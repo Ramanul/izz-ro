@@ -10,7 +10,7 @@ from generator import config, render, source_publishers
 
 def test_registrul_editorilor_e_valid_si_corespunde_surselor_configurate():
     pubs = source_publishers.load()
-    assert len(pubs) >= 25
+    assert len(pubs) >= 20  # 9 înregistrări ascunse până la verificare manuală (vezi PR)
     domenii_configurate = {
         source_publishers.canonical_domain(meta["url"])
         for meta in config.SOURCES.values()
@@ -61,7 +61,8 @@ def test_grupuri_comune_apar_doar_la_cel_putin_doua_publicatii():
         ],
         pubs,
     )
-    assert comune == [{"group": "Grupul ARCMEDIA", "members": ["Economedia", "G4Media"]}]
+    # Economedia (Grupul ARCMEDIA) e ascunsă până la verificare: grupul nu apare comun acum.
+    assert comune == []
 
 
 def test_catalogul_surse_ataseaza_editorul_doar_unde_exista_act_verificat():
@@ -75,7 +76,7 @@ def test_catalogul_surse_ataseaza_editorul_doar_unde_exista_act_verificat():
                 for s in c["with_stats"] + c["without_stats"]:
                     toate[s["name"]] = s
 
-    assert toate["Digi24"]["publisher_info"]["group"] == "Grupul Digi"
+    assert "publisher_info" not in toate["Digi24"]  # ascunsă până la verificare manuală
     assert toate["BBC Europe"]["url"] == "https://bbc.co.uk/"
     assert "British Broadcasting Corporation" in toate["BBC Europe"]["publisher_info"]["label"]
     assert toate["DW Europe"]["url"] == "https://dw.com/"
