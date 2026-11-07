@@ -22,7 +22,11 @@ async function serve({ method = "GET", path = "/local/old/", origin } = {}) {
   globalThis.fetch = async (url, options) => { mirrorCalls++; return origin(url, options); };
   try {
     const response = await worker.fetch(new Request("https://izz.ro" + path, { method }), {
-      ASSETS: { fetch: async () => { assetsCalls++; return new Response("local missing", { status: 404 }); } },
+      ASSETS: { fetch: async (req) => {
+        assetsCalls++;
+        if (new URL(req.url).pathname === "/404") return new Response(req.method === "HEAD" ? null : "PAGE404", { headers: { "content-type": "text/html", "content-security-policy": "site-csp", etag: '"x"' } });
+        return new Response(null, { status: 404 });
+      } },
     });
     return { response, assetsCalls, mirrorCalls };
   } finally { globalThis.fetch = originalFetch; }
@@ -39,7 +43,10 @@ test("fallback fetches ASSETS once and applies local security headers", async ()
   assert.equal(result.mirrorCalls, 1);
   assert.equal(result.response.status, 200);
   assert.equal(await result.response.text(), HTML);
-  assert.match(result.response.headers.get("content-security-policy"), /frame-ancestors 'none'/);
+  // Mirror HTML has its own inline scripts: no script-src 'self' CSP may be imposed on it.
+  assert.equal(result.response.headers.get("content-security-policy"), null);
+  assert.equal(result.response.headers.get("x-frame-options"), "DENY");
+  assert.equal(result.response.headers.get("content-type"), "text/html; charset=utf-8");
   assert.equal(result.response.headers.get("x-content-type-options"), "nosniff");
   assert.equal(result.response.headers.get("set-cookie"), null);
   assert.equal(result.response.headers.get("access-control-allow-origin"), null);
@@ -61,9 +68,27 @@ test("methods and fresh-only routes never query the mirror", async () => {
   for (const args of [{ method: "POST" }, { path: "/" }, { path: "/feed.xml" }, { path: "/local/3/" }]) {
     const result = await serve({ ...args, origin: () => { throw new Error("must not query mirror"); } });
     assert.equal(result.response.status, 404);
-    assert.equal(result.assetsCalls, 1);
     assert.equal(result.mirrorCalls, 0);
+    if (args.method === "POST") {
+      assert.equal(result.assetsCalls, 1);
+    } else {
+      // GET miss outside the mirror list: the site's own 404 page, with ITS headers.
+      assert.equal(result.assetsCalls, 2);
+      assert.equal(await result.response.text(), "PAGE404");
+      assert.equal(result.response.headers.get("content-security-policy"), "site-csp");
+      assert.equal(result.response.headers.get("etag"), null);
+      assert.equal(result.response.headers.get("cache-control"), "public, max-age=0, s-maxage=60, must-revalidate");
+    }
   }
+});
+
+test("mirror miss serves the local 404 page; HEAD keeps it bodiless", async () => {
+  const get = await serve({ origin: () => new Response("missing", { status: 404 }) });
+  assert.equal(get.response.status, 404);
+  assert.equal(await get.response.text(), "PAGE404");
+  const head = await serve({ method: "HEAD", origin: () => new Response(null, { status: 404 }) });
+  assert.equal(head.response.status, 404);
+  assert.equal(await head.response.text(), "");
 });
 
 test("only the mirror's trailing-slash redirect is honored, as a local 301", async () => {
