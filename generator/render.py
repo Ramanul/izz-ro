@@ -1438,6 +1438,14 @@ def build(articles: list, mod: dict | None = None) -> None:
         htmlart.aloca_stiluri_lista(cat_items, limit=12)
         by_category[cat] = cat_items
 
+    # Doar cele mai active rubrici pe prima pagina (config.HOME_SECTIUNI), in ordinea
+    # editoriala din config.CATEGORIES. Restul ramân in bara de categorii, pe /sectiuni/ si
+    # pe pagina proprie — limita e despre greutatea si linistea primei pagini, nu despre acoperire.
+    if len(by_category) > config.HOME_SECTIUNI:
+        pastrate = {cat for cat, _ in sorted(by_category.items(),
+                                             key=lambda kv: len(kv[1]), reverse=True)[:config.HOME_SECTIUNI]}
+        by_category = {cat: items for cat, items in by_category.items() if cat in pastrate}
+
     # homepage
     item_list = {
         "@type": "ItemList", "@id": _abs_id("/", "itemlist"),

@@ -90,13 +90,20 @@ def test_fara_data_publicatie_nu_afiseaza_none():
 
 # --- 2. sabloanele nu mai cer fisiere pentru arta generata --------------------------
 
-def test_cardul_deseneaza_arta_in_loc_sa_ceara_fisier():
+def test_cardul_nu_mai_deseneaza_arta_generata():
+    """Cardul e tipografic (analiza/rebranding/PROPUNERE.md, faza 3).
+
+    Pana in rebranding, fiecare card fara fotografie isi desena compozitia inline: 58 de
+    compozitii pe prima pagina = ~455 KB din 593 KB (76% din greutate). Compozitiile rămân
+    pe pagina de articol si pe lead (unde cititorul le priveste); cardul pastreaza doar
+    fotografia reala, ca fisier.
+    """
     a = _art()
     a["art_style"] = htmlart.stil_inline(a)
     card = render._env().get_template("_card.html").module.card
     html = str(card(a))
-    assert 'class="art art--' in html
-    assert "art.jpg" not in html and "art.webp" not in html and "art-card" not in html
+    assert 'class="art art--' not in html, "compozitia generata a revenit pe card"
+    assert "art.jpg" not in html and "art.webp" not in html
 
 
 def test_NEGATIV_cand_exista_fotografie_reala_cardul_foloseste_fisierul():

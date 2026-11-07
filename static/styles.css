@@ -250,14 +250,17 @@ main { max-width: var(--maxw); margin: 0 auto; padding: var(--s-34) var(--s-34);
   display: grid; grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr));
   column-gap: var(--s-55); row-gap: 0; align-items: start;
 }
+/* Card = 4 elemente (kicker, titlu, dek, meta). Fara chenar, fara umbra: o linie de
+   regula sus si ierarhia tipografica fac toata treaba. */
 .card {
-  background: none; border: 0; border-top: 1px solid var(--line-strong);
-  padding: var(--s-21) 0; display: flex; flex-direction: column; gap: var(--s-8);
+  background: none; border: 0; border-top: 1px solid var(--line);
+  padding: var(--s-21) 0 var(--s-34);
+  display: flex; flex-direction: column; gap: var(--s-8);
 }
 .card:hover .card-title a { color: var(--navy); }
 
-/* banda de top (stirile principale de sub lead): accent auriu -> ierarhie vizuala */
-.top-band .card { border-top: 3px solid var(--gold); }
+/* banda de top (stirile principale de sub lead): o regula mai groasa, nu culoare */
+.top-band .card { border-top: 2px solid var(--ink); }
 
 /* <picture> (WebP + fallback JPEG) nu participa la layout: img ramane elementul
    dimensionat de container (height:100% in .card-media) */
@@ -276,12 +279,43 @@ picture { display: contents; }
 }
 .card:hover .card-media img { transform: scale(1.03); }
 
-/* Eticheta = eyebrow auriu (nu pastila). C (sinteza) marcat cu bulina aurie. */
-.badge {
-  align-self: flex-start; font-family: var(--font-mono); font-size: var(--fs-eyebrow);
-  font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-strong);
+/* Kicker: categoria, in arama-inchis, o singura data pe card (nu si in meta). */
+.card-kicker {
+  margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-8);
+  font-family: var(--font-text); font-size: 0.6875rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .13em;
 }
-.badge.c::before { content: "\25CF\00A0"; color: var(--gold); }   /* bulina aurie pt. multi-sursa */
+.badge { color: var(--gold-strong); }
+.badge.c::before { content: "\25CF\00A0"; color: var(--gold); }   /* bulina de sinteza multi-sursa */
+.badge-extra { color: var(--ink-3); }
+
+/* Chip de portret licentiat (Wikimedia): un singur chip pe pagina, cu creditul sub el.
+   Fara compozitia generata pe card — vezi nota din _card.html. */
+.card-face {
+  order: -1; width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
+  background: var(--line); align-self: flex-start;
+}
+.card-face-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Randul de meta: sursa, timpul, starea de confirmare. Un singur rand care se rupe
+   natural; sursele nu mai fac un paragraf separat. */
+.card-meta {
+  margin: var(--s-5) 0 0; display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 4px var(--s-8);
+  font-family: var(--font-text); font-size: 0.75rem; color: var(--ink-3); line-height: 1.5;
+}
+.card-meta .sep { color: var(--line-strong); }
+.card-meta time { color: var(--ink-3); }
+
+/* Starea de confirmare: un punct colorat + text scurt. Punctul e singurul loc din card
+   unde apare culoare semantica (verde = confirmat, ocru = o singura origine, rosu =
+   relatari divergente, gri = anunt oficial). */
+.trust { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.trust i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 auto; }
+.trust--single i { background: var(--warn); border-radius: 1px; transform: rotate(45deg); }
+.trust--div i { background: var(--live); }
+.trust--official i { background: var(--ink-3); border-radius: 0; }
+.trust--plain i { background: var(--line-strong); }
 
 /* Dezvaluire AI Act art. 50(4). Sta in `.meta` (cum e facut articolul), nu in `.badge` (despre
    ce e): eticheta aurie e eyebrow de CATEGORIE, iar o dezvaluire pusa acolo s-ar citi ca tema.
@@ -312,13 +346,20 @@ picture { display: contents; }
    sau nume compuse, care nu sunt un atac. */
 .summary, .lead-summary, .body, .card h2, .card h3, .card a { overflow-wrap: anywhere; }
 
-.summary { color: var(--ink-2); font-size: var(--fs-xs); margin: 0; line-height: 1.55; }
+/* Dek-ul se opreste la 3 randuri: cardurile dintr-o grila trebuie sa aiba aceeasi
+   inaltime de citire, iar textul integral e pe pagina articolului. */
+.summary {
+  color: var(--ink-2); font-size: var(--fs-xs); margin: 0; line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
 .read-more { font-size: var(--fs-eyebrow); font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: var(--s-5); }
 .read-more::after { content: " \2192"; }
-.sources-inline { font-size: var(--fs-eyebrow); color: var(--ink-3); font-family: var(--font-mono); }
-.sources-inline b { color: var(--gold-strong); font-weight: 700; }
-/* linkurile de sursa: tinta tactila >=24px (WCAG 2.2 target-size) fara a ingrosa vizual randul */
-.sources-inline a, .lead-aside ul a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
+.sources-inline { color: var(--ink-3); }
+.sources-inline b { color: var(--ink-3); font-weight: 600; }
+.sources-inline a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 2px; }
+.sources-inline a:hover { color: var(--navy); text-decoration-color: var(--navy); }
+/* pe pagina de articol, lista de surse din aside rămâne cu tinta tactila de 24px */
+.lead-aside ul a { display: inline-block; padding: 6px 4px; margin: -4px -2px; }
 
 .see-all {
   display: inline-block; margin: var(--s-21) 0 0;
@@ -1192,7 +1233,7 @@ picture { display: contents; }
    primeste niciodata — acolo nu exista legenda. */
 .card-credit {
   margin: calc(-1 * var(--s-5)) 0 0; color: var(--ink-3);
-  font-family: var(--font-mono); font-size: var(--fs-eyebrow); line-height: 1.4;
+  font-family: var(--font-text); font-size: 0.6875rem; line-height: 1.4;
   overflow-wrap: anywhere;
 }
 .card-credit a { color: inherit; text-decoration: underline; }
