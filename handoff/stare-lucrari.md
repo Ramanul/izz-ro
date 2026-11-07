@@ -386,3 +386,25 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 - Local, pe branch `ramanul-ai-output-quality`: tokenuri Latin–Han respinse pe căile B/C și la quality gate; verificarea diacriticelor tratează separat titlul/corpul și QA raportează proxy-urile distinct. Corpus scan: 0/11042 tokenuri mixte. 72 teste țintite + Ruff trecute; full suite: 2590 passed, 8 failed (7 în căi neatinse/limitări Windows; testul plafonului STATE a fost corectat și trecut separat).
 - QA: 16/2165 corpuri eligibile fără diacritice (0,7%). Render-only a construit 9867 articole; Pagefind lipsește local. `data/articles.json` neatins.
 - PR #499 deschis la cererea proprietarului; checks CI verzi pe 0bc076eb, așteaptă review/merge manager. Nu se face deploy manual; live rămâne neconfirmat până la merge și CI/CD.
+
+
+## 20. izz.ro — audit SEO extern aplicat (7 noiembrie 2026, Arena, PR #554)
+- Cerere: „# rezolvă pe repo cu push pe main”, pe raportul unui tool extern. Arena nu poate
+  împinge pe `main` din sesiunea ei (limitare de platformă, nu de chef): branch
+  `arena/1b1317c8-izz-ro` → PR #554, gata de merge când vrei tu.
+- Aplicat: pct. 1 (`nofollow` pe surse, 59/65 pe prima pagină; creditele Wikimedia rămân
+  DoFollow), pct. 2 (slug fără cuvinte de legătură + fără prepoziție atârnată: 793 → 0 cozi,
+  194 → 4 slug-uri la limita de 80, permalinkurile publicate neschimbate), pct. 3 (title 44 → 57,
+  description 119 → 151, `og:*` pe aceleași blocuri), pct. 4 (cardul devine `h3`, secțiunea
+  rămâne `h2`, `h2` ascuns pe pagina de categorie), pct. 5 (ancoră „Toate știrile din X”),
+  pct. 7 (`llms.txt` la build).
+- Nu s-a aplicat, cu motiv consemnat în registru: pct. 6 era alarmă falsă [IZZ-0445
+  masurat-fals — `alt=""` e alt valid, 0/7.906 imagini fără `alt`]; Pixel + LocalBusiness
+  [IZZ-0446 respins]; pct. 8 (backlinkuri, conturi de social) = decizie a proprietarului,
+  nu diff.
+- Verificat: 3174 teste trec, ruff curat, randare completă 6.797 articole,
+  `html_check` 0 legături moarte pe 392.004, `a11y_static` 0 încălcări tari pe 7.533 pagini,
+  `qa_check` verde. **Nemăsurat:** Lighthouse/pa11y în browser (fără Chromium în sandbox) și
+  orice cifră LIVE — până la merge + deploy, valorile de mai sus sunt pe randare locală.
+- Rămâne la tine: merge-ul (#554) și, dacă vrei continuarea raportului, conturile de social
+  (footer + `sameAs` în JSON-LD) — codul e o linie, conturile nu.
