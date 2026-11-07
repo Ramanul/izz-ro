@@ -296,6 +296,9 @@ def _env() -> Environment:
     )
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    # Codul de judet din date e „CONSTANTA”, „TIMIS”; banda de context din articol are nevoie
+    # de forma cu diacritice („Constanța”), din aceeasi sursa ca etichetele de pe coperti.
+    env.filters["judet_label"] = geo.eticheta_judet
     env.filters["href_extern"] = _href_extern
     return env
 
@@ -1438,6 +1441,14 @@ def build(articles: list, mod: dict | None = None) -> None:
         htmlart.aloca_stiluri_lista(cat_items, limit=12)
         by_category[cat] = cat_items
 
+    # Doar cele mai active rubrici pe prima pagina (config.HOME_SECTIUNI), in ordinea
+    # editoriala din config.CATEGORIES. Restul ramân in bara de categorii, pe /sectiuni/ si
+    # pe pagina proprie — limita e despre greutatea si linistea primei pagini, nu despre acoperire.
+    if len(by_category) > config.HOME_SECTIUNI:
+        pastrate = {cat for cat, _ in sorted(by_category.items(),
+                                             key=lambda kv: len(kv[1]), reverse=True)[:config.HOME_SECTIUNI]}
+        by_category = {cat: items for cat, items in by_category.items() if cat in pastrate}
+
     # homepage
     item_list = {
         "@type": "ItemList", "@id": _abs_id("/", "itemlist"),
@@ -2105,11 +2116,6 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     ghid_tpl = env.get_template("ghid.html")
     ghiduri_tpl = env.get_template("ghiduri.html")
 
-    categorii_icon = {
-        "bani": "💰", "acte": "📄", "auto": "🚗",
-        "locuinte": "🏠", "educatie": "🎓", "sanatate": "🩺",
-    }
-
     entities_by_cat = {}
     for eid, ent in entities.items():
         cat = ent.get("categorie_ghid", "")
@@ -2157,7 +2163,7 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
         _write(os.path.join(OUT_DIR, "ghiduri", eid, "index.html"),
                ghid_tpl.render(**_base_ctx(
                    f"/ghiduri/{eid}/", ent=ent, categorii=categorii,
-                   categorii_icon=categorii_icon, related_news=related,
+                   related_news=related,
                    related_news_eticheta=eticheta_stiri,
                    jsonld_nodes=[breadcrumb_jsonld], jsonld_page=jsonld_page,
                    calculator_html=calculator_html, sectiuni=sectiuni, active_cat=None)))
@@ -2167,13 +2173,13 @@ def _render_ghiduri(env: Environment, articles: list) -> None:
     n_neverificate = sum(1 for ent in entities.values() if not ent.get("verificat"))
     _write(os.path.join(OUT_DIR, "ghiduri", "index.html"),
            ghiduri_tpl.render(**_base_ctx(
-               "/ghiduri/", nav_section="ghiduri", categorii=categorii, categorii_icon=categorii_icon,
+               "/ghiduri/", nav_section="ghiduri", categorii=categorii,
                entities_by_cat=entities_by_cat, n_neverificate=n_neverificate,
                n_ghiduri=len(entities))))
 
     # Instrumente
     tools = [
-        {"url": "/instrumente/calculator-salariu/", "icon": "🧮",
+        {"url": "/instrumente/calculator-salariu/",
          "title": "Calculator salariu net", "desc": "Calculează salariul net în funcție de brut. Datele se actualizează automat."},
     ]
     instr_tpl = env.get_template("instrumente.html")
@@ -2243,7 +2249,7 @@ def _render_calc_salariu(env: Environment, ent: dict) -> str:
     (`script-src 'self'`, _write_headers) le blocheaza tacut: pe live calculatorul afisa
     campul si butoanele si nu calcula nimic. Codul e acum in static/calc-salariu.js."""
     return env.get_template("_calc_salariu.html").render(
-        salariu_minim=_salariu_minim(ent), calc_heading="🧮 Calculator salariu net")
+        salariu_minim=_salariu_minim(ent), calc_heading="Calculator salariu net")
 
 
 def _render_legal(env: Environment) -> None:

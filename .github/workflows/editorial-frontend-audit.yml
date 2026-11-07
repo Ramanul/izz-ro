@@ -11,6 +11,12 @@ on:
       - 'content/legal/method.md'
       - 'templates/index.html'
       - 'templates/_editorial_selection.html'
+      # Faza 7: un redesign se judecă pe foaia de stil și pe greutatea imaginilor. Fără
+      # liniile astea, exact schimbările care mută scorurile nu declanșau măsurătoarea.
+      - 'static/**'
+      - 'media/portraits/**'
+      - 'tools/audit.sh'
+      - 'tools/usureaza_portrete.py'
       - 'content/pages/despre.md'
       - 'content/pages/principii.md'
       - 'content/editorial/annotations.json'
@@ -98,21 +104,28 @@ jobs:
 
           root = Path('audit-results')
           lines = ['## Editorial frontend audit', '', '| Revision | Page | Perf | A11y | Best practices | SEO |', '|---|---|---|---|---|---|']
+          # O linie de `notice` ajunge în adnotările rulării, deci cifrele se pot citi din API
+          # fără să descarci artefactul (care stă pe blob storage și expiră în 14 zile).
+          scurt = []
           for revision in ('before', 'after'):
               for page in ('home', 'article'):
                   reports = [json.loads((root / f'{revision}-{i}' / f'lh-{page}.json').read_text()) for i in (1, 2, 3)]
                   scores = [statistics.median(r['categories'][key]['score'] * 100 for r in reports) for key in ('performance', 'accessibility', 'best-practices', 'seo')]
                   lines.append('| ' + ' | '.join([revision, page, *(str(round(s, 1)) for s in scores)]) + ' |')
+                  scurt.append(f'{revision}/{page} ' + '/'.join(str(round(s)) for s in scores))
               counts = []
               for i in (1, 2, 3):
                   with (root / f'{revision}-{i}' / 'pa11y-home.csv').open() as stream:
                       counts.append(max(0, len(list(csv.reader(stream))) - 1))
               lines.append(f'\n{revision}: WCAG2AA home error counts {counts}.\n')
+              scurt.append(f'{revision} pa11y ' + ','.join(str(c) for c in counts))
           summary = '\n'.join(lines)
           (root / 'summary.md').write_text(summary)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
               stream.write(summary)
           print(summary)
+          print('::notice title=Lighthouse/pa11y (mediană din 3 rulări)::'
+                + ' · '.join(scurt))
           PY
       - name: Preserve evidence
         if: always()

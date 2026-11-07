@@ -45,11 +45,25 @@ def _prima_din_srcset(srcset: str) -> str:
 
 
 def referinte(html: str) -> tuple[list[str], list[str]]:
-    """(eager, lazy) — caile la care pagina trimite, separate dupa cand se descarca."""
+    """(eager, lazy) — caile la care pagina trimite, separate dupa cand se descarca.
+
+    `<source>` dintr-un `<picture>` nu are atribut propriu `loading`: decizia o ia `<img>`-ul
+    care urmeaza. Pana pe 2026-11-07 toolul le numara pe toate ca „eager" si raporta carduri
+    de categorie la ~2 MB, desi toate imaginile erau `loading="lazy"` — o cifra umflata exact
+    pe paginile pe care redesignul trebuia sa le usureze.
+    """
     eager, lazy = [], []
-    for tag, brut in TAG.findall(html):
+    taguri = list(TAG.finditer(html))
+    for idx, m in enumerate(taguri):
+        tag, brut = m.group(1), m.group(2)
         a = _atribute(brut)
         tag = tag.lower()
+        if tag == "source":
+            # mosteneste `loading` de la primul <img> de dupa el (fratii din <picture>)
+            for urm in taguri[idx + 1:]:
+                if urm.group(1).lower() == "img":
+                    a = dict(a, **{"loading": _atribute(urm.group(2)).get("loading", "")})
+                    break
         if tag == "link":
             # Doar ce blocheaza sau precarca. `alternate` (RSS) si `canonical` nu se descarca.
             if a.get("rel", "").lower() not in {"stylesheet", "preload"}:
@@ -58,11 +72,24 @@ def referinte(html: str) -> tuple[list[str], list[str]]:
         elif tag == "source":
             cale = _prima_din_srcset(a.get("srcset", "")) or a.get("src", "")
         else:
+            if tag == "img" and _are_sursa_in_picture(html, m.start()):
+                # <img> e doar FALLBACK-ul unui <picture> cu <source>: browserul descarca
+                # sursa, nu si jpg-ul. Numarand amandoua, fiecare articol parea cu ~250 KB
+                # mai greu decat e (masurat 2026-11-07: photo.jpg 245K + photo.webp 210K).
+                continue
             cale = a.get("src", "") or _prima_din_srcset(a.get("srcset", ""))
         if not cale or cale.startswith(("data:", "http://", "https://", "//", "mailto:")):
             continue
         (lazy if a.get("loading", "").lower() == "lazy" else eager).append(cale)
     return eager, lazy
+
+
+def _are_sursa_in_picture(html: str, poz: int) -> bool:
+    """True daca `<img>`-ul de la `poz` sta intr-un `<picture>` care are si `<source>`."""
+    deschidere = html.rfind("<picture", 0, poz)
+    if deschidere == -1:
+        return False
+    return "<source" in html[deschidere:poz]
 
 
 def _octeti(cale: str, pagina: Path) -> int:

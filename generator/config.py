@@ -488,6 +488,12 @@ MAX_PER_SOURCE = 8             # redus de la 12 ca sa scada apelurile AI/rulare
 HOME_CARDS_PER_CATEGORY = 4
 # Sub prag, rubrica nu e o secțiune de homepage. Rămâne în nav. Reversibil.
 HOME_MIN_SECTIUNE = 8
+# Cate secțiuni de categorie incap pe prima pagina. Toate rubricile rămân în bara de
+# categorii și pe /sectiuni/, iar articolele lor rămân indexate pe pagina de categorie —
+# limita taie doar DOM-ul primei pagini (rebranding 2026-11-07: 14 secțiuni × 4 carduri
+# insemnau 60+ de carduri pe un ecran; ținta e ≤24). Se aleg cele mai active din fereastra
+# curenta, apoi se afiseaza in ordinea din config.CATEGORIES. Reversibil: 10 -> 99.
+HOME_SECTIUNI = 10
 
 AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")  # "gemini" | "anthropic" | "ollama" (local, gratuit — vezi generator/providers/ollama.py)
 # Fallback AUTOMAT pe Qwen local cand providerul de mai sus (gemini/anthropic) esueaza (429,

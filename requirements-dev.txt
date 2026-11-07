@@ -9,6 +9,14 @@
 # Pasul următor din audit, nefăcut aici: hash-uri (`--require-hashes`), după ce se
 # stabilește un lock.
 
+# Garda de fonturi (`tests/test_fonturi.py`) citește cmap-ul fiecărei fețe woff2 ca să
+# demonstreze că diacriticele românești sunt în subset. Fără ea, testul dă ImportError la
+# colectare — deci pică toată suita, nu doar garda (măsurat pe CI, 7 nov).
+fonttools==4.68.0
+# ...și brotli, fiindcă fontTools nu poate DECODA un .woff2 fără el: fără extensie, garda de
+# fonturi pică la fiecare față cu `ImportError: No module named brotli` (și `fetch_fonts.py`
+# nu poate nici scrie). Ambele lipsuri au fost verzi local și roșii pe CI — de aici rândul.
+brotli==1.2.1
 pytest==9.1.1
 ruff==0.17.1
 pytest-randomly==5.0.0

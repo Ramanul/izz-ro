@@ -3,7 +3,7 @@
 > Contract canonic pentru Claude Code / Cowork. Se citește la fiecare tură și înlocuiește comportamentul implicit.
 >
 > **Plafon: 24 KB.** Măsurat în octeți; `tests/test_reguli.py` îl verifică mecanic.
-> **Buget de pornire: 37 KB.** Include acest fișier, `SessionStart` și frontmatter-ul agenților/comenzilor; se verifică mecanic.
+> **Buget de pornire: 40 KB.** Include acest fișier, `SessionStart` și frontmatter-ul agenților/comenzilor; se verifică mecanic.
 > **Regulă de namespace:** un `§N` necalificat din documentația repo-ului înseamnă secțiunea N din acest `CLAUDE.md`. Pentru `REGULI-SINTEZA.md` se scrie explicit `REGULI-SINTEZA.md §N`.
 >
 > Cifrele istorice, măsurătorile și incidentele stau în `specs/`, nu în contract, decât dacă schimbă acțiunea imediată.

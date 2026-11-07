@@ -80,3 +80,4 @@ jobs:
           python -m generator.main --render-only
           python -m generator.pagefind_index --verify output
           python tools/html_check.py
+          python tools/a11y_static.py
