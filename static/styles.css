@@ -872,16 +872,16 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
    ===================================================================== */
 :root {
   /* perechile (accent, fond) din generator/htmlart.py `_PALETE`, in aceeasi ordine */
-  --art-a0: #1f2a44; --art-b0: #faf5e6;   /* cerneala albastra pe spalare aurie (nu #8b6918: maroniu) */
-  --art-a1: #15171c; --art-b1: #f6f7f9;   /* cerneala pe hartie */
-  --art-a2: #3d4a3a; --art-b2: #f1f4ee;   /* masliniu */
-  --art-a3: #4a3b32; --art-b3: #f7f2ed;   /* pamant ars */
-  --art-a4: #2f3d4a; --art-b4: #eef1f5;   /* ardezie */
-  --art-a5: #4a3244; --art-b5: #f5f0f4;   /* prun */
-  --art-gold: #c9a227;   /* NU se inverseaza pe dark: e aurul tiparit, ca --ink-fixed */
+  --art-a0: #173a5e; --art-b0: #f7f1e6;   /* navy pe hartie calda */
+  --art-a1: #14161a; --art-b1: #fbfaf7;   /* cerneala pe hartie */
+  --art-a2: #39443a; --art-b2: #f2f4ee;   /* masliniu */
+  --art-a3: #453a31; --art-b3: #faf5ef;   /* pamant ars */
+  --art-a4: #2f3d4a; --art-b4: #f1f3f6;   /* ardezie */
+  --art-a5: #463043; --art-b5: #f8f2f5;   /* prun */
+  --art-gold: #a8823a;   /* NU se inverseaza pe dark: e alama tiparita, ca --ink-fixed */
   /* stirile locale/judetene (`.art--geo`); aceleasi valori ca GEO_* din generator/htmlart.py */
-  --art-geo-ink: #1d1f24; --art-geo-bg: #faf6ec;
-  --art-geo-aur: #dcb84e;   /* aur luminos pentru forma locului; #8b6918 pe suprafete mari iesea maroniu */
+  --art-geo-ink: #14161a; --art-geo-bg: #fbfaf7;
+  --art-geo-aur: #c8a458;   /* alama pentru forma locului (era aur luminos #dcb84e) */
   --art-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
 }
 .art--p0 { --art-acc: var(--art-a0); --art-bg: var(--art-b0); }
