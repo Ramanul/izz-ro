@@ -75,7 +75,7 @@ def _ruleaza(script: str, modul: Path | None = None) -> dict:
         proba = Path(tmp) / "proba.mjs"
         proba.write_text(PRELUDIU + script.replace("__PUSH__", copie.as_uri()),
                          encoding="utf-8")
-        proc = subprocess.run([NODE, str(proba)], capture_output=True, text=True, timeout=180)
+        proc = subprocess.run([NODE, str(proba)], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=180)
     # Se judeca dupa CODUL DE IESIRE, nu dupa stderr: Node poate scrie avertismente
     # (ExperimentalWarning pe versiunile unde `fetch` e experimental) fara ca proba sa fi
     # gresit cu ceva. A confunda avertismentul cu esecul a facut testele sa pice in CI

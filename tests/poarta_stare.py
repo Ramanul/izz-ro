@@ -71,7 +71,7 @@ def _git(*argumente: str) -> str | None:
     """Iesirea comenzii, sau None daca git a esuat. Nu ridica: apelantul decide implicitul."""
     try:
         iesire = subprocess.run(
-            ["git", *argumente], cwd=ROOT, capture_output=True, text=True,
+            ["git", *argumente], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace",
             check=False, timeout=60,
         )
     except (OSError, subprocess.SubprocessError):

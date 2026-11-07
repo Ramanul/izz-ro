@@ -48,7 +48,7 @@ def _ruleaza(apeluri: str, tmp_path) -> dict:
     script = (bloc.group(0) + f"\nconst items = {json.dumps(ARTICOLE)};\n" + apeluri)
     cale = tmp_path / "harness.js"
     cale.write_text(script, encoding="utf-8")
-    rez = subprocess.run(["node", str(cale)], capture_output=True, text=True, timeout=30)
+    rez = subprocess.run(["node", str(cale)], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
     assert rez.returncode == 0, f"node a esuat: {rez.stderr}"
     return json.loads(rez.stdout)
 

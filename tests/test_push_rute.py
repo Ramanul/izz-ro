@@ -81,7 +81,7 @@ def _ruleaza(script: str) -> dict:
             (dest / (sursa.stem + ".mjs")).write_text(text, encoding="utf-8")
         proba = Path(tmp) / "proba.mjs"
         proba.write_text(PRELUDIU + script, encoding="utf-8")
-        proc = subprocess.run([NODE, str(proba)], capture_output=True, text=True, timeout=180,
+        proc = subprocess.run([NODE, str(proba)], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=180,
                               cwd=tmp)
     # Se judeca dupa CODUL DE IESIRE, nu dupa stderr: Node poate scrie avertismente
     # (ExperimentalWarning pe versiunile unde `fetch` e experimental) fara ca proba sa fi

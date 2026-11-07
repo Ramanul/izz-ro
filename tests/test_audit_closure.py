@@ -199,7 +199,7 @@ def test_grounding_gate_blocks_deterministic_violation(tmp_path):
         cwd=ROOT,
         env=env,
         capture_output=True,
-        text=True,
+        text=True, encoding="utf-8", errors="replace",
         check=False,
     )
     assert proc.returncode != 0
@@ -216,7 +216,7 @@ def test_grounding_gate_fails_closed_when_evidence_is_malformed(tmp_path):
         cwd=ROOT,
         env=env,
         capture_output=True,
-        text=True,
+        text=True, encoding="utf-8", errors="replace",
         check=False,
     )
     assert proc.returncode == 1

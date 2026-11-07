@@ -208,7 +208,7 @@ def output_randat(tmp_path_factory) -> str:
         env["IZZ_STATE_PATH"] = str(corpus)
     try:
         r = subprocess.run([sys.executable, "-m", "generator.main", "--render-only"],
-                           cwd=ROOT, capture_output=True, text=True, timeout=limita, env=env)
+                           cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=limita, env=env)
     except subprocess.TimeoutExpired:
         corpus_desc = (f"esantion {esantion} articole" if esantion > 0
                        else f"{_numar_articole()} articole (starea completa)")
