@@ -13,15 +13,16 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-11-07 (rebranding #542 merged și LIVE; rămasă decizia de fonturi).
+**Updated:** 2026-11-07 (rebranding #542 merged și LIVE; §8.4 închis integral).
 
 ## Open
 - **Rebranding „Hârtie curată" — #542 merged 7 nov, LIVE:** fazele 0–7 (tokeni +
   Newsreader/Inter, masthead, card 7→4 elemente, pagină de articol, coperți pe același serif,
   o foaie de stil, harta pe alamă, utilitare fără emoji, portrete re-encodate). Prima pagină
   593→139 KB brut / 109→36,7 KB gzip; articolul cel mai greu 553→193 KB. Cifre:
-  `analiza/rebranding/PROPUNERE.md` §8, `specs/masuratori-frontend.md`. Rămas: decizia de
-  fonturi (5 fețe/76 KB vs ținta 3/55 KB — variantele măsurate în §8.4).
+  `analiza/rebranding/PROPUNERE.md` §8, `specs/masuratori-frontend.md`. §8.4 e închis integral:
+  ținta de fonturi (3/55 KB) s-a retras cu cifre — cele 5 fețe au fiecare un rol, iar variabilul
+  complet ar da ~58 KB, tot peste.
 - **Transformarea «prin prisma cărților» (`specs/plan-paradigma-izz.md`):** E0–E4 pe main (#511 merged · #512 merged · #521 merged); D6 fără profilare (#515 merged); `href` extern prin `guard.url_ostil` (#516 merged). `SILENCE_REJECTION_THRESHOLD` rămâne 0,34 (leagă 1 din 74). Curățenia urmelor vechi din browsere: după 2027-01-31 [IZZ-0437].
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`), rutele dau 503.
 - **Media pe carduri [IZZ-0403/0404 → IZZ-0416]:** portrete PD/CC0, siluete de județ, `covers.py`; marcaj AI Act la prima expunere [IZZ-0420/0423]. Pozele noi apar pe măsură ce `fetch_leadphotos`/`fetch_eventphotos` rulează în build.

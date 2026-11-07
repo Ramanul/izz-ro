@@ -289,15 +289,19 @@ Faza 7 (7 nov) a luat lista de mai jos punct cu punct. Detaliile măsurate, cu c
    imagini să declanșeze măsurătoarea. Adăugate în `paths:`. Scorurile trăiesc în sumarul rulării
    (și, de acum, într-o adnotare `notice` citibilă din API), nu în acest document.
 
-**Rămâne deschis — și e o decizie, nu o lipsă:**
+**Închis și ultimul punct — prin retragerea țintei, nu prin amânare:**
 
-5. **Fonturile: 5 fișiere / 76.224 B, ținta 3 / 55 KB.** Ambele drumuri au fost măsurate:
-   Newsreader variabil ar da un fișier de 9.396 B în locul celor două statice de 38.784 B, dar
-   fontul variabil din `analiza/rebranding/fonts/` are 14 acoperiri de kerning față de 305 câte au
-   staticele — o schimbare de spațiere în titluri, nemăsurabilă fără browser; renunțarea la Inter
-   600 ar da exact 3 fișiere / ~47 KB, cu ~30 de etichete căzând de la 600 pe 700. Ambele sunt
-   schimbări vizibile: se aleg cu A11y măsurat, nu cu o cifră de octeți. Până atunci,
-   `tests/test_fonturi.py` ține plafonul la 5 fețe / 80.000 B și verifică diacriticele.
+5. **Fonturile: 5 fețe / 76.224 B; ținta „3 / 55 KB" se retrage.** Nu e atinsă nici pe drumul cel
+   mai bun, iar cifra care sugera contrariul era o **eroare de măsurare**: „9.396 B" ieșise dintr-un
+   subset făcut din `analiza/rebranding/fonts/newsreader-var.woff2`, care nu e fontul complet, ci
+   **felia latin-ext** (229 de codepoint-uri, fără `!`…`H`, fără cifre). Pe fontul variabil complet,
+   economia realistă e ~15–20 KB, deci inventarul ar ajunge la ~58 KB — tot peste 55; a coborî sub
+   ea cere renunțarea la o greutate Inter, adică ~30 de etichete care cad de la 600 pe 700, lucru
+   de decis cu A11y măsurat. Garda `tests/test_fonturi.py` (5 fețe / 80.000 B + diacritice) păzește
+   starea reală, iar `test_fisierul_variabil_din_analiza_e_doar_o_felie` ține minte capcana.
+   Detaliile: `specs/masuratori-frontend.md` §faza 7.
+
+**Nimic din §8.4 nu mai rămâne deschis.**
 
 ## Anexă: fișierele propunerii
 

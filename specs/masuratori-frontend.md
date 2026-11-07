@@ -346,24 +346,32 @@ reparate:
 Garda: `tests/test_css_tokeni.py` (niciun `var()` fără definiție; whitelist-ul de tokeni puși din
 JS e dovedit, nu declarat; numele vechi nu au voie să reapară; `--sp-N` trebuie să fie N px).
 
-### Fonturile: două variante măsurate, niciuna aleasă în locul proprietarului
+### Fonturile: ținta „3 fișiere / 55 KB" se retrage, cu cifre
 
-Ținta din propunere era 3 fișiere / 55 KB; livrate sunt 5 / 76.224 B. Am măsurat exact ce ar
-însemna fiecare drum:
+Livrate: **5 fețe / 76.224 B** (Inter 400/600/700 = 37.440 B; Newsreader 400/600 = 38.784 B).
+Ținta din propunere era 3 / 55 KB. Au fost măsurate ambele drumuri și **niciunul nu duce acolo**
+fără o schimbare vizibilă:
 
-1. **Newsreader variabil, un singur fișier pentru 400–800.** Subsetat la aceleași 212 codepoint-uri:
-   **9.396 B** cu ambele axe (`wght` + `opsz`) sau **4.044 B** cu `opsz` fixat — adică ar înlocui
-   38.784 B cu 9.396 B. **Respins**: fontul variabil din `analiza/rebranding/fonts/` are acoperire
-   de kerning mult mai mică decât cele două statice livrate (14 acoperiri de perechi față de 305),
-   iar o schimbare de spațiere în titluri nu se poate verifica fără browser. Câștigul de 29 KB nu
-   plătește un risc vizual nemăsurabil.
-2. **Renunțarea la Inter 600** (care ar da exact 3 fișiere / ~47 KB): toate cele ~30 de etichete
-   scrise cu 600 ar cădea pe 700, adică exact „efectul vizibil pe `strong`" din §8.4. Nu se face
-   fără A11y măsurat.
+1. **Newsreader variabil, un singur fișier pentru 400–800.** Aici a existat o **eroare de
+   măsurare** care a stat o vreme în document: cifra „9.396 B" (sau 4.044 B cu `opsz` fixat) a
+   ieșit dintr-un subset făcut din `analiza/rebranding/fonts/newsreader-var.woff2` — dar fișierul
+   acela **nu e fontul complet, e felia latin-ext**: 229 de codepoint-uri, fără `!`…`H`, fără
+   cifre, fără aproape tot ASCII-ul de bază. Un subset fără litere cântărește puțin și seamănă cu
+   un câștig de 29 KB; HarfBuzz, chemat să shapeze titluri reale cu el, a arătat imediat că
+   spațierea iese fără sens (`H` și `o` lipsesc din cmap).
+   Pe fontul variabil **complet**, economia realistă e de ordinul a **15–20 KB** (38.784 B →
+   ~20–25 KB, cu `gvar` pentru 212 glife), adică inventarul ar ajunge la **~58 KB** — tot peste 55.
+   Peste asta, rutarea ar cere vectorul complet din `google/fonts`, care nu e în repo. Garda
+   `test_fisierul_variabil_din_analiza_e_doar_o_felie` ține minte capcana.
+2. **Renunțarea la Inter 600** (3 fișiere / ~47 KB): cele ~30 de etichete scrise cu 600 ar cădea
+   pe 700 — exact „efectul vizibil pe `strong`" din §8.4. Se decide cu A11y măsurat, nu ca efect
+   secundar al unei cifre de octeți.
 
-Deci fonturile rămân cum sunt, cu o gardă: `tests/test_fonturi.py` — plafon 80.000 B / 5 fețe,
-zero fișiere fără `@font-face`, fiecare față acoperă diacriticele românești, iar `RO_UNICODES` din
-`tools/fetch_fonts.py` trebuie să acopere tot ce cere testul.
+**Concluzia nu e „rămâne pe mai târziu", e „ținta era formulată greșit".** A fost scrisă înainte de
+a se ști din ce e făcut inventarul; acum se știe: fiecare dintre cele cinci fețe are un rol
+(400 text de articol, 600 titluri și etichete, 700 butoane și „citește mai mult"), iar Inter singur
+cântărește 37.440 B. Criteriul real, păzit de `tests/test_fonturi.py`, e **5 fețe / 80.000 B** plus
+diacriticele românești verificate față cu față.
 
 ### Lighthouse / pa11y: rulau deja, doar că nu se știa
 

@@ -25,6 +25,18 @@ MAX_FETE = 5
 DIACRITICE = "ăâîșțĂÂÎȘȚ„”–—…"
 
 
+def _cmap(cale: str) -> dict:
+    """Codepoint-urile unei fețe. woff2 are nevoie de brotli ca să fie decodat."""
+    from fontTools.ttLib import TTFont
+
+    try:
+        with TTFont(cale) as font:
+            return font.getBestCmap()
+    except ImportError as exc:
+        pytest.fail(f"nu pot decoda {os.path.basename(cale)} ({exc}): lipsește brotli? "
+                    "Instalează `pip install -r requirements-dev.txt`.")
+
+
 def _fete() -> list[str]:
     with open(FONTS_CSS, encoding="utf-8") as fh:
         css = fh.read()
@@ -51,14 +63,7 @@ def test_plafonul_de_octeti_si_de_fete():
 
 @pytest.mark.parametrize("fata", sorted({os.path.basename(f) for f in _fete()}))
 def test_fiecare_fata_are_diacriticele_romanesti(fata):
-    from fontTools.ttLib import TTFont
-
-    try:
-        with TTFont(os.path.join(FONTURI, fata)) as font:
-            cmap = font.getBestCmap()
-    except ImportError as exc:      # woff2 are nevoie de brotli ca să fie decodat
-        pytest.fail(f"nu pot decoda {fata} ({exc}): lipsește brotli? "
-                    "Instalează `pip install -r requirements-dev.txt`.")
+    cmap = _cmap(os.path.join(FONTURI, fata))
     lipsa = [c for c in DIACRITICE if ord(c) not in cmap]
     assert not lipsa, f"{fata} nu acoperă: {''.join(lipsa)}"
 
@@ -91,3 +96,27 @@ def test_subsetul_din_fetch_fonts_acopera_diacriticele():
             acoperit.add(int(parte, 16))
     lipsa = [c for c in DIACRITICE + "aAzZ09" if ord(c) not in acoperit]
     assert not lipsa, f"RO_UNICODES nu acoperă: {''.join(lipsa)}"
+
+
+def test_fisierul_variabil_din_analiza_e_doar_o_felie():
+    """`analiza/rebranding/fonts/newsreader-var.woff2` e felia latin-ext, nu fontul complet.
+
+    De ce un test pentru un fișier de analiză: pe 7 nov cifra „variabilul ar da 9.396 B" a stat
+    în două documente (PROPUNERE §8.4 și `specs/masuratori-frontend.md`) fiindcă subsetul fusese
+    făcut din fișierul acesta — 229 de codepoint-uri, dar fără `!`…`H`, fără cifre, fără aproape
+    tot ASCII-ul de bază. Un subset fără litere cântărește puțin și arată ca un câștig de 29 KB;
+    HarfBuzz a arătat imediat că spațierea iese fără sens. Pe fontul COMPLET economia e ~15–20 KB,
+    deci inventarul ar ajunge la ~58 KB, tot peste ținta de 55.
+
+    Dacă cineva aduce vectorul complet în repo, testul pică intenționat: atunci drumul „un singur
+    fișier variabil" redevine posibil și trebuie re-măsurat (apoi șters testul).
+    """
+    cale = os.path.join(ROOT, "analiza", "rebranding", "fonts", "newsreader-var.woff2")
+    if not os.path.exists(cale):
+        pytest.skip("analiza/rebranding/fonts/newsreader-var.woff2 lipsește")
+    cmap = _cmap(cale)
+    lipsa = [c for c in "AEHIMORST0123456789" if ord(c) not in cmap]
+    assert lipsa, (
+        "fișierul variabil acoperă acum ASCII-ul de bază, deci e fontul complet: re-măsoară "
+        "varianta „un singur fișier” (vezi `specs/masuratori-frontend.md` §faza 7), "
+        "actualizează PROPUNERE.md §8.4 pct. 5 și șterge acest test")
