@@ -308,7 +308,7 @@ picture { display: contents; }
   gap: 4px var(--sp-8);
   font-family: var(--font-text); font-size: 0.75rem; color: var(--ink-3); line-height: 1.5;
 }
-.card-meta .sep { color: var(--line-strong); }
+.card-meta .sep { color: var(--ink-3); } /* separatorul e text, nu linie decorativă: AA */
 .card-meta time { color: var(--ink-3); }
 
 /* Starea de confirmare: un punct colorat + text scurt. Punctul e singurul loc din card

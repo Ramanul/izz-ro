@@ -26,7 +26,7 @@ import verify_release as vr  # noqa: E402
 def _manifest(minute_in_urma: float, cheie: str = "generated_at") -> dict:
     momentul = datetime.now(timezone.utc) - timedelta(minutes=minute_in_urma)
     return {cheie: momentul.isoformat(), "commit": "a" * 40, "branch": "main",
-            "article_count": 42}
+            "article_count": 42, "latest_article": momentul.isoformat()}
 
 
 @pytest.fixture

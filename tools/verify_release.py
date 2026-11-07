@@ -97,7 +97,14 @@ def _probe(base: str) -> tuple[bool, str]:
         return False, f"servește {deployed[:12]}, care nu include {EXPECTED[:12]}"
     if not isinstance(data.get("article_count"), int) or data["article_count"] < 1:
         return False, "manifest cu article_count invalid"
-    return True, f"{deployed[:12]} (articole: {data['article_count']})"
+    try:
+        from tools.public_probe import content_freshness
+    except ModuleNotFoundError:  # rulare directă: python tools/verify_release.py
+        from public_probe import content_freshness
+    fresh = content_freshness(data, max_age_hours=float(os.getenv("RELEASE_CONTENT_MAX_AGE_HOURS", "48")))
+    if fresh.state != "ok":
+        return False, fresh.detail
+    return True, f"{deployed[:12]} (articole: {data['article_count']}; {fresh.detail})"
 
 
 def verifica_mirror(base: str = "", max_age_min: int = 0) -> tuple[bool, str]:

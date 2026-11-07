@@ -16,7 +16,9 @@ Dacă schimbarea afectează înțelegerea faptului principal, publicăm o notă 
 
 ## Jurnal de corecții
 
-Acest jurnal este activ de la **19 august 2026**. Corecțiile materiale publicate după această dată vor fi enumerate aici cu link spre articolul afectat și explicația schimbării. Nu există încă intrări publicate în acest jurnal.
+Acest jurnal este activ de la **19 august 2026**. Corecțiile materiale și retragerile aprobate sunt enumerate mai jos cu link spre articolul afectat și explicația schimbării. Lista este generată din catalogul editorial aprobat, nu scrisă manual.
+
+<!-- IZZ_CORRECTIONS_JOURNAL -->
 
 Jurnalul este disponibil și ca [flux RSS pentru corecții și retrageri](/corectii/feed.xml).
 

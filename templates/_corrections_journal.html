@@ -1,0 +1,15 @@
+{% if rows %}
+<ol class="corrections-journal">
+  {% for row in rows %}
+  <li>
+    <time datetime="{{ row.reviewed_at }}">{{ row.reviewed_at[:10] }}</time> —
+    <strong>{{ 'Corecție' if row.state == 'corrected' else 'Retragere' }}:</strong>
+    <a href="{{ base }}{{ row.path }}">{{ row.title }}</a>
+    <p>{{ row.notice }}</p>
+    <p><a href="{{ row.evidence_url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">Dovada examinată</a></p>
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<p>Nu există intrări publicate în acest jurnal.</p>
+{% endif %}
