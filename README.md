@@ -1,10 +1,28 @@
-# IZZ.ro — Informația Zero Zgomot
+# IZZ.ro — Romanian news without clickbait
 
-> **Portalul știrilor tale** · [izz.ro](https://izz.ro)
+> **Informația Zero Zgomot** · [citește pe izz.ro](https://izz.ro) · [vezi sursele monitorizate](https://izz.ro/surse/)
 
-Agregator de știri românești construit pe o promisiune simplă: **mai puțin zgomot, mai multă informație**. Titlurile sunt reformulate faptic, fără cârlige emoționale. Rezumatele sunt scrise cu cuvinte proprii și duc întotdeauna la sursa originală. Când mai multe publicații relatează același eveniment, subiectul apare o singură dată, cu toate sursele enumerate. Imaginile sunt grafică generată pentru fiecare articol, nu fotografii preluate.
+[![Live site](https://img.shields.io/website?url=https%3A%2F%2Fizz.ro&label=izz.ro&style=flat-square)](https://izz.ro)
+[![Tests](https://img.shields.io/github/actions/workflow/status/Ramanul/izz-ro/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/Ramanul/izz-ro/actions/workflows/tests.yml)
+[![Deploy](https://img.shields.io/github/actions/workflow/status/Ramanul/izz-ro/deploy-worker.yml?branch=main&label=deploy&style=flat-square)](https://github.com/Ramanul/izz-ro/actions/workflows/deploy-worker.yml)
 
-Site-ul este **100% static (SSG)**, publicat serverless: pipeline-ul rulează în GitHub Actions, publicarea se face prin Cloudflare Workers. Fără server propriu, fără baze de date gestionate, fără publicitate.
+![IZZ.ro — portal de știri românești fără clickbait](static/og-image.png)
+
+IZZ.ro este un portal românesc de știri construit pe o promisiune simplă: **mai puțin zgomot, mai multă informație**. Titlurile sunt reformulate faptic, rezumatele sunt scrise cu cuvinte proprii, iar fiecare subiect trimite la sursele originale.
+
+Când mai multe publicații relatează același eveniment, IZZ.ro le grupează într-o singură pagină și arată ce apare în mai multe surse și ce provine dintr-o singură origine. Nu este un înlocuitor pentru redacțiile sursă: este un strat de orientare, proveniență și comparație.
+
+## De ce merită urmărit
+
+- **Fără clickbait:** titluri clare, fără cârlige emoționale.
+- **Surse la vedere:** link direct către publicațiile originale și către afirmațiile folosite în sinteză.
+- **Mai puține duplicate:** relatările despre același eveniment sunt grupate.
+- **Transparență despre AI:** automatizarea, limitele și corecțiile sunt explicate public.
+- **Proiect open source:** pipeline-ul, testele și regulile editoriale pot fi inspectate.
+
+Dacă ideea de știri grupate, atribuite și fără zgomot ți se pare utilă, o **stea** ajută proiectul să fie descoperit de alți cititori și contributori.
+
+Site-ul este **100% static (SSG)** și publicat serverless: pipeline-ul rulează în GitHub Actions, iar publicarea se face prin Cloudflare Workers. Fără server propriu, fără bază de date gestionată și fără publicitate.
 
 ---
 
