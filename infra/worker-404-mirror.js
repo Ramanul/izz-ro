@@ -92,25 +92,44 @@ const MIME = new Map([
   ["png", "image/png"], ["xml", "application/xml"], ["ics", "text/calendar"],
 ]);
 
-function headersFor(type, cache) {
-  return new Headers({
+function headersFor(type, cache, { csp = true } = {}) {
+  const headers = new Headers({
     "content-type": type, "cache-control": cache,
     "content-security-policy": CSP, "x-content-type-options": "nosniff",
     "x-frame-options": "DENY", "referrer-policy": "strict-origin-when-cross-origin",
     "strict-transport-security": "max-age=31536000; includeSubDomains",
     "permissions-policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   });
+  // Mirror HTML carries the mirror render's own inline scripts; a script-src 'self' header
+  // would block them. Before the bounded fallback the mirror's headers (no CSP) passed
+  // through, so archived HTML keeps no CSP header rather than a wrong one.
+  if (!csp) headers.delete("content-security-policy");
+  return headers;
 }
 
 function discard(response) {
   if (response?.body) void response.body.cancel().catch(() => {});
 }
 
-function local404(response, method, confirmed = false) {
-  const headers = headersFor("text/html; charset=utf-8", confirmed
-    ? "public, max-age=0, s-maxage=60, must-revalidate" : "no-store");
-  if (method === "HEAD") discard(response);
-  return new Response(method === "HEAD" ? null : response.body, { status: 404, headers });
+// Without assets.not_found_handling the ASSETS miss has an empty body, so the Worker
+// serves the site's own 404 page (404.html, reachable as /404) with ITS headers
+// (_headers CSP with the inline-script hashes), only status and cache changed.
+async function local404(response, request, env, confirmed = false) {
+  discard(response);
+  const cache = confirmed ? "public, max-age=0, s-maxage=60, must-revalidate" : "no-store";
+  let page = null;
+  try {
+    page = await env.ASSETS.fetch(new Request(new URL("/404", request.url), { method: request.method }));
+  } catch { page = null; }
+  const ok = page && page.status === 200;
+  const headers = ok ? new Headers(page.headers) : headersFor("text/html; charset=utf-8", cache);
+  headers.set("cache-control", cache);
+  headers.set("x-robots-tag", "noindex");
+  // The 404.html validators must not be attached to every missing URL.
+  headers.delete("etag");
+  headers.delete("last-modified");
+  if (!ok || request.method === "HEAD") discard(page);
+  return new Response(request.method === "HEAD" || !ok ? null : page.body, { status: 404, headers });
 }
 
 // A deadline covers both response headers and every byte of the body. Abort alone
@@ -167,7 +186,8 @@ export default {
     const raspuns = await env.ASSETS.fetch(request);
     if (raspuns.status !== 404) return raspuns;
     const pathname = new URL(request.url).pathname;
-    if (!["GET", "HEAD"].includes(request.method) || !e_cale_de_oglinda(pathname)) return raspuns;
+    if (!["GET", "HEAD"].includes(request.method)) return raspuns;
+    if (!e_cale_de_oglinda(pathname)) return local404(raspuns, request, env, true);
     const ext = pathname.split("/").pop()?.split(".").slice(1).pop();
     const expectedType = MIME.get(ext) || "text/html";
     try {
@@ -201,13 +221,15 @@ export default {
         headers.set("location", result.redirect);
         return new Response(null, { status: 301, headers });
       }
-      if (!result.type) return local404(raspuns, request.method, result.absent);
+      if (!result.type) return local404(raspuns, request, env, result.absent);
       discard(raspuns);
       return new Response(result.body, {
-        headers: headersFor(result.type, "public, max-age=0, s-maxage=300, must-revalidate"),
+        headers: headersFor(result.type === "text/html" ? "text/html; charset=utf-8" : result.type,
+          "public, max-age=0, s-maxage=300, must-revalidate",
+          { csp: result.type !== "text/html" }),
       });
     } catch {
-      return local404(raspuns, request.method);
+      return local404(raspuns, request, env);
     }
   },
 };
