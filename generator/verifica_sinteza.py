@@ -479,6 +479,116 @@ def dublari_cuvinte(text: str) -> list[str]:
     return gasite
 
 
+# --- Contradicții cheie: rezultatele penalty (cazul Mbappé vs Maroc, CM 2026) ----
+# Eroarea reală (iulie 2026): sinteze spuneau că Mbappé a „transformat” penalty-ul,
+# când toate surse spuneau „ratat, apărat de Bono”. Nicio verificare mecanică nu
+# prindea: verificau citate, cifre, copiere — dar nu afirmațiile de tip „penalty
+# transformat/ratat” care contrazic textul sursei.
+#
+# Regula, conservatoare pe ambele direcții:
+#   · rezumat spune „transformat/marcat/înscris” în contextul penalty, dar sursa
+#     spune „ratat/apărat/irosit” acolo → semnal;
+#   · rezumat spune „ratat/apărat” în contextul penalty, dar sursa spune
+#     „transformat/marcat” acolo → semnal;
+#   · dacă sursa menționează ambele rezultate ÎN ACEEAȘI propoziție („a ratat
+#     penalty-ul, dar a marcat apoi”) nu se semnalează — verbele nu se pot
+#     atribui mecanic rezultatului penalty, deci e etapizat conservator.
+# RAPORTEAZA, nu respinge: merg în `advisory_issues` (nu în _BLOCKING), ca toate
+# verificarile noi — activarea blocking-ului e o linie în `raport_copiere.py`
+# după măsurarea ratei de fals pozitiv pe rulări reale.
+_PENALTY_PATTERN = re.compile(
+    r"\b(?:penalty|penalti\w*|penalul|"
+    r"lovitura de departajare|de la 11 metri|la 11 metri)\b")
+_PENALTY_RAZA_CARACTERS = 100
+
+# Granița de propoziție e esențială, nu un detaliu de stil: forma reală a textului
+# de sursă e „a ratat penalty-ul în minutul 28, apărat de Bono. Francezul a marcat
+# totuși în minutul 60.” Cu o fereastră pur de caractere, propoziția a doua intră în
+# context, sursa pare ambiguă („scor” + „lipsa”) și garda TACE exact pe cazul care a
+# produs eroarea — măsurat 2026-11-07, înainte de a fi livrată.
+#
+# Dar nici doar propoziția penalty-ului nu ajunge: Digisport scrie „a beneficiat de
+# un penalty, după ce Mbappé a fost faultat de Mazraoui. Starul francez a irosit însă
+# șansa, portarul Bounou a parat lovitura.” — propoziția penalty-ului nu spune
+# rezultatul, ci propoziția URMĂTOARE. Deci se citește ca un om: întâi propoziția
+# penalty-ului, iar doar dacă ea nu enunță un rezultat se ia propoziția următoare.
+# Astfel golul din minutul 60 (altă propoziție, dar penalty-ul își spune deja
+# rezultatul în a lui) nu mai contaminează contextul.
+_PENALTY_GRANITA = re.compile(r"[.!?;:\n]")
+_PENALTY_FALLBACK_MAX = 220
+
+
+def _propozitie_din_jur(text: str, start: int, end: int) -> tuple[int, int]:
+    """Limitele propoziției care conține intervalul [start, end)."""
+    inceput = 0
+    for m in _PENALTY_GRANITA.finditer(text, 0, start):
+        inceput = m.end()
+    sfarsit = len(text)
+    m = _PENALTY_GRANITA.search(text, end)
+    if m:
+        sfarsit = m.start()
+    return inceput, sfarsit
+
+
+def _propozitia_urmatoare(text: str, end: int) -> str:
+    """Propoziția imediat următoare, dacă e destul de aproape ca să fie aceeași fază."""
+    m = _PENALTY_GRANITA.search(text, end)
+    if not m or m.end() - end > _PENALTY_FALLBACK_MAX:
+        return ""
+    start, stop = _propozitie_din_jur(text, m.end(), m.end() + 1)
+    return text[start:stop]
+
+
+# Verbele care descriu rezultatul penalty — cuvânt cu cuvânt, fără diacritice
+# (`_norm` le ia): „scor” = transformat/marcat/înscris, „lipsa” = ratat/apărat.
+_PENALTY_SCORED = ("transformat", "transformeaza", "marcat", "inscris", "scorat")
+_PENALTY_MISSED = ("ratat", "irosit", "lipsit", "aparat", "parat", "respins", "prins")
+
+
+def _contexte_penalty(text: str) -> list[str]:
+    """Contextul fiecărei mențiuni: propoziția ei (+ cea următoare dacă ea tace)."""
+    net = _norm(text)
+    contexte = []
+    for m in _PENALTY_PATTERN.finditer(net):
+        inceput, sfarsit = _propozitie_din_jur(net, m.start(), m.end())
+        inceput = max(inceput, m.start() - _PENALTY_RAZA_CARACTERS)
+        proprie = net[inceput:min(sfarsit, m.end() + _PENALTY_RAZA_CARACTERS)]
+        if not any(v in proprie for v in _PENALTY_SCORED + _PENALTY_MISSED):
+            proprie += " " + _propozitia_urmatoare(net, sfarsit)
+        contexte.append(proprie)
+    return contexte
+
+
+def _rezultate_penalty(text: str) -> set[str]:
+    """{'scor', 'lipsa'} — rezultatele penalty menționate în contextul imediat."""
+    out: set[str] = set()
+    for ctx in _contexte_penalty(text):
+        if any(v in ctx for v in _PENALTY_SCORED):
+            out.add("scor")
+        if any(v in ctx for v in _PENALTY_MISSED):
+            out.add("lipsa")
+    return out
+
+
+def contradicție_cheie_penalty(rezumat: str, sursa: str) -> bool:
+    """True când rezumat spune rezultatul penalty opus sursei.
+
+    Ferestra de 100 caractere e deliberat îngustă: verbele de rezultat ale
+    penalty-ului se scriu în acea propoziție („a ratat penalty-ul”, „penalty-ul
+    transformat de X”), iar un gol marcat ulterior se află în altă propoziție,
+    departe de mențiunea penalty — deci nu poate anula semnalul.
+    """
+    r = _rezultate_penalty(rezumat)
+    s = _rezultate_penalty(sursa)
+    if not r or not s:
+        return False
+    if "scor" in r and "lipsa" in s and "scor" not in s:
+        return True    # rezumat: transformat; sursa: ratat/apărat
+    if "lipsa" in r and "scor" in s and "lipsa" not in s:
+        return True    # rezumat: ratat/apărat; sursa: transformat/marcat
+    return False
+
+
 def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
              frecventa: dict | None = None) -> list[Problema]:
     """Toate verificarile, pe titlu + rezumat impreuna.
@@ -518,5 +628,10 @@ def verifica(titlu: str, rezumat: str, sursa: str, slug_sursa: str = "",
         probleme.append(Problema(
             "dublare_cuvinte",
             f"„{c} {c}” — cuvânt repetat consecutiv în titlu sau rezumat",
+        ))
+    if contradicție_cheie_penalty(text, sursa):
+        probleme.append(Problema(
+            "contradicție_cheie",
+            "rezumatul spune că penalty-ul a fost transformat/ratat opus textului sursei",
         ))
     return probleme
