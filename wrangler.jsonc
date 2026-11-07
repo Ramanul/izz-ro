@@ -54,6 +54,10 @@
   // (17 iul - 5 aug 2026). visual/monitor/harta-smoke/harta-data au nevoie de o
   // origine curata; pe Workers, aceea e subdomeniul workers.dev.
   "workers_dev": true,
+  // Observabilitate (ramura obs/worker-observability, 7 nov 2026): loguri per cerere pentru
+  // diagnosticarea 504 cu originResponseStatus 0, cand nu exista loguri de Worker.
+  // Nepublicat: se activeaza doar dupa deploy aprobat de proprietar.
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
   // Din 2026-10-31 ruta publica sta aici, nu in infra/wrangler.toml: Workerul de assets serveste
   // direct, deci fisierele existente nu mai consuma plafonul Free de 100.000 de invocari/zi.
   // Masurat inainte: varf 99.170 pe 9 oct, 98,8% din invocari prin izz-failover. ORDINEA conteaza:
