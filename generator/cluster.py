@@ -145,7 +145,14 @@ def attach_recent(groups: list, candidates: list) -> list:
 # ele, pe titlul AI, cu praguri mai stricte decat `_strict_match` (citite pe perechi reale:
 # la jac 0,40-0,44 lipituri gresite frecvente; la >=0,6 niciuna la citire). Revizuit cu Argon.
 REGRUPARE_MAX_PE_RULARE = 3
+REGRUPARE_ESECURI_MAX = 2   # un articol prezent in 2 grupuri esuate nu mai intra in regrupare
 _NUMAR = re.compile(r"\d+(?:[.,]\d+)?")
+# „Guvernul a aprobat X" vs „Guvernul nu a aprobat X": Jaccard mare, aceleasi entitati, sens opus.
+_NEGATIE_TITLU = re.compile(r"\b(nu|n-a|n-au|n-ar|nici|fara|respin\w*|resping\w*|amana\w*|amanat\w*|refuz\w*)\b")
+
+
+def _polaritate(titlu: str) -> bool:
+    return bool(_NEGATIE_TITLU.search(strip_diacritics(titlu).lower()))
 
 
 def _entitati(a: dict) -> set:
@@ -170,6 +177,8 @@ def _potrivire_regrupare(a: dict, b: dict) -> bool:
     ta, tb = _stemset(a.get("title") or ""), _stemset(b.get("title") or "")
     inter, union = len(ta & tb), len(ta | tb)
     if not union or _cifre_disjuncte(a.get("title") or "", b.get("title") or ""):
+        return False
+    if _polaritate(a.get("title") or "") != _polaritate(b.get("title") or ""):
         return False
     ea, eb = _entity_stems(a), _entity_stems(b)
     if not (ea and eb and ea & eb):
@@ -220,7 +229,8 @@ def regrupeaza_publicate(candidates: list) -> list:
     schimba componenta lui. Sintezele C vin primele ca lideri: altfel doua B noi despre un
     eveniment deja sintetizat ar forma o a DOUA sinteza langa prima (Argon)."""
     pool = [a for a in _recent(candidates)
-            if a.get("model") in ("B", "C") and not a.get("anunt_fara_corp") and a.get("title")]
+            if a.get("model") in ("B", "C") and not a.get("anunt_fara_corp") and a.get("title")
+            and (a.get("regrupare_esecuri") or 0) < REGRUPARE_ESECURI_MAX]
     pool.sort(key=lambda a: (a.get("model") != "C", a.get("published") or ""))
     grupuri: list = []
     for a in pool:
@@ -252,6 +262,9 @@ def marcheaza_esec_regrupare(group: list) -> None:
     sig = semnatura_grup(group)
     for a in group:
         a["regrupare_esuata"] = sig
+        # semnatura noua la fiecare sursa noua ar relua la nesfarsit un grup cu un articol
+        # care strica sinteza (paywall, text corupt) — contorul per articol il scoate (Argon)
+        a["regrupare_esecuri"] = (a.get("regrupare_esecuri") or 0) + 1
 
 
 def is_synthesis_candidate(group: list) -> bool:

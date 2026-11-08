@@ -88,3 +88,18 @@ def test_anunt_fara_corp_si_single_nu_intra():
     arts = _bce()[:2]
     arts[1]["anunt_fara_corp"] = True
     assert cluster.regrupeaza_publicate(arts) == []
+
+
+def test_negatia_in_titlu_nu_se_lipeste_cu_afirmatia():
+    e = ["Guvernul Romaniei", "ANRE"]
+    a = _a("/1", "Guvernul a aprobat plafonarea prețurilor la energie anunțată de ANRE", e, "a.ro")
+    b = _a("/2", "Guvernul nu a aprobat plafonarea prețurilor la energie anunțată de ANRE", e, "b.ro")
+    assert not cluster._potrivire_regrupare(a, b)
+
+
+def test_articol_din_doua_grupuri_esuate_iese_din_regrupare():
+    arts = _bce()
+    for _ in range(cluster.REGRUPARE_ESECURI_MAX):
+        cluster.marcheaza_esec_regrupare(arts)
+    arts.append(_a("/5", "Spania și Olanda candidează pentru șefia Băncii Centrale Europene", BCE, "digi24.ro"))
+    assert cluster.regrupeaza_publicate(arts) == []
