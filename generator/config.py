@@ -293,6 +293,17 @@ CATEGORIES = ["general", "regional", "judetean", "local",
               "politic", "economic", "extern", "sport", "ai",
               "tech", "auto", "sanatate", "cultura", "lifestyle", "discounturi"]
 
+# ── CIOBURI (mai multe Workere Free, specs/multi-worker-free-2026-11.md) ──────────────────
+# Fiecare categorie primeste un Worker propriu pe ruta `izz.ro/<categorie>/*`; `local/` e prea
+# mare pentru un singur Worker la 10x, deci se imparte dupa PRIMUL CARACTER al numelui din
+# `local/` (rutele Workers accepta doar `*` la coada -- felia 0, IZZ-0455, a confirmat pe live
+# rutele pe litera si pe cifra). Grupurile sunt pe distributia MASURATA a primelor litere
+# (2026-11-08: a 552, p 499, c 329, s 173, u 165, o 150, r 147, d 145), nu pe alfabet egal.
+# Cifrele merg impreuna: paginarea categoriei e `/local/<n>/`. Un caracter care nu e in niciun
+# grup ramane pe Workerul principal -- exact unde l-ar trimite si rutarea, deci nu se rupe nimic.
+SHARD_SUBJECT_PREFIX = "subiect/"
+LOCAL_SHARD_GROUPS = ["0123456789", "a", "p", "bc", "defghi", "jklmnoqr", "stuvwxyz"]
+
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
 SEED_CATEGORIES = {"regional", "judetean", "local", "ai"}
