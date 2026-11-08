@@ -930,7 +930,10 @@ def _prep_cluster_rep(group: list) -> tuple:
     intre calea single (process_cluster) si cea in lot (process_clusters_batch) -- doua
     copii ale conditiei „cine e rep-ul" s-ar putea departe fara sa para stricat nimic,
     acelasi risc numit la `upgradable()` mai sus."""
-    group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("published") or ""))
+    # o sinteza C deja publicata ramane reprezentantul, chiar daca un B absorbit e mai vechi:
+    # altfel sinteza ar fi „pliata" si si-ar pierde adresa (IZZ-0151: se actualizeaza pe loc)
+    group = sorted(group, key=lambda a: (not a.get("processed_by"), a.get("model") != "C",
+                                         a.get("published") or ""))
     actualizare = bool(group[0].get("processed_by"))
     rep = dict(group[0])
     rep["model"] = "C"
