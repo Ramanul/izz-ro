@@ -15388,18 +15388,6 @@
   "name": "Năvodari",
   "kind": "locality"
  },
- "e7a330c77a794ad3": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "8602cc36e595c334": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_qid"
- },
  "30a7cc9de8517bff": {
   "miss": true,
   "v": 3,
@@ -15417,102 +15405,6 @@
   "v": 3,
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_fara_qid"
- },
- "62d0baaae69717d2": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "57ab322ed0b66b7f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "c99c4b5e959ec1b7": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "2cb853d576d2e4d5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "a027e322f2c6bb7f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "81e57b559c63fdb7": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "a71504cd604bf640": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "17349568ed6e7701": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_qid"
- },
- "978aefedc20b0c1b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "5b8c64605613cca5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "2c4fd98e4238866b": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "ab0887d013be6eee": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_fara_entitati"
- },
- "b0374080e07e6246": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "0c554d51a0e80b17": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_licenta_sau_format"
- },
- "b1db1b10cd6eb5d3": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
- "a33c26ce327ff249": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
  },
  "6ba9477a3da9beee": {
   "miss": true,
@@ -15814,12 +15706,6 @@
   "qid": "Q12724790"
  },
  "6039371ed50e4c1f": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
-  "motiv_ent": "ent_fara_entitati"
- },
- "b938562a9c6de2fe": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
@@ -18344,12 +18230,6 @@
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_dimensiune_sau_format",
-  "motiv_ent": "ent_fara_entitati"
- },
- "0d27eba4038ad6df": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
  },
  "8a38737c808f365d": {
@@ -25877,5 +25757,150 @@
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
   "motiv_ent": "ent_fara_entitati"
+ },
+ "ef30c64a849209c2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "151f9fc2049a4f16": {
+  "cover": "leads/gadi-eisenkot.c.jpg",
+  "art": "leads/gadi-eisenkot.jpg",
+  "webp": "leads/gadi-eisenkot.webp",
+  "artist": "יהב טרודלר (Yahav Trudler - Yahav Studio‬‏)",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Gadi_Eisenkot_2_(cropped_-_WD).jpg",
+  "name": "Gadi Eisenkot",
+  "kind": "entity"
+ },
+ "a9a399f160ab3b6e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a1a0d720bbbb7797": {
+  "cover": "leads/cesc-fabregas.c.jpg",
+  "art": "leads/cesc-fabregas.jpg",
+  "webp": "leads/cesc-fabregas.webp",
+  "artist": "Web Summit",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:2023_-_Cesc_Fabregas_(cropped).jpg",
+  "name": "Cesc Fabregas",
+  "kind": "entity"
+ },
+ "54da3bae4065229e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "de438ba25c8f63ad": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "0ddbe22f39d8681a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cecb7edbd2772a5e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "135fe4186670c847": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "302131c50eebc3ec": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "9f379f6388386ae4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "6ef955fd43514561": {
+  "cover": "leads/loc-Q16425522.c.jpg",
+  "art": "leads/loc-Q16425522.jpg",
+  "webp": "leads/loc-Q16425522.webp",
+  "artist": "Andrei Stroe",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_AG_Lunca_Corbului_1.jpg",
+  "name": "Poiana Lacului",
+  "kind": "locality",
+  "qid": "Q16425522"
+ },
+ "ebbd65158b612ea4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9e942db5834f188e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f19f8935205cec2f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "cad36260b393b915": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f51545a18ffbfa05": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "d32c985dd860a6fb": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "191cbcfe73c1031c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "23910634bce5a9b5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3dbf3427b34a989d": {
+  "cover": "leads/of-3dbf3427b34a989d.c.jpg",
+  "art": "leads/of-3dbf3427b34a989d.jpg",
+  "webp": "leads/of-3dbf3427b34a989d.webp",
+  "artist": "The White House",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:President_Donald_J_Trump_delivers_remarks_alongside_the_last_piece_of_steel_used_in_the_construction_of_the_White_House_Ballroom,_November_4,_2026_(P20261104DT-1213).jpg",
+  "name": "Donald Trump",
+  "kind": "oficial",
+  "sursa": "Casa Albă",
+  "data_poza": "2026-11-04"
  }
 }

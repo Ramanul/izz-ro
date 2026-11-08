@@ -407,6 +407,16 @@
 "py": -17.42
 }
 },
+"portraits/alain-delon.jpg": {
+"fete": 1,
+"poz": "50% 100%",
+"sha256": "7fb13db86c5682f57582087d2e8edfa8e09cbb981e103ecf9b737d24dd1e005c",
+"taiere": {
+"pw": 100.0,
+"px": 0.0,
+"py": -29.09
+}
+},
 "portraits/alan-milburn.jpg": {
 "fete": 1,
 "poz": "50% 0%",
@@ -2850,6 +2860,11 @@
 "px": -0.0,
 "py": -16.64
 }
+},
+"portraits/bogdan-aurescu.jpg": {
+"fete": 3,
+"respins": "grup",
+"sha256": "fa1f50de480a7953282916e55cf6abb602f168a23cabf4bc8e775aca047815eb"
 },
 "portraits/bogdan-ivan.jpg": {
 "fete": 1,
@@ -10061,6 +10076,16 @@
 "pw": 177.11,
 "px": -29.55,
 "py": -0.0
+}
+},
+"portraits/john-f-kennedy.jpg": {
+"fete": 1,
+"poz": "50% 25%",
+"sha256": "ce3ad27d1ec5b196858b0333008d970ef641a326c05ff82a52beb3e15f23b01f",
+"taiere": {
+"pw": 103.15,
+"px": -0.0,
+"py": -9.36
 }
 },
 "portraits/john-galliano.jpg": {
@@ -17573,6 +17598,10 @@
 "px": -1.93,
 "py": -1.23
 }
+},
+"portraits/sao-paolo.jpg": {
+"fete": 0,
+"sha256": "570339f7ce942edca9122ac15744039b9970063bcf45783afb284c6d55fdf7b5"
 },
 "portraits/sao-paulo.jpg": {
 "fete": 0,
