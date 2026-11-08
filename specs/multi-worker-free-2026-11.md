@@ -217,3 +217,11 @@ principalului și verifică `build.json` pe `izz-ro-<ciob>.andifreelancer2.worke
 oprește principalul. **Neverificat până la prima rulare CI:** dacă tokenul din GitHub are dreptul
 de a lega rute pe zonă (local s-a publicat cu contul proprietarului).
 Revenire: scoate ciobul din `SHARDS_LIVE` + `npx wrangler delete --name izz-ro-cat-auto`.
+
+**Stare la 2026-11-08 seara: pilot OPRIT** (`wrangler delete --name izz-ro-cat-auto`, cerut de
+proprietar — sesiunea se oprește până pe 13 nov, iar fără merge ciobul ar fi rămas înghețat).
+După ștergere: aceleași 13 coduri pe `izz.ro`, `izz-ro-cat-auto.andifreelancer2.workers.dev` → 404.
+Dovada pilotului de mai sus rămâne valabilă. **Reluare:** fetch + rebase #568, apoi merge și
+`gh workflow run deploy-worker.yml -f confirmare=deploy`, urmărit până la verde. Prima rulare
+recreează Workerul din `SHARDS_LIVE`. Dacă pică la legarea rutelor (tokenul), principalul NU
+se publică: revert #568 imediat, ca publicarea orară să nu rămână blocată.
