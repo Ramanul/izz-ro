@@ -13,7 +13,7 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-11-08 (fallback 404 → oglindă reparat, #566 LIVE).
+**Updated:** 2026-11-08 (Gemini serial sincronizat între `.env` și GitHub Actions).
 
 ## Open
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
