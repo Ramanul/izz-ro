@@ -48,7 +48,7 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   {%- set dz = a.dialectic if a.model == 'C' else none %}
   {%- set n_pub = (a.sources | length) if a.sources else 1 %}
-  <span class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · compară sursele de mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</span>
+  <span class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }}{% elif a.model == 'C' %}Sinteză multi-sursă{% else %}Rezumat dintr-o sursă{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</span>
   </p>
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
@@ -80,10 +80,10 @@
     {% set body = a.synthesis if a.model == 'C' else a.teaser %}
     {% set word_count = (body or '').split() | length %}
     {% set read_mins = [word_count // 200, 1] | max %}
-    <span class="reading-time">~{{ read_mins }} min citire</span>
+    {% if read_mins >= 2 %}<span class="reading-time">~{{ read_mins }} min citire</span>{% endif %}
     {% endif %}
     {% if a.updated_human %}<span class="article-updated">Actualizat: {{ a.updated_human }}</span>{% endif %}
-    {% if a.ai_generat %}<span class="ai-mark"><img src="{{ base }}/static/icons/ai-generated.svg" alt="" width="14" height="14"><a href="{{ base }}/legal/method/">Titlu și rezumat sintetizate automat</a></span>{% endif %}
+    {% if a.ai_generat %}<span class="ai-mark"><img src="{{ base }}/static/icons/ai-generated.svg" alt="" width="18" height="18"><a href="{{ base }}/legal/method/">Titlu și rezumat sintetizate automat</a></span>{% endif %}
   </div>
 
   {#- Banda de context: unde se intampla si despre ce e vorba, inainte de corp. Cine ajunge
@@ -238,18 +238,12 @@
     <ul>
       {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
-    {% if a.surse_roluri %}
-    <p class="source-roles-note">Rolul fiecărei publicații e calculat mecanic din textul articolelor: cine a relatat primul (o relatare densă publicată în aceleași 15 minute bate o alertă de două rânduri), cine aduce detalii noi, cine repetă aceleași fapte, cine preia un text comun sau citează explicit altă redacție. Confirmări încrucișate — publicații care coroborează faptele fără să preia același text: {{ a.cross_confirmations or 1 }} din {{ srcs | length }}. Ordinea observată nu dovedește cine e autorul informației.</p>
-    {% endif %}
     {% if grupuri_comune %}
     <p class="source-roles-note source-groups-note">Același grup media (din casetele editoriale verificate): {% for g in grupuri_comune %}{{ g.members | join(', ') }} — {{ g.group }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>
     {% endif %}
     {% if a.editorial %}{% include '_editorial_context.html' %}{% endif %}
     {% set editorial_relations = a.editorial_relations %}{% include '_editorial_relations.html' %}
   </div>
-  <aside class="article-accountability">
-    <p><strong>Răspunde editorial: Redacția IZZ.ro</strong> (<a href="{{ base }}/despre/">cine operează site-ul</a>). Răspunderea pentru ce rămâne publicat este a redacției.</p>
-  </aside>
   {% if people %}
   <h2 class="people-title">În imagini</h2>
   <div class="people">

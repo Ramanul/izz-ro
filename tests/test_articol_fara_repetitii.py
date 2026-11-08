@@ -36,3 +36,28 @@ def test_subiectul_cu_numele_judetului_nu_se_repeta():
     banda = banda[:banda.find("</div>")]
     assert banda.count(f">{eticheta}<") == 1
     assert ">Jandarmerie<" in banda
+
+
+@pytest.mark.parametrize("stare", ["SYNTHESIS_VALID", "SINGLE_ORIGIN", "ASSUMED_SILENCE"])
+def test_fara_indemnuri_repetate_pe_articol(stare):
+    """8.11.2026, a doua tură de plângeri: «compară sursele» și paragraful de metodă
+    (explicat deja la /legal/method/) nu se mai repetă pe fiecare articol."""
+    html = _pagina(_articol(stare))
+    assert "compară sursele" not in html
+    assert "Rolul fiecărei publicații" not in html
+    assert "Fiecare sinteză își arată sursele" not in html
+
+
+def test_timpul_de_citire_apare_doar_la_texte_lungi():
+    scurt = _articol("SYNTHESIS_VALID", synthesis="Un text scurt, fără pretenții.")
+    lung = _articol("SYNTHESIS_VALID", synthesis="cuvânt " * 450)
+    assert "min citire" not in _pagina(scurt)
+    assert "min citire" in _pagina(lung)
+
+
+def test_raspunderea_editoriala_e_in_subsol_nu_pe_articol():
+    """8.11.2026: «Răspunde editorial» e informație despre site, o singură dată, în subsol."""
+    html = _pagina(_articol("SYNTHESIS_VALID"))
+    assert html.count("Răspunde editorial") == 1
+    assert "Răspunde editorial" not in html.split("<footer")[0]
+    assert "article-accountability" not in html
