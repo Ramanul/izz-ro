@@ -48,7 +48,7 @@
   <span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}{% if a.anunt_fara_corp %} · Anunț oficial{% endif %}</span>
   {%- set dz = a.dialectic if a.model == 'C' else none %}
   {%- set n_pub = (a.sources | length) if a.sources else 1 %}
-  <span class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · compară sursele de mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă · verifică informația în articolul original{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</span>
+  <span class="trust-label article-trust">{% if a.anunt_fara_corp %}Anunț oficial · verifică textul integral la instituția emitentă{% elif dz and dz.state == 'ASSUMED_SILENCE' %}Relatări divergente din {{ n_pub }} publicații · fiecare versiune e atribuită mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}{{ n_pub }} publicații · fapte neconfirmate reciproc · compară sursele de mai jos{% elif dz and dz.state == 'SINGLE_ORIGIN' %}Sinteză din {{ n_pub }} publicații cu o singură origine · compară sursele de mai jos{% elif dz %}Sinteză din {{ n_pub }} publicații · {{ a.cross_confirmations or 1 }} {{ 'confirmare încrucișată' if (a.cross_confirmations or 1) == 1 else 'confirmări încrucișate' }} · compară sursele de mai jos{% elif a.model == 'C' %}Sinteză multi-sursă · compară sursele de mai jos{% else %}Rezumat dintr-o sursă{% endif %}{% if a.publicitar_la_sursa %} · <strong>Material publicitar la sursă</strong> (advertorial){% endif %}</span>
   </p>
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
@@ -83,7 +83,7 @@
     <span class="reading-time">~{{ read_mins }} min citire</span>
     {% endif %}
     {% if a.updated_human %}<span class="article-updated">Actualizat: {{ a.updated_human }}</span>{% endif %}
-    {% if a.ai_generat %}<span class="ai-mark"><img src="{{ base }}/static/icons/ai-generated.svg" alt="" width="14" height="14">Titlu sintetizat automat</span>{% endif %}
+    {% if a.ai_generat %}<span class="ai-mark"><img src="{{ base }}/static/icons/ai-generated.svg" alt="" width="14" height="14"><a href="{{ base }}/legal/method/">Titlu și rezumat sintetizate automat</a></span>{% endif %}
   </div>
 
   {#- Banda de context: unde se intampla si despre ce e vorba, inainte de corp. Cine ajunge
@@ -216,19 +216,6 @@
     </ul>
   </aside>
   {% endif %}
-  {% if a.ai_generat and dz %}
-  <p class="ai-note">Titlul și afirmațiile de mai sus au fost extrase automat de un model de limbaj
-    din textul articolelor publicate de sursele de mai jos, apoi verificate mecanic: fiecare
-    afirmație trimite la propozițiile din care provine, iar cele fără temei în acele propoziții
-    (o cifră absentă, o citare greșită, un text copiat) au fost eliminate. „Confirmat" înseamnă
-    că afirmația apare la cel puțin două publicații care nu preiau același text. Faptele aparțin
-    surselor; formularea ne aparține și nu a fost recitită de un editor uman înainte de publicare.</p>
-  {% elif a.ai_generat %}
-  <p class="ai-note">Titlul și rezumatul de mai sus au fost redactate automat de un model de
-    limbaj, pornind de la {{ 'articolele publicate de sursele' if a.model == 'C' else 'articolul publicat de sursa' }}
-    de mai jos. Faptele aparțin sursei; formularea ne aparține și nu a fost recitită de un editor
-    uman înainte de publicare.</p>
-  {% endif %}
 
   {% set srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
   {% if a.ghid %}
@@ -262,8 +249,7 @@
   </div>
   <aside class="article-accountability" aria-labelledby="article-accountability-title">
     <h2 id="article-accountability-title">Transparență și corecții</h2>
-    <p><strong>Răspunde editorial: Redacția IZZ.ro</strong> (<a href="{{ base }}/despre/">cine operează site-ul</a>). Formularea titlului și a rezumatului este a noastră, chiar și când este generată automat; răspunderea pentru ce rămâne publicat este a redacției.</p>
-    <p>Proveniența este afișată mai sus. Dacă observi o eroare factuală, o sursă lipsă sau o formulare neclară, trimite-ne pagina și contextul relevant.</p>
+    <p><strong>Răspunde editorial: Redacția IZZ.ro</strong> (<a href="{{ base }}/despre/">cine operează site-ul</a>). Răspunderea pentru ce rămâne publicat este a redacției.</p>
     <p><a class="article-report-link" href="mailto:contact@izz.ro?subject={{ ('Raport eroare IZZ.ro: ' ~ (a.display_title or a.title)) | urlencode }}&body={{ ('Pagina: ' ~ canonical ~ '\n\nCe trebuie corectat:\n\nSursa sau contextul relevant:') | urlencode }}">Raportează o eroare</a> <a href="{{ base }}/legal/corrections/">Vezi politica de corecții</a></p>
   </aside>
   {% if people %}

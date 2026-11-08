@@ -23,7 +23,9 @@ def _pagina(a, topics=()) -> str:
 def test_nota_pentru_cititor_doar_unde_are_miza(categorie, are_nota):
     html = _pagina(_articol("SYNTHESIS_VALID", category=categorie))
     assert ("Notă pentru cititor" in html) is are_nota
-    assert 'class="ai-note"' in html
+    # dezvăluirea AI e o singură mențiune: bulina `ai-mark` (caseta `ai-note` a fost scoasă 8.11.2026)
+    assert 'class="ai-mark"' in html
+    assert 'class="ai-note"' not in html
 
 
 def test_subiectul_cu_numele_judetului_nu_se_repeta():
