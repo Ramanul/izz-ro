@@ -177,16 +177,17 @@ def test_butonul_de_instalare_nu_mai_e_in_nav():
     assert "izz-install" not in nav
 
 
-def test_butonul_de_instalare_e_in_afara_fluxului():
+def test_butonul_de_instalare_sta_la_chemare_in_footer():
+    """Nu plutește peste text (P4: la chemare, nu prin împingere — proprietar, 8.11.2026):
+    stă printre uneltele de citire din footer, unde nu mută nimic deja pictat (CLS)."""
     baza = _baza()
-    assert 'id="izz-install"' in baza
-    assert 'id="izz-install-btn"' in baza
-    assert 'id="izz-install-inchide"' in baza
+    citire = re.search(r'<div class="izz-citire".*?</div>', baza, re.S).group(0)
+    assert 'id="izz-install"' in citire and 'id="izz-install-btn"' in citire
     css = _citeste(os.path.join(STATIC, "styles.css"))
     bloc = re.search(r"\.izz-install \{(.*?)\}", css, re.S).group(1)
-    assert "position: fixed" in bloc, "butonul trebuie sa ramana scos din flux (CLS)"
+    assert "position: fixed" not in bloc, "banda fixă peste text a fost scoasă deliberat"
     assert ".izz-install[hidden] { display: none; }" in css, (
-        "`display: flex` bate atributul `hidden`: butonul s-ar vedea la toata lumea")
+        "fără regula asta, `display` bate atributul `hidden`: butonul s-ar vedea la toată lumea")
 
 
 def test_textele_sunt_in_romana():
