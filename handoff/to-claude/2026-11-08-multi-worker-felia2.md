@@ -18,3 +18,6 @@ Plan complet: `specs/multi-worker-free-2026-11.md` (5 felii, §4; rezultate §9�
 5. Apoi feliile 3–5 (§4): restul cioburilor, scoaterea categoriilor din principal, plafonul.
 
 Nu delega feliile 2–4 la arena: ating deploy și rute (zonă protejată §10).
+
+## Cerut tot pe 8 nov (separat de Multi-Worker)
+- **Pagina de articol repetă de 4 ori că textul e generat automat** (eticheta de sus, bulina „Titlu sintetizat automat”, caseta gri, blocul „Transparență și corecții”). Proprietarul o găsește enervantă (N2). Propunere: O singură propoziție sub rezumat + sursa + „Raportează o eroare” + link spre politica de corecții. Înainte: `python tools/registru.py find transparenta` (poate fi decizie veche), iar forma finală o aprobă proprietarul (zonă legală §10; AI Act art. 50 cere un avertisment, nu patru).
