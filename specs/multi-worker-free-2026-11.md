@@ -198,3 +198,22 @@ Neadoptat: legături fizice în loc de copii (câștig de timp mic, risc pe Wind
 
 Respins: împărțirea `local/` pe an/lună — schimbă adresele existente (SEO, §11).
 Felia 0 se extinde: testează și o rută pe cifră (`/_proba-ruta/1*`) și una pe literă.
+
+## 11. Felia 2 — pilot `auto` (2026-11-08, confirmat pe live)
+
+Workerul `izz-ro-cat-auto` (versiunea fe34af06, publicat local cu `wrangler deploy -c
+dist/izz-ro-cat-auto.config.json`) are rutele `izz.ro/auto` și `izz.ro/auto/*`. Configul îl scrie
+`generator/shard.py` (`worker_config`): scriptul e doar `infra/worker-404-mirror.js`, assets fără
+`not_found_handling`, deci ratarea aduce articolul expirat de pe oglindă, ca la principal.
+Fiecare ciob primește și `_headers`, `build.json` și `_redirects` filtrat pe rutele lui.
+
+Dovada (curl, 13 adrese, înainte și după): aceleași coduri — `/auto/` 200, `/auto` 307 → `/auto/`,
+paginare 200, 3 articole 200, 2 imagini 200, `feed.xml` 200, articol expirat 200 din oglindă,
+inexistent 404 cu pagina site-ului, CSP prezent ca înainte. `izz.ro/auto/` are amprenta ciobului
+(`d7398d73`), nu a principalului (`aa8a9827`) → răspunde ciobul.
+
+Publicarea automată: `deploy-worker.yml` împarte, publică `config.SHARDS_LIVE` înaintea
+principalului și verifică `build.json` pe `izz-ro-<ciob>.andifreelancer2.workers.dev`; orice eșec
+oprește principalul. **Neverificat până la prima rulare CI:** dacă tokenul din GitHub are dreptul
+de a lega rute pe zonă (local s-a publicat cu contul proprietarului).
+Revenire: scoate ciobul din `SHARDS_LIVE` + `npx wrangler delete --name izz-ro-cat-auto`.

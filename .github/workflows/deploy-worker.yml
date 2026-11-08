@@ -93,6 +93,38 @@ jobs:
         run: |
           python tools/asset_budget.py --output-dir output --enforce
 
+      # Multi-Worker (specs/multi-worker-free-2026-11.md, felia 2): cioburile din
+      # `config.SHARDS_LIVE` au Workerul lor, cu ruta `izz.ro/<categorie>/*`. Se publica INAINTEA
+      # principalului si fail-closed: un ciob ramas in urma ar lasa prima pagina sa trimita spre
+      # articole pe care ruta lui nu le are. Principalul pastreaza pana la felia 4 toate fisierele.
+      - name: Imparte in cioburi
+        run: python -m generator.shard --src output --dest dist
+
+      - name: Publica cioburile live (inaintea principalului)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"
+        run: |
+          set -euo pipefail
+          for c in $(python -c "from generator import config; print(' '.join(config.SHARDS_LIVE))"); do
+            echo "::group::ciob $c"
+            npx --yes wrangler@4.125.0 deploy -c "dist/izz-ro-$c.config.json"
+            echo "::endgroup::"
+          done
+
+      - name: Verifica release-ul pe cioburi
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+          RELEASE_TIMEOUT_SECONDS: "300"
+          RELEASE_POLL_SECONDS: "15"
+        run: |
+          set -euo pipefail
+          # Un singur apel cu toate originile (verify_release accepta lista separata prin virgula),
+          # ca timeout-ul sa nu se inmulteasca cu numarul de cioburi. Lista goala = nimic de verificat.
+          urls=$(python -c "from generator import config; print(','.join(f'https://izz-ro-{c}.andifreelancer2.workers.dev' for c in config.SHARDS_LIVE))")
+          if [ -n "$urls" ]; then RELEASE_BASE_URLS="$urls" python tools/verify_release.py; fi
+
       - name: Publica pe Worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

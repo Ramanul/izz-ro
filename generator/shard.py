@@ -27,6 +27,14 @@ from generator import config
 
 MAIN = "main"
 ZONE = "izz.ro"
+WORKER_PREFIX = "izz-ro-"
+# Aceeasi ca `compatibility_date` a Workerului principal; `tests/test_shard.py` le compara.
+COMPAT_DATE = "2026-06-18"
+# Fisierele de la radacina pe care fiecare ciob le are in copie proprie: 404.html (ratarile nu
+# cad pe principal), `_headers` (CSP si cache pe activele ciobului; o regula pentru o cale care
+# nu ajunge la ciob nu se aplica niciodata) si `build.json` (sonda de release citeste commitul
+# de pe originea workers.dev a ciobului). `_redirects` se FILTREAZA pe ciob, mai jos.
+REPLICATE = ("404.html", "_headers", "build.json")
 
 
 def plan() -> list[dict]:
@@ -72,7 +80,10 @@ def _route(url: str, shards: list[dict]) -> str:
     best, best_len = MAIN, -1
     for shard in shards:
         for prefix in shard["prefixes"]:
-            if url.startswith(prefix) and len(prefix) > best_len:
+            # `auto/` are si ruta exacta `izz.ro/auto` (vezi manifestul), deci adresa `auto`
+            # (o sursa `/auto` din `_redirects`) ajunge tot la ciob.
+            potrivit = url.startswith(prefix) or (prefix.endswith("/") and url == prefix[:-1])
+            if potrivit and len(prefix) > best_len:
                 best, best_len = shard["name"], len(prefix)
     return best
 
@@ -130,13 +141,34 @@ def partition(src: str, dest: str, shards: list[dict] | None = None,
 
     # Fiecare ciob primeste pagina 404, chiar si unul gol: ratarile nu cad pe principal, iar
     # un ciob mereu prezent tine setul de rute stabil intre publicari (categoriile in
-    # insamantare pot fi goale azi si pline maine).
-    pagina_404 = os.path.join(src, "404.html")
-    if os.path.isfile(pagina_404):
-        sha_404 = _sha(pagina_404)
+    # insamantare pot fi goale azi si pline maine). La fel `_headers` si `build.json`.
+    for nume_fisier in REPLICATE:
+        full = os.path.join(src, nume_fisier)
+        if not os.path.isfile(full):
+            continue
+        sha_f = _sha(full)
         for s in shards:
-            if not any(p == "404.html" for p, _ in tree[s["name"]]):
-                _pune(s["name"], "404.html", pagina_404, sha_404)
+            if not any(p == nume_fisier for p, _ in tree[s["name"]]):
+                _pune(s["name"], nume_fisier, full, sha_f)
+
+    # `_redirects`: fiecare ciob primeste DOAR regulile a caror sursa ajunge la el prin rutare.
+    # O regula `/auto/x /auto/y` lasata pe principal nu se mai declanseaza (cererea merge la
+    # ciob), iar plafonul de reguli e per Worker.
+    redir = os.path.join(src, "_redirects")
+    if os.path.isfile(redir):
+        with open(redir, encoding="utf-8") as fh:
+            linii = fh.read().splitlines()
+        for s in shards:
+            ale_lui = [ln for ln in linii if ln.strip() and not ln.lstrip().startswith("#")
+                       and _route(ln.split()[0].lstrip("/"), shards) == s["name"]]
+            if not ale_lui:
+                continue
+            out = os.path.join(dest, s["name"], "_redirects")
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            text = "\n".join(ale_lui) + "\n"
+            with open(out, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(text)
+            tree[s["name"]].append(("_redirects", hashlib.sha256(text.encode()).hexdigest()))
 
     manifest = {"zone": ZONE, "ceiling": ceiling, "shards": []}
     for s in [{"name": MAIN, "prefixes": []}] + shards:
@@ -164,10 +196,37 @@ def partition(src: str, dest: str, shards: list[dict] | None = None,
         raise RuntimeError("cioburi peste plafonul de %d fisiere: %s" % (
             ceiling, ", ".join(f"{s['name']}={s['file_count']}" for s in peste)))
     os.makedirs(dest, exist_ok=True)
+    for s in manifest["shards"]:
+        if s["name"] == MAIN:
+            continue
+        s["worker"] = WORKER_PREFIX + s["name"]
+        with open(os.path.join(dest, s["worker"] + ".config.json"), "w", encoding="utf-8") as fh:
+            json.dump(worker_config(s), fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
     with open(os.path.join(dest, "shards.json"), "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, ensure_ascii=False, indent=2, sort_keys=True)
         fh.write("\n")
     return manifest
+
+
+def worker_config(entry: dict) -> dict:
+    """Configuratia wrangler a unui ciob, scrisa ca `dist/<worker>.config.json`.
+
+    Caile sunt relative la `dist/` (wrangler le rezolva fata de fisierul de config). Scriptul e
+    DOAR fallback-ul spre oglinda: un articol iesit din fereastra ciobului nu mai ajunge la
+    scriptul principal (ruta ciobului castiga), deci ciobul il aduce singur de pe oglinda.
+    Fara `not_found_handling`, ca la principal: ratarea invoca scriptul, care serveste 404.html.
+    `workers_dev` da originea fara bot challenge pe care o citeste sonda de release.
+    """
+    return {
+        "name": entry["worker"],
+        "main": "../infra/worker-404-mirror.js",
+        "compatibility_date": COMPAT_DATE,
+        "assets": {"directory": "./" + entry["name"], "binding": "ASSETS"},
+        "workers_dev": True,
+        "preview_urls": False,
+        "routes": [{"pattern": r, "zone_name": ZONE} for r in entry["routes"]],
+    }
 
 
 def main(argv: list[str] | None = None) -> int:

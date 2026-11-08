@@ -303,6 +303,12 @@ CATEGORIES = ["general", "regional", "judetean", "local",
 # grup ramane pe Workerul principal -- exact unde l-ar trimite si rutarea, deci nu se rupe nimic.
 SHARD_SUBJECT_PREFIX = "subiect/"
 LOCAL_SHARD_GROUPS = ["0123456789", "a", "p", "bc", "defghi", "jklmnoqr", "stuvwxyz"]
+# Cioburile PUBLICATE ca Workere proprii (`deploy-worker.yml`, inaintea principalului, fail-closed).
+# Restul raman servite de principal, care pana la felia 4 are oricum toate fisierele. Pilot
+# (felia 2): `auto`, cea mai mica categorie cu trafic. Revenire: scoate numele de aici SI
+# `npx wrangler delete --name izz-ro-<ciob>` -- altfel Workerul ramane cu rutele lui si
+# serveste continut inghetat.
+SHARDS_LIVE = ["cat-auto"]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
