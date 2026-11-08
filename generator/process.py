@@ -1001,7 +1001,8 @@ def _prep_cluster_rep(group: list) -> tuple:
 # Motivele de amânare la care o a doua încercare, în aceeași rulare, are sens: țin de
 # RĂSPUNSUL modelului (obiect lipsă din lot, titlu transcris sau deformat), nu de verificarea
 # afirmațiilor contra surselor — acolo o reîncercare ar cere doar să treacă de gardă.
-MOTIVE_REINCERCABILE = frozenset({"nemapat", "hibrid", "titlu_copiat", "titlu_deformat", "titlu_cifra"})
+MOTIVE_REINCERCABILE = frozenset({"nemapat", "hibrid", "titlu_copiat", "titlu_deformat", "titlu_cifra",
+                                  "titlu_nume_trunchiat", "tacere_miez_comun"})
 
 # Nota de la reîncercare spune motivul EXACT al căderii (Argon R8): un mesaj generic („copia
 # sau deforma") pus pe un titlu căzut pentru o cifră fără sursă îl face pe model să schimbe
@@ -1013,7 +1014,111 @@ _MESAJ_MOTIV = {
                       "din ele",
     "titlu_cifra": "continea o cifra care nu apare in propozitiile citate; scoate cifra sau "
                    "foloseste doar numere prezente literal in surse",
+    "titlu_nume_trunchiat": "numea o persoana doar prin prenume, desi sursele scriu numele complet; "
+                            "scrie numele asa cum apare in surse (complet sau doar numele de familie)",
+    "tacere_miez_comun": "afirma un fapt pe care il relateaza cel putin doua publicatii, dar nu ai "
+                         "listat niciun fapt comun; daca sursele chiar il confirma, trece faptul "
+                         "central in common_facts cu citarile din fiecare publicatie",
 }
+
+
+# --- Garda numelui trunchiat (8.11.2026, live: „Donald l-a numit pe Stephen Miller…") ---------
+# Un cuvânt cu majusculă rămas singur în titlu, care în surse apare constant urmat de ACELAȘI
+# cuvânt cu majusculă („Donald" → „Donald Trump"), e un nume tăiat. Gărzile de precizie
+# (Argon, 8.11.2026; măsurat pe 7.528 de titluri stocate: 2 semnalări, ambele fals pozitive
+# acceptabile — costul e o reîncercare, nu o pierdere): instituțiile articulate sunt excluse
+# („Guvernul" → „Guvernul României"), cuvântul precedat în titlu de altă majusculă e deja
+# într-un nume compus, iar perechea trebuie să apară măcar o dată în mijlocul unei propoziții
+# (altfel e doar un început de frază din surse).
+_LITERE_MICI = "a-zăâîșşțţ"
+_LITERE_MARI = "A-ZĂÂÎȘŞȚŢ"
+_CUVANT_TITLU = re.compile(rf"[{_LITERE_MARI}{_LITERE_MICI}]+(?:[\-\.][{_LITERE_MARI}{_LITERE_MICI}]+)*")
+_INSTITUTII = frozenset({
+    "guvernul", "parchetul", "politia", "primaria", "consiliul", "curtea", "banca", "ministerul",
+    "comisia", "administratia", "inspectoratul", "tribunalul", "judecatoria", "parlamentul",
+    "senatul", "camera", "agentia", "autoritatea", "directia", "universitatea", "spitalul",
+    "presedintele", "premierul", "ministrul", "primarul", "vicepresedintele", "uniunea", "statele",
+})
+
+
+def _nume_trunchiat(title: str, context: str) -> str | None:
+    """„Prenume Nume" din surse dacă titlul păstrează doar prenumele, altfel None."""
+    title = title or ""
+    potriviri = list(_CUVANT_TITLU.finditer(title))
+    cuvinte = [m.group(0) for m in potriviri]
+    context = context or ""
+
+    def _lipit(a: int, b: int) -> bool:
+        # doi vecini fac parte din același nume doar dacă îi desparte numai spațiu
+        # („SUA: Donald…", „Donald, NATO…" nu sunt nume compuse — Argon)
+        return title[potriviri[a].end():potriviri[b].start()].isspace()
+
+    for i, x in enumerate(cuvinte):
+        if len(x) < 3 or not x[0].isupper() or x.isupper():
+            continue
+        if strip_diacritics(x).lower() in _INSTITUTII:
+            continue
+        if i > 0 and cuvinte[i - 1][:1].isupper() and _lipit(i - 1, i):
+            continue                           # al doilea cuvânt dintr-un nume deja compus
+        if i + 1 < len(cuvinte) and cuvinte[i + 1][:1].isupper() and _lipit(i, i + 1):
+            continue                           # numele e complet în titlu
+        perechi = list(re.finditer(
+            rf"(?<![\w{_LITERE_MICI}])" + re.escape(x) + rf"\s+([{_LITERE_MARI}][\w{_LITERE_MICI}\-]+)",
+            context))
+        total = len(re.findall(rf"(?<![\w{_LITERE_MICI}{_LITERE_MARI}])" + re.escape(x)
+                               + rf"(?![\w{_LITERE_MICI}])", context))
+        if len(perechi) < 2 or len(perechi) < 0.8 * total:
+            continue
+        familii = {m.group(1) for m in perechi}
+        if len(familii) != 1:
+            continue
+        familie = familii.pop()
+        if familie in cuvinte:
+            continue
+        # măcar o apariție în mijlocul unei propoziții: înainte stă un cuvânt, o cifră sau o
+        # virgulă (și „liderul PSD Marcel…", „președintele SUA Donald…"), nu un final de frază
+        if not any(re.search(r"[\w,][„\"'(]*\s+$", context[max(0, m.start() - 6):m.start()])
+                   for m in perechi):
+            continue
+        return f"{x} {familie}"
+    return None
+
+
+# --- Tăcerea cu miez comun (8.11.2026, live: Stephen Miller, 4 surse, divergență doar pe vârstă) -
+# „Ireconciliabil" e o afirmație despre presă. Dacă titlul publicat e susținut, propoziție cu
+# propoziție, de ≥2 publicații-origine, starea și titlul se contrazic: modelul a omis faptul
+# comun. Măsura e pe PROPOZIȚIE, nu pe tot textul unei surse (vocabularul comun al temei e
+# motivul pentru care articolele sunt în același cluster, nu acord factual — Argon), iar o
+# propoziție cu negație nu susține nimic („a aprobat" / „nu a aprobat" rămâne tăcere).
+_STOP_TITLU = frozenset({"dupa", "pentru", "care", "fost", "este", "intr", "dintr", "prin", "catre",
+                         "acest", "aceasta", "despre", "spre", "unei", "unui", "sunt", "avea"})
+_NEGATIE = re.compile(r"(?<![a-z])(nu|n-a|n-au|n-ar|n-o|n-avea|fara|niciun|nicio|infirm\w*|dezm\w*"
+                      r"|neag\w*|respin\w*)(?![a-z])")
+PRAG_SUSTINERE_TITLU = 0.7
+
+
+def _radacini_titlu(text: str) -> set:
+    cuv = re.findall(r"[a-z]+", strip_diacritics(text or "").lower())
+    return {c[:4] for c in cuv if len(c) >= 4 and c not in _STOP_TITLU}
+
+
+def _origini_care_sustin_titlul(title: str, block) -> int:
+    tinta = _radacini_titlu(title)
+    if len(tinta) < 3:
+        return 0                               # titlu prea scurt ca să măsor ceva
+    origini = block.origin_names()
+    # susține titlul doar propoziția cu ACEEAȘI polaritate: „nu va majora" e susținut de
+    # „nu va majora", nu de „va majora" (Argon — altfel contrazicerea s-ar număra ca acord)
+    titlu_negativ = bool(_NEGATIE.search(strip_diacritics(title).lower()))
+    sustin: set = set()
+    for chunk_id, (nume, text) in block.chunks.items():
+        if not chunk_id.startswith("S"):
+            continue                           # doar propozițiile surselor, nu versiunea anterioară
+        if bool(_NEGATIE.search(strip_diacritics(text).lower())) != titlu_negativ:
+            continue
+        if len(tinta & _radacini_titlu(text)) >= PRAG_SUSTINERE_TITLU * len(tinta):
+            sustin |= set(nume) & origini
+    return len(sustin)
 
 
 def _nota_reincercare(motiv: str, titlu: str) -> str:
@@ -1126,6 +1231,20 @@ def _aplica_dialectic(rep: dict, obj, block, provider) -> dict | None:
         dialectic.numara("amanate_titlu_cifra")
         rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_cifra", candidat
         return None                            # cifra fara sursa in titlu -> amanat
+    if not dialectic.este_reincercare() and _nume_trunchiat(candidat, context):
+        # la a doua încercare cedează: dacă modelul, avertizat, păstrează forma scurtă, e fie
+        # un fals pozitiv (club, local, brand), fie un apelativ consacrat (Argon)
+        dialectic.numara("amanate_titlu_nume_trunchiat")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "titlu_nume_trunchiat", candidat
+        return None                            # prenume fara nume de familie -> amanat
+    if (d["state"] == dialectic.STATE_SILENCE and not dialectic.este_reincercare()
+            and _origini_care_sustin_titlul(candidat, block) >= 2):
+        # La a doua încercare tăcerea se publică: dacă modelul, întrebat explicit, tot nu
+        # găsește un fapt comun citabil, sursele chiar se contrazic (Argon — altfel clusterul
+        # s-ar relua la nesfârșit și o tăcere legitimă n-ar mai apărea niciodată).
+        dialectic.numara("amanate_tacere_miez_comun")
+        rep["_motiv_amanare"], rep["_titlu_respins"] = "tacere_miez_comun", candidat
+        return None
     rep["title"] = candidat
     rep["synthesis"] = dialectic.derive_synthesis(d, candidat, config.SYNTHESIS_MAX_WORDS)
     if not rep["synthesis"]:
