@@ -1,7 +1,7 @@
 """Pagina de articol nu repetă același lucru (proprietar, 8.11.2026, captura „Jandarmii din Bacău").
 
-Ce fixează: (1) „Notă pentru cititor" apare doar la sănătate și economie, unde decizia
-cititorului are miză; pe restul, rândul de stare și dezvăluirea AI spun deja „verifică sursa";
+Ce fixează: (1) „Notă pentru cititor" apare doar la sănătate, unde decizia
+cititorului are miză (economia a ieșit 8.11.2026, la a doua plângere); pe restul, rândul de stare și dezvăluirea AI spun deja „verifică sursa";
 (2) dezvăluirea AI (AI Act art. 50) rămâne pe orice articol generat; (3) un subiect cu același
 nume ca județul nu apare a doua oară în banda de context („Bacău Bacău").
 """
@@ -19,7 +19,7 @@ def _pagina(a, topics=()) -> str:
 
 
 @pytest.mark.parametrize("categorie,are_nota", [
-    ("sanatate", True), ("economic", True), ("local", False), ("sport", False)])
+    ("sanatate", True), ("economic", False), ("local", False), ("sport", False)])
 def test_nota_pentru_cititor_doar_unde_are_miza(categorie, are_nota):
     html = _pagina(_articol("SYNTHESIS_VALID", category=categorie))
     assert ("Notă pentru cititor" in html) is are_nota

@@ -71,8 +71,9 @@ def test_article_exposes_update_source_chronology_and_error_reporting():
         topics=[], people=[], related=[]))
     assert "Actualizat: 19 august 2026, 14:00" in html
     assert "publicată prima" in html
-    assert "Raportează o eroare" in html
-    assert "Vezi politica de corecții" in html
+    # 2026-11-08: «Raportează o eroare» stă o singură dată, în subsolul site-ului, nu pe fiecare articol
+    assert "Raportează o eroare" not in html.split("<footer")[0]
+    assert html.count("Raportează o eroare") == 1
     assert "contact@izz.ro?subject=" in html
 
 
