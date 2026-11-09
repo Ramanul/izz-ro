@@ -310,7 +310,13 @@ PR #576 (`feat/shard-trim-main`), CI verde pe `38f48bc32`, squash-merge `925f1b4
 - Rularea `deploy-worker` `42603797890` (push pe main) a trecut toți pașii: `dist/main` = **1.527 fișiere** (urcate 1.525 pe `izz-ro`, față de 10.103 înainte; v. `1d95422b`).
 - Sonda pe 26 de adrese (`trim_inainte.json` vs `trim_dupa.json`): 0 diferențe; `smoke_live.py` pe `izz-ro.andifreelancer2.workers.dev`: 5/5 articole și imagini 200.
 
-## 20. Felia 4, Pasul 1 — buget/supapă per ciob + `ARTICLE_TTL_DAYS = 21` (2026-11-09)
+## 20. Felia 4, Pasul 1 — buget/supapă per ciob + fereastră 11 → 21 zile (2026-11-09, confirmat pe live)
 
+PR #577 (`feat/shard-felia-4-ttl21`), CI verde pe `0d174147c`, squash-merge `47abf0490`.
 - `generator/render.py` (`_taie_pe_cioburi`, `_write_build_metadata`), `tools/asset_budget.py` și `tests/test_buget_fisiere.py`: bugetul de 17.000 și plafonul de 20.000 se aplică acum pe fiecare Worker/ciob live separat, nu pe suma globală din `output/`.
-- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `11` la `21` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md`). Toate cele 6.869 de articole din `data/articles.json` rămân în fereastră (cel mai mare ciob: `cat-sport` cu 893 de articole în stare).
+- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `11` la `21` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md`).
+- Rularea `deploy-worker` `42609450933` (push pe main) a trecut toți pașii: `10.177` fișiere în 22 de cioburi, **max/ciob = 1.527** pe `main` (7,6% din plafonul de 20.000; `cat-sport` 959, `local-a` 874, `local-jklmnoqr` 800). Sonda pe 26 de adrese (`f4_pas1_dupa.json` vs `trim_inainte.json`): 0 diferențe.
+
+## 21. Felia 4, Pasul 2 — `ARTICLE_TTL_DAYS = 45` (2026-11-09)
+
+- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `21` la `45` de zile (criteriul §5: arhivă servită direct fără oglindă ≥ 45 de zile). Aliniat în `generator/render.py`, `README.md`, `content/legal/method.md` și `notes/`.

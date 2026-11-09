@@ -466,7 +466,10 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # categoriile migrate au fost scoase din dist/main (#576, 925f1b477: main = 1.527 fisiere,
 # cel mai mare ciob = local-a cu 1.076 fisiere). Bugetul de 17.000 si plafonul de 20.000
 # se aplica acum per Worker/ciob, nu global pe output/.
-ARTICLE_TTL_DAYS = 21
+# 21 -> 45 (2026-11-09, Felia 4 Pasul 2, aprobat de proprietar in chat): la TTL=21 (#577,
+# 47abf0490, run 42609450933) cel mai mare Worker are 1.527 fisiere (main), cat-sport 959,
+# local-a 874 (7,6% din plafonul de 20.000).
+ARTICLE_TTL_DAYS = 45
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie
