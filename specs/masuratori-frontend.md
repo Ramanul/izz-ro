@@ -382,3 +382,59 @@ Lighthouse plus numărul de erori WCAG2AA din pa11y. Pe ramura rebrandingului a 
 (rularea `42357330249`, 7 nov 08:52). Ce lipsea era ca schimbările de **CSS și imagini** să
 declanșeze și ele măsurătoarea — un redesign se judecă pe ele, nu pe `render.py`. Adăugate în
 `paths:`, alături de `static/**` și `media/portraits/**`.
+
+## Paleta epistemică: culori măsurate, nu alese din paletare (2026-11-08, IZZ-0456)
+
+Cererea a venit ca paletă „semantică" (verde = consens, albastru = traseul sursei, ocru =
+divergență, indigo = incertitudine). Am măsurat valorile propuse față de fundalul real al
+site-ului, înainte de a atinge CSS-ul. Rezultatul a schimbat trei din patru decizii.
+
+| Propus | Contrast pe `--paper` (#fbfaf7) | Verdict |
+|---|---:|---|
+| verde `#4E9F6E` / `#2E6F40` | 3,09:1 / 5,81:1 | al doilea trece, dar…
+| albastru `#3B82F6` | 3,52:1 | **pică AA** pentru text; în plus se bate cap în cap cu `--navy`, culoarea de acțiune |
+| albastru `#60A5FA` | 2,44:1 | pică și pe tema deschisă, și pe cea întunecată (5,14:1 doar pe dark) |
+| ocru `#D97706` | 3,05:1 | **pică AA** |
+| indigo `#6366F1` | 4,28:1 | pică pragul de 4,5:1 la text mic (etichetele au 11–13px) |
+
+**Ce s-a livrat, cu valori măsurate:**
+
+| Token | Valoare | Contrast pe `--paper` | Rol |
+|---|---|---:|---|
+| `--ok` | `#2f6b46` (existent) | 6,07:1 | confirmat de origini independente |
+| `--warn` | `#8a6414` (existent) | 5,14:1 | o singură origine / neconfirmat reciproc |
+| `--live` | `#b23a2e` (existent) | 5,69:1 | **divergență între relatări** |
+| `--infer` | `#5b54a8` (nou) | 6,14:1 | formulare cu rezervă la sursă; deducere |
+
+Verdele, ocrul și roșul **existau deja** și erau deja folosite epistemic (punctul din card:
+`.trust--ok/--single/--div`). Schimbarea lor ar fi fost o regresie de contrast, nu o
+îmbunătățire — deci nu s-au atins. Ce lipsea nu era paleta, ci **acoperirea** ei: marca
+exista doar pe card și pe rândul de stare, iar „cu rezervă la sursă" era un `<em>` fără
+culoare, adică invizibil ca stare. Noul token umple exact golul care nu avea culoare.
+
+`--live` se folosește **doar** pentru divergență (`--trust--div`, bordura `.dialectic-diverg`).
+Nu există și nu are voie să apară un token pentru „breaking", „urgență", „tragedie": regula
+de aur e verificată de `tests/test_culoare_semantica.py::test_nu_exista_culoare_marcata_pentru_emotia_stirii`.
+
+**Greutate:** CSS 89.137 → 91.837 B raw (23.486 → 24.508 B gzip, **+1,0 KB gzip**), din care
+~700 B sunt comentariul-regulă din capul fișierului, care nu ajunge la cititor după minificare
+la deploy. HTML: +~430 B pe pagină de sinteză (legenda, o dată pe pagină), 183 de marcaje de
+rezervă în tot build-ul.
+
+**Acoperire pe build-ul real** (6.659 articole, `--render-only`):
+
+| Element | Pagini |
+|---|---:|
+| Legendă (sinteze cu conținut epistemic) | 346 |
+| Marcaj „cu rezervă la sursă" | 183 |
+| Legendă care explică `--div` (relatări care se contrazic) | 41 |
+| Legendă care explică `--infer` | 118 |
+
+Cifra mică nu e un defect de implementare: doar 6,2% din conținut e sinteză multi-sursă
+(`analiza/2026-11-07-analiza-multidimensionala.md` §1). Pe restul, orice legendă ar fi promis
+o distincție care nu se vede în text — de aceea legenda se emite condiționat, per pagină.
+
+**Ce rămâne nemăsurat aici:** Lighthouse/pa11y (sandboxul nu are Chromium; `tools/audit.sh`
+rulează pe PR în `editorial-frontend-audit.yml`). Contrastul de mai sus e calculat WCAG pe
+valori hex, nu citit din pixeli randați — deci e limita superioară a încrederii, nu dovada
+finală. Cifrele de greutate sunt locale, comparabile doar înainte/după pe aceeași mașină.

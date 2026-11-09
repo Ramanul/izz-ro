@@ -146,7 +146,7 @@
     {% if dz.common %}
     <h2 class="dialectic-h">Confirmat de mai multe publicații</h2>
     <ul class="dialectic-list dialectic-common">
-      {% for f in dz.common %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% for f in dz.common %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
       {% endfor %}
     </ul>
     {% endif %}
@@ -167,7 +167,7 @@
     {%- set multe_origini = dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}
     <h2 class="dialectic-h">{% if multe_origini %}Fiecare fapt, la o singură publicație{% elif dz.state == 'SINGLE_ORIGIN' %}Relatat dintr-o singură origine{% else %}Dintr-o singură origine{% endif %}</h2>
     <ul class="dialectic-list dialectic-single">
-      {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
       {% endfor %}
     </ul>
     <p class="dialectic-note">{% if multe_origini %}Publicațiile abordează subiectul din unghiuri diferite: fiecare prezintă fapte distincte, fără ca detaliile să fie confirmate de o a doua sursă independentă.{% elif dz.state == 'SINGLE_ORIGIN' %}Publicațiile din acest grup pornesc de la aceeași relatare inițială sau de la o sursă comună (comunicat, agenție), deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
@@ -180,6 +180,23 @@
       <p><strong>Actualizare sinteză{% if a.updated_human %} · {{ a.updated_human }}{% endif %}.</strong>{% if dz.schimbari.surse_noi %} {{ 'A intrat o publicație nouă' if dz.schimbari.surse_noi | length == 1 else 'Au intrat ' ~ (dz.schimbari.surse_noi | length) ~ ' publicații noi' }}: {{ dz.schimbari.surse_noi | join(', ') }}.{% endif %}{% if dz.schimbari.stare_anterioara == 'ASSUMED_SILENCE' %} Versiunea anterioară nu avea fapte confirmate de mai multe publicații; acum are.{% elif dz.schimbari.stare_anterioara == 'SINGLE_ORIGIN' %} Versiunea anterioară nu avea confirmări încrucișate.{% elif dz.schimbari.stare_anterioara == 'SYNTHESIS_VALID' %} Versiunea anterioară avea fapte confirmate de mai multe publicații.{% endif %}</p>
     </aside>
     {% endif %}
+    {#- Legenda: singurul loc din site care TRADUCE punctele colorate in cuvinte. Sta o data pe
+        articol, dupa continut (nu inainte de el), fiindca punctul e semnal si propozitia e
+        explicatie. Arunca DOAR marcajele chiar prezente in pagina: o legenda care listeaza o
+        stare inexistenta ar promite o distinctie care nu se vede nicaieri in text. -#}
+    {%- set comune = dz.common or [] %}
+    {%- set unice = dz.single or [] %}
+    {%- set are_rezerva = (comune | selectattr('hedged') | list) or (unice | selectattr('hedged') | list) %}
+    {%- if comune or unice or dz.diverg %}
+    {#- `aria-label` pe un <p> e ignorat de majoritatea cititoarelor de ecran; textul introductiv
+        ascuns vizual e varianta care chiar se anunță. -#}
+    <p class="trust-key"><span class="visually-hidden">Cum se citesc marcajele de verificare: </span>
+      {%- if comune %}<span class="trust trust--ok"><i aria-hidden="true"></i>confirmat de origini independente</span>{% endif %}
+      {%- if unice %}<span class="trust trust--single"><i aria-hidden="true"></i>o singură origine sau neconfirmat reciproc</span>{% endif %}
+      {%- if dz.diverg %}<span class="trust trust--div"><i aria-hidden="true"></i>relatări care se contrazic</span>{% endif %}
+      {%- if are_rezerva %}<span class="trust trust--infer"><i aria-hidden="true"></i>formulare cu rezervă la sursă</span>{% endif %}
+    </p>
+    {%- endif %}
   </section>
   {% else %}
   <p class="body" data-pagefind-body>{% if a.model == 'C' %}{{ a.synthesis }}{% else %}{{ a.teaser }}{% endif %}</p>

@@ -81,9 +81,9 @@ def test_numele_de_spatiere_isi_spun_valoarea():
 def test_paleta_are_culorile_semantice_complet_definite():
     """Verde/ocru/roșu + variantele de temă întunecată, altfel un punct dispare din nou."""
     css = _citeste(CSS[0])
-    for token in ("--ok", "--warn", "--live"):
+    for token in ("--ok", "--warn", "--live", "--infer"):
         assert re.search(rf"{token}:\s*#", css), f"{token} lipsește din :root"
     intunecat = css.split('[data-theme="dark"]', 1)[1]
-    for token in ("--ok", "--warn", "--live"):
+    for token in ("--ok", "--warn", "--live", "--infer"):
         assert re.search(rf"{token}:\s*#", intunecat), \
             f"{token} nu are variantă pentru tema întunecată"
