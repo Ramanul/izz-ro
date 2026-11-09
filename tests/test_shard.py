@@ -141,5 +141,59 @@ def test_numele_cioburilor_sunt_unice(plan):
     assert len(nume) == len(set(nume))
 
 
+def test_radacina_se_replica_si_redirectele_se_filtreaza(tmp_path):
+    src, dest = tmp_path / "output", tmp_path / "dist"
+    for rel in ("index.html", "404.html", "build.json", "auto/a/index.html", "sport/b/index.html"):
+        _scrie(str(src), rel, rel)
+    _scrie(str(src), "_headers", "/*\n  X-Test: 1\n")
+    _scrie(str(src), "_redirects",
+           "# comentariu\n/auto/vechi /auto/a/ 301\n/tech/x /tech/y 301\n\n/sport/z /sport/b/ 301\n"
+           "/sport /sport/ 301\n")
+    man = shard.partition(str(src), str(dest))
+    for nume in ("cat-auto", "cat-sport", "cat-tech"):
+        for f in shard.REPLICATE:
+            assert (dest / nume / f).exists(), (nume, f)
+    assert (dest / "cat-auto" / "_redirects").read_text() == "/auto/vechi /auto/a/ 301\n"
+    # `/sport` fara bara merge pe ruta exacta `izz.ro/sport`, deci regula e a ciobului.
+    assert (dest / "cat-sport" / "_redirects").read_text() == "/sport/z /sport/b/ 301\n/sport /sport/ 301\n"
+    assert not (dest / "cat-politic" / "_redirects").exists()
+    # Principalul pastreaza fisierul intreg: pana la felia 4 serveste inca toate categoriile.
+    assert "/tech/x" in (dest / "main" / "_redirects").read_text()
+    auto = next(s for s in man["shards"] if s["name"] == "cat-auto")
+    assert auto["file_count"] == 5   # a/index, 404, _headers, build.json, _redirects
+
+
+def test_configul_workerului_de_ciob(tmp_path):
+    src, dest = tmp_path / "output", tmp_path / "dist"
+    _scrie(str(src), "index.html")
+    _scrie(str(src), "auto/a/index.html")
+    shard.partition(str(src), str(dest))
+    cfg = json.loads((dest / "izz-ro-cat-auto.config.json").read_text(encoding="utf-8"))
+    assert cfg["name"] == "izz-ro-cat-auto"
+    # Caile se rezolva fata de dist/, unde sta configul: `dist/../infra/...` e scriptul din repo.
+    assert cfg["main"] == "../infra/worker-404-mirror.js"
+    assert os.path.isfile(os.path.join("infra", "worker-404-mirror.js"))
+    assert (dest / cfg["assets"]["directory"]).is_dir()
+    assert cfg["assets"]["binding"] == "ASSETS"     # fallback-ul cheama env.ASSETS
+    assert "not_found_handling" not in cfg["assets"]  # altfel ratarea nu invoca scriptul
+    assert cfg["routes"] == [{"pattern": "izz.ro/auto", "zone_name": "izz.ro"},
+                             {"pattern": "izz.ro/auto/*", "zone_name": "izz.ro"}]
+    assert not (dest / "izz-ro-main.config.json").exists()
+
+
+def test_compat_date_ca_la_principal():
+    import re
+    with open("wrangler.jsonc", encoding="utf-8") as fh:
+        text = fh.read()
+    assert re.search(r'"compatibility_date":\s*"([^"]+)"', text).group(1) == shard.COMPAT_DATE
+
+
+def test_cioburile_live_exista_in_plan(plan):
+    nume = {s["name"] for s in plan}
+    # Lista goala e valida: e exact starea dupa o revenire.
+    assert set(config.SHARDS_LIVE) <= nume
+    assert len(config.SHARDS_LIVE) == len(set(config.SHARDS_LIVE))
+
+
 def test_cli_refuza_fara_randare(tmp_path, capsys):
     assert shard.main(["--src", str(tmp_path / "gol"), "--dest", str(tmp_path / "d")]) == 1
