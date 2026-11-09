@@ -225,3 +225,10 @@ Dovada pilotului de mai sus rămâne valabilă. **Reluare:** fetch + rebase #568
 `gh workflow run deploy-worker.yml -f confirmare=deploy`, urmărit până la verde. Prima rulare
 recreează Workerul din `SHARDS_LIVE`. Dacă pică la legarea rutelor (tokenul), principalul NU
 se publică: revert #568 imediat, ca publicarea orară să nu rămână blocată.
+
+**Reluat și LIVE la 2026-11-09.** #568 adus la zi cu main (fără conflicte), CI verde pe `a5b273e46`,
+squash-merge `3d817ac11`. Rularea `deploy-worker` 42582355846 (push pe main) a trecut toți pașii:
+„Publica cioburile live” a legat `izz.ro/auto` și `izz.ro/auto/*` (versiunea ec3a4733), deci
+**riscul tokenului e închis: tokenul din GitHub are dreptul de a lega rute.** `build.json` =
+`3d817ac11` pe ciob și pe principal. Sonda pe 13 adrese, înainte și după: aceleași coduri, CSP
+prezent. Rămâne de măsurat în Analytics: invocările scriptului nu cresc (criteriu §4, felia 2).

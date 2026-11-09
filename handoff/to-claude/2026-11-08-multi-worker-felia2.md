@@ -10,7 +10,12 @@ Plan complet: `specs/multi-worker-free-2026-11.md` (5 felii, §4; rezultate §9�
   - **OPRIT 8 nov seara** (`wrangler delete`), la cererea proprietarului: fără merge, ciobul ar fi rămas înghețat. După ștergere, live identic cu înainte.
   - Consultări: consult-merge-567, consult-felia2-design, consult-felia2-diff (rezerva Argon).
 
-## Următorul pas (13 nov)
+## Reluat 9 nov — felia 2 LIVE
+Pașii 1–4 de mai jos sunt făcuți: merge `3d817ac11`, deploy-worker verde (rutele s-au legat din CI),
+sonda pe 13 adrese identică cu înainte. Detalii: spec §11. **Rămâne:** felia 3 (cere „da”) și
+verificarea în Analytics că invocările scriptului nu cresc. Reamintirea de vineri: pornește de aici.
+
+## Următorul pas (13 nov) — ISTORIC, făcut pe 9 nov
 1. Fetch + rebase #568; CI verde pe head; scoate-l din `## Open` în STATE.md înainte de merge.
 2. Merge (`--match-head-commit`), apoi `gh workflow run deploy-worker.yml -f confirmare=deploy`. Urmărești rularea până la capăt.
 3. **Riscul nedovedit:** tokenul din GitHub poate să nu aibă dreptul de a lega rute. Dacă pasul „Publica cioburile live” pică, principalul nu se publică: revert #568 imediat.
