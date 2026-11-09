@@ -4,7 +4,7 @@ IZZ.ro publică sinteze și rezumate automate bazate pe surse publice. Putem gre
 
 ## Cum raportezi o eroare
 
-Folosește linkul **„Raportează o eroare”** de pe articol sau scrie la **contact@izz.ro**. Include URL-ul IZZ.ro, ce informație consideri greșită și, dacă există, sursa sau documentul care susține corectura. Nu este necesar să îți publici datele personale.
+Folosește linkul **„Raportează o eroare”** din subsolul site-ului sau scrie la **contact@izz.ro**. Include URL-ul IZZ.ro, ce informație consideri greșită și, dacă există, sursa sau documentul care susține corectura. Nu este necesar să îți publici datele personale.
 
 ## Cum analizăm sesizările
 

@@ -65,9 +65,12 @@ def test_articolul_poarta_marcajul_cand_e_generat():
         f"/{a['category']}/{a['slug']}/", a=a, active_cat=a["category"],
         topics=[], people=[], related=[], nav_section="stiri",
     ))
-    assert "Titlu sintetizat automat" in html
+    assert "Titlu și rezumat sintetizate automat" in html
     assert 'class="ai-mark"' in html
-    assert "ai-note" in html
+    # 2026-11-08: o singură mențiune pe pagină (bulina); caseta ai-note și repetările din
+    # «Transparență» au fost scoase la cererea proprietarului — repetate de 4 ori, se citeau
+    # ca neîncredere în propriul text.
+    assert "ai-note" not in html
 
 
 def test_anuntul_oficial_ramane_nemarcat(card):

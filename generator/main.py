@@ -213,6 +213,16 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
                        b={a["url"] for a in singles},
                        oficial={a["url"] for a in official})
     syn.sort(key=_cluster_rank, reverse=True)
+    # Regruparea post-AI (cluster.regrupeaza_publicate): articole deja publicate despre acelasi
+    # eveniment, pe care gruparea pre-AI le-a ratat. DUPA clusterele noi, ca stirile noi sa-si
+    # pastreze prioritatea la buget, si plafonate.
+    regrupate = cluster.regrupeaza_publicate([a for a in recent_publicate if a["url"] not in clustered])
+    regrupate.sort(key=_cluster_rank, reverse=True)
+    regrupate = regrupate[:cluster.REGRUPARE_MAX_PE_RULARE]
+    if regrupate:
+        print(f">> Regrupare post-AI: {len(regrupate)} grupuri din articole deja publicate "
+              f"({sum(len(g) for g in regrupate)} articole)")
+    syn += regrupate
     singles.sort(key=lambda a: (a.get("published") or "", _tie(a.get("url", ""))), reverse=True)
 
     # E0 — materia primă pe clusterele selectate (plan-paradigma-izz.md §3): text integral
@@ -246,12 +256,14 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             folded.update(a["url"] for a in g if a["url"] != rep["url"])
 
     de_reluat: list = []                       # (grup, motiv, titlu respins) — vezi mai jos
+    incercate: set = set()                     # id(grup) pentru care s-a facut efectiv un apel
     for chunk in dialectic.loturi(syn, cbs):
         if used >= budget:
             break  # restul clusterelor -> reluate la rularea urmatoare
         motive: list = []
         reps = process_clusters_batch(chunk, provider, motive=motive)
         used += 1
+        incercate.update(id(g) for g in chunk)
         for g, rep, motiv in zip(chunk, reps, motive or [None] * len(chunk)):
             if rep is None:
                 # esec/nemapat -> cluster amanat; membrii raman nefolded si se reiau data viitoare
@@ -303,6 +315,13 @@ def process_new(new_items: list, provider, budget: int, existing: list | None = 
             dialectic.numara(f"amanate_{motiv}", -1)
         if recuperate:
             dialectic.numara("recuperate_la_reincercare", len(recuperate))
+
+    # Un grup regrupat care a primit apel si n-a devenit sinteza nu se reia la nesfarsit: membrii
+    # (articole deja in stare) poarta semnatura esecului pana cand grupul se schimba (Argon).
+    for g in regrupate:
+        if provider is not None and id(g) in incercate and not any(a["url"] in folded for a in g):
+            cluster.marcheaza_esec_regrupare(g)
+            dialectic.numara("regrupare_esuata")
 
     # Diacriticele pierdute la reformulare: se MASOARA pe fiecare rulare si se repara cu UN
     # singur apel-lot suplimentar, consumat din buget (de aceea `used += 1`). Anunturile
