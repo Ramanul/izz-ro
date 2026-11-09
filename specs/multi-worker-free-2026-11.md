@@ -280,3 +280,13 @@ Rularea `deploy-worker` `42591958419` (push pe main) a trecut toți pașii:
 - `izz-ro-cat-regional` (v. `3d9b1992`) pe rutele `izz.ro/regional` și `izz.ro/regional/*`.
 `build.json` = `46e2d26d8` pe toate cele 14 cioburi `cat-*` live și pe principal. Sonda pe 19 adrese
 (`f3_lot5_inainte.json` vs `f3_lot5_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
+
+## 17. Felia 3, lotul 6a — `local-cifre`, `local-a`, `local-p` (2026-11-09, confirmat pe live)
+
+PR #574 (`feat/shard-felia-3-lot6a`), CI verde pe `eb67eade9`, squash-merge `023101545`.
+Rularea `deploy-worker` `42593967577` (push pe main) a trecut toți pașii:
+- `izz-ro-local-cifre` (v. `88c967e6`) pe rutele `izz.ro/local/0*` .. `izz.ro/local/9*` (inclusiv paginarea `/local/2/`, `/local/3/`);
+- `izz-ro-local-a` (v. `ad8ac2bc`) pe ruta `izz.ro/local/a*`;
+- `izz-ro-local-p` (v. `b398755f`) pe ruta `izz.ro/local/p*`.
+`build.json` = `023101545` pe toate cele 17 cioburi live și pe principal. Sonda pe 35 de adrese
+(`f3_local_inainte.json` vs `f3_local6a_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
