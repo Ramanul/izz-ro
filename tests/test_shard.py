@@ -148,7 +148,7 @@ def test_radacina_se_replica_si_redirectele_se_filtreaza(tmp_path):
     _scrie(str(src), "_headers", "/*\n  X-Test: 1\n")
     _scrie(str(src), "_redirects",
            "# comentariu\n/auto/vechi /auto/a/ 301\n/tech/x /tech/y 301\n\n/sport/z /sport/b/ 301\n"
-           "/sport /sport/ 301\n")
+           "/sport /sport/ 301\n/zonal/* /judetean/:splat 301\n")
     man = shard.partition(str(src), str(dest))
     for nume in ("cat-auto", "cat-sport", "cat-tech"):
         for f in shard.REPLICATE:
@@ -157,8 +157,8 @@ def test_radacina_se_replica_si_redirectele_se_filtreaza(tmp_path):
     # `/sport` fara bara merge pe ruta exacta `izz.ro/sport`, deci regula e a ciobului.
     assert (dest / "cat-sport" / "_redirects").read_text() == "/sport/z /sport/b/ 301\n/sport /sport/ 301\n"
     assert not (dest / "cat-politic" / "_redirects").exists()
-    # Principalul pastreaza fisierul intreg: pana la felia 4 serveste inca toate categoriile.
-    assert "/tech/x" in (dest / "main" / "_redirects").read_text()
+    # Principalul pastreaza doar regulile a caror sursa ramane pe `main` (ex. `/zonal/*`).
+    assert (dest / "main" / "_redirects").read_text() == "/zonal/* /judetean/:splat 301\n"
     auto = next(s for s in man["shards"] if s["name"] == "cat-auto")
     assert auto["file_count"] == 5   # a/index, 404, _headers, build.json, _redirects
 
@@ -197,3 +197,33 @@ def test_cioburile_live_exista_in_plan(plan):
 
 def test_cli_refuza_fara_randare(tmp_path, capsys):
     assert shard.main(["--src", str(tmp_path / "gol"), "--dest", str(tmp_path / "d")]) == 1
+
+
+def test_live_only_pastreaza_cioburile_neactivate_in_main(tmp_path, monkeypatch):
+    monkeypatch.setattr(config, "SHARDS_LIVE", ["cat-auto"])
+    src, dest = tmp_path / "output", tmp_path / "dist"
+    for rel in ("index.html", "auto/a/index.html", "sport/b/index.html", "subiect/x/index.html"):
+        _scrie(str(src), rel, rel)
+    assert shard.main(["--src", str(src), "--dest", str(dest), "--live-only"]) == 0
+    assert (dest / "cat-auto" / "auto" / "a" / "index.html").exists()
+    # `sport` si `subiect` nu sunt in SHARDS_LIVE -> raman in `main`, unde merge cererea pe izz.ro.
+    assert (dest / "main" / "sport" / "b" / "index.html").exists()
+    assert (dest / "main" / "subiect" / "x" / "index.html").exists()
+    assert not (dest / "cat-sport").exists()
+    assert not (dest / "subiect").exists()
+
+
+def test_workers_origin_for_comuta_doar_pe_workers_dev():
+    shards = [{"name": "cat-sport", "prefixes": ["sport/"]},
+              {"name": "local-a", "prefixes": ["local/a"]}]
+    baza = "https://izz-ro.andifreelancer2.workers.dev"
+    assert shard.workers_origin_for(baza, "/", shards) == baza
+    assert shard.workers_origin_for(baza, "/static/styles.css?v=1", shards) == baza
+    assert shard.workers_origin_for(baza, "/subiect/romania/", shards) == baza
+    assert shard.workers_origin_for(baza, "/local/", shards) == baza
+    assert (shard.workers_origin_for(baza, "/sport/meci/photo.jpg?v=2", shards)
+            == "https://izz-ro-cat-sport.andifreelancer2.workers.dev")
+    assert (shard.workers_origin_for(baza, "/local/arad/", shards)
+            == "https://izz-ro-local-a.andifreelancer2.workers.dev")
+    # Pe domeniul public sau alt host, rutarea Cloudflare face singura treaba.
+    assert shard.workers_origin_for("https://izz.ro", "/sport/meci/", shards) == "https://izz.ro"

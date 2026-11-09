@@ -82,21 +82,31 @@ def _article_paths(sitemap: str) -> list[str]:
     return paths
 
 
+def _origin_for(path: str) -> str:
+    """Originea pentru `path`: pe `izz-ro.<cont>.workers.dev`, comuta pe ciobul potrivit."""
+    if not (BASE.startswith(("https://izz-ro.", "http://izz-ro.")) and BASE.endswith(".workers.dev")):
+        return BASE
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from generator import shard
+    return shard.workers_origin_for(BASE, path)
+
+
 def _check_article_images(markup: _ArticleMarkup, page: str) -> None:
     """Photos are optional; every photo actually emitted must load as an image."""
     for src in markup.images:
         media = urlsplit(src)
-        base = urlsplit(BASE)
+        base_url = _origin_for(media.path or "/")
+        base = urlsplit(base_url)
         ok_art = False
         # A photo probe only needs HTTP(S). The explicit transport cannot open local
         # files or any of urllib's other URL schemes, even with malformed page markup.
         detail = ""
         if (src and media.scheme in ("", "http", "https") and media.path
                 and base.scheme in ("http", "https") and base.hostname):
-            allowed_hosts = {base.hostname}
+            allowed_hosts = {base.hostname, urlsplit(BASE).hostname}
             if base.hostname in {"izz.ro", "www.izz.ro"}:
                 allowed_hosts.update({"izz.ro", "www.izz.ro"})
-            target = BASE + media.path + ("?" + media.query if media.query else "")
+            target = base_url + media.path + ("?" + media.query if media.query else "")
             for _ in range(5):
                 address = urlsplit(target)
                 if address.scheme not in {"http", "https"} or address.hostname not in allowed_hosts:
@@ -158,14 +168,14 @@ def _interstitial(html: str) -> bool:
 
 
 def get(path: str) -> str:
-    req = urllib.request.Request(BASE + path, headers=UA)
+    req = urllib.request.Request(_origin_for(path) + path, headers=UA)
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.read().decode("utf-8", "replace")
 
 
 def head(path: str):
     """Returneaza headerele raspunsului (fara corp) pentru un path pe live."""
-    req = urllib.request.Request(BASE + path, headers=UA)
+    req = urllib.request.Request(_origin_for(path) + path, headers=UA)
     with urllib.request.urlopen(req, timeout=30) as r:
         return r.headers, r
 
@@ -292,7 +302,7 @@ def main() -> int:
         if cover_url:
             cpath = re.sub(r"^https?://[^/]+", "", cover_url)
             try:
-                req = urllib.request.Request(BASE + cpath, headers=UA)
+                req = urllib.request.Request(_origin_for(cpath) + cpath, headers=UA)
                 with urllib.request.urlopen(req, timeout=30) as r:
                     ok_img = (r.headers.get("Content-Type", "").startswith("image/")
                               and len(r.read()) > 5000)

@@ -54,6 +54,37 @@ def plan() -> list[dict]:
     return shards
 
 
+def live_plan() -> list[dict]:
+    """Cioburile din `plan()` activate in `config.SHARDS_LIVE`.
+
+    Orice ciob neactivat (ex. `subiect`, sau o categorie retrasa la rollback) ramane in `main`,
+    fiindca pe `izz.ro` cererile lui cad tot pe Workerul principal.
+    """
+    live = set(config.SHARDS_LIVE)
+    return [s for s in plan() if s["name"] in live]
+
+
+def workers_origin_for(base_url: str, path: str,
+                       shards: list[dict] | None = None) -> str:
+    """Pe `https://izz-ro.<cont>.workers.dev`, intoarce originea ciobului care serveste `path`.
+
+    Pe domeniul public (`https://izz.ro`) sau pe orice alt host, intoarce `base_url` neschimbat:
+    acolo rutarea de zona Cloudflare trimite singura cererea la Workerul potrivit.
+    """
+    base = base_url.rstrip("/")
+    if not (base.startswith(("https://izz-ro.", "http://izz-ro.")) and base.endswith(".workers.dev")):
+        return base
+    shards = live_plan() if shards is None else shards
+    rel = path.split("?", 1)[0].split("#", 1)[0].lstrip("/")
+    if not rel or rel.endswith("/"):
+        rel = (rel + "index.html") if rel else "index.html"
+    tinta = assign(rel, shards)
+    if tinta == MAIN:
+        return base
+    scheme, rest = base.split("://izz-ro.", 1)
+    return f"{scheme}://{WORKER_PREFIX}{tinta}.{rest}"
+
+
 def served_path(relpath: str) -> str:
     """Adresa la care Workers Static Assets serveste fisierul (fara `/` initial).
 
@@ -130,6 +161,8 @@ def partition(src: str, dest: str, shards: list[dict] | None = None,
         tree[tinta].append((rel, sha))
 
     for rel, full in sorted(_files(src)):
+        if rel == "_redirects":
+            continue
         sha = _sha(full)
         tinta = assign(rel, shards)
         _pune(tinta, rel, full, sha)
@@ -151,24 +184,24 @@ def partition(src: str, dest: str, shards: list[dict] | None = None,
             if not any(p == nume_fisier for p, _ in tree[s["name"]]):
                 _pune(s["name"], nume_fisier, full, sha_f)
 
-    # `_redirects`: fiecare ciob primeste DOAR regulile a caror sursa ajunge la el prin rutare.
-    # O regula `/auto/x /auto/y` lasata pe principal nu se mai declanseaza (cererea merge la
-    # ciob), iar plafonul de reguli e per Worker.
+    # `_redirects`: fiecare Worker (inclusiv principalul) primeste DOAR regulile a caror sursa
+    # ajunge la el prin rutare. O regula `/auto/x /auto/y` lasata pe principal nu se mai
+    # declanseaza (cererea merge la ciob), iar plafonul de reguli e per Worker.
     redir = os.path.join(src, "_redirects")
     if os.path.isfile(redir):
         with open(redir, encoding="utf-8") as fh:
             linii = fh.read().splitlines()
-        for s in shards:
+        for nume_ciob in [MAIN] + [s["name"] for s in shards]:
             ale_lui = [ln for ln in linii if ln.strip() and not ln.lstrip().startswith("#")
-                       and _route(ln.split()[0].lstrip("/"), shards) == s["name"]]
+                       and _route(ln.split()[0].lstrip("/"), shards) == nume_ciob]
             if not ale_lui:
                 continue
-            out = os.path.join(dest, s["name"], "_redirects")
+            out = os.path.join(dest, nume_ciob, "_redirects")
             os.makedirs(os.path.dirname(out), exist_ok=True)
             text = "\n".join(ale_lui) + "\n"
             with open(out, "w", encoding="utf-8", newline="\n") as fh:
                 fh.write(text)
-            tree[s["name"]].append(("_redirects", hashlib.sha256(text.encode()).hexdigest()))
+            tree[nume_ciob].append(("_redirects", hashlib.sha256(text.encode()).hexdigest()))
 
     manifest = {"zone": ZONE, "ceiling": ceiling, "shards": []}
     for s in [{"name": MAIN, "prefixes": []}] + shards:
@@ -233,11 +266,13 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--src", default="output")
     ap.add_argument("--dest", default="dist")
+    ap.add_argument("--live-only", action="store_true",
+                    help="imparte doar cioburile din config.SHARDS_LIVE; restul raman in main")
     args = ap.parse_args(argv)
     if not os.path.isfile(os.path.join(args.src, "index.html")):
         print(f"!! {args.src}/index.html lipseste -- randeaza intai", file=sys.stderr)
         return 1
-    manifest = partition(args.src, args.dest)
+    manifest = partition(args.src, args.dest, shards=live_plan() if args.live_only else None)
     for s in manifest["shards"]:
         if s["file_count"]:
             print(f"{s['name']:<16} {s['file_count']:>6}  {', '.join(s['routes'])}")

@@ -93,12 +93,13 @@ jobs:
         run: |
           python tools/asset_budget.py --output-dir output --enforce
 
-      # Multi-Worker (specs/multi-worker-free-2026-11.md, felia 2): cioburile din
+      # Multi-Worker (specs/multi-worker-free-2026-11.md, feliile 2-3): cioburile din
       # `config.SHARDS_LIVE` au Workerul lor, cu ruta `izz.ro/<categorie>/*`. Se publica INAINTEA
       # principalului si fail-closed: un ciob ramas in urma ar lasa prima pagina sa trimita spre
-      # articole pe care ruta lui nu le are. Principalul pastreaza pana la felia 4 toate fisierele.
+      # articole pe care ruta lui nu le are. Principalul publica `dist/main` (radacina + orice
+      # ciob neactivat in `SHARDS_LIVE`, ex. `subiect/`).
       - name: Imparte in cioburi
-        run: python -m generator.shard --src output --dest dist
+        run: python -m generator.shard --src output --dest dist --live-only
 
       - name: Publica cioburile live (inaintea principalului)
         env:
@@ -130,7 +131,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_SEND_METRICS: "false"
-        run: npx --yes wrangler@4.125.0 deploy
+        run: npx --yes wrangler@4.125.0 deploy --assets dist/main
 
       # HTTP 200 singur nu detecteaza un release ramas in urma. Verificam manifestul buildului,
       # SHA-ul si numarul de articole. Origin-only este intentionat: domeniul public poate avea
