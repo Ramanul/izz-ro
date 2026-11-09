@@ -268,6 +268,19 @@ _RO_MONTHS = ["", "ianuarie", "februarie", "martie", "aprilie", "mai", "iunie",
 _RO_DAYS = ["Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă", "Duminică"]
 
 
+def _slug_ancora(nume: str) -> str:
+    """Identificator de ancora pentru un nume de publicație („Opinia Timișoarei" -> „opinia-timisoarei").
+
+    De ce un filtru propriu, nu `slugify` direct in sablon: slug-ul trebuie sa fie STABIL intre
+    build-uri (aceeasi sursa -> aceeasi ancora), sa nu depinda de diacritice si sa ramana valid
+    ca `id` HTML. Se foloseste `python-slugify` cu transliterare, deja in requirements, ca numele
+    cu diacritice sa nu produca doua ancore diferite dupa cum e scris in feed.
+    """
+    from slugify import slugify as _s
+
+    return _s(nume or "", lowercase=True, separator="-", allow_unicode=False) or "sursa"
+
+
 def _href_extern(url) -> str:
     """Ultima barieră pentru un `href` cu date venite din afară: întoarce URL-ul doar dacă
     `guard.url_ostil` îl acceptă (http/https, fără caractere de control, fără credențiale,
@@ -301,6 +314,7 @@ def _env() -> Environment:
     # de forma cu diacritice („Constanța”), din aceeasi sursa ca etichetele de pe coperti.
     env.filters["judet_label"] = geo.eticheta_judet
     env.filters["href_extern"] = _href_extern
+    env.filters["slug_ancora"] = _slug_ancora
     return env
 
 

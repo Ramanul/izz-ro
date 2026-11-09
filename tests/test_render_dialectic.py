@@ -71,11 +71,18 @@ def test_faptele_poarta_publicatiile_iar_linkurile_raman_in_sources_box():
     html = _articol_html(_pagina(_articol("SYNTHESIS_VALID")))
     sec = html[html.find('<section class="dialectic"'):html.find("</section>")]
     assert "Confirmat de mai multe publicații" in sec
-    assert "— Alfa, Beta" in sec
-    assert "cu rezervă la sursă" in sec
+    # Textul de atribuire se citeste ca propozitie: numele sunt despărțite de virgulă, iar
+    # ancora spre `sources-box` e invizibilă (fără text propriu) — deci se scoate din
+    # comparație, nu se acceptă un text diferit.
+    text_atribuire = re.sub(r'<a class="sursa-link"[^>]*></a>', "", sec)
+    assert "— Alfa, Beta" in text_atribuire
+    assert "cu rezervă la sursă" in text_atribuire
     assert "Unde diferă relatările" in sec and "Numărul voturilor pentru" in sec
     assert "Dintr-o singură origine" in sec
-    assert "<a " not in sec                         # atribuire în text, nu un al doilea „Surse"
+    # Atribuire în text, nu un al doilea „Surse": singurele linkuri din corp sunt ancore
+    # interne (#surse), niciodată linkuri externe.
+    externe = re.findall(r'<a [^>]*href="(?!#)[^"]*"', sec)
+    assert not externe, f"link extern în corpul sintezei: {externe[:3]}"
     assert len(re.findall(r'class="sources-box"', html)) == 1
 
 

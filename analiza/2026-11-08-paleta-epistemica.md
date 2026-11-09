@@ -201,3 +201,47 @@ o promisiune.
 | `a11y_static` | 0 încălcări tari | 0 încălcări tari |
 | Marcaje pe card | 0 | 121 |
 | Cifre noi pe `/sub-prag/` | 0 | 3 + numitor |
+
+---
+
+## 8. Felia a treia: atribuirea devine navigabilă (tot 2026-11-08)
+
+Ultimul punct din §6 — „albastrul pe legătura care există deja" — s-a făcut, dar nu cum era
+formulat. Formularea mea de la §6 suna *„numele publicației, clicabil spre `sources-box`"*,
+adică un **link extern**. Trei teste existente au respins-o imediat, și aveau dreptate:
+
+- `test_faptele_poarta_publicatiile_iar_linkurile_raman_in_sources_box` — CLAUDE.md §7 (decizie
+  proprietar 2026-07-04) cere proveniență **exact un element**: linkurile externe stau doar în
+  `sources-box`. Un link extern pe fiecare nume ar fi al doilea element de proveniență;
+- `test_eticheta_de_provenienta_urmeaza_numarul_de_surse` — numără `<li>` în caseta de surse, ca
+  să țină „Sursă" vs „Surse". Am pus inițial `id` pe `<li>` și a raportat 173 de pagini cu
+  „'Sursă' pentru 0 surse"; `id`-ul a trecut pe link, garda a rămas neatinsă;
+- textul de atribuire trebuie să se citească drept propoziție: **„— Alfa, Beta"**. Orice
+  înfrumusețare („Alfa →", subliniere, culoare de link) schimbă ce citește omul.
+
+### Ce s-a livrat
+
+Numele din propoziție duce la **rândul ei** din `sources-box`, printr-o ancoră invizibilă
+(`<a class="sursa-link">` fără text propriu, 24×24 px, lățime netă zero). De ce ancoră per sursă
+și nu `#surse`: dacă duci la caseta întreagă, omul tot trebuie să caute rândul — jumătate din drum.
+
+| Măsurat pe build-ul real (6.221 articole randate) | |
+|---|---:|
+| Pagini cu sinteză dialectică | 346 |
+| Ancore nume → rând de sursă | **2.750** |
+| Ancora fără țintă în pagină | **0** (verificat pe toate paginile) |
+
+### Două capcane de măsurare, prinse la timp
+
+**1. `output/` nu era build-ul real.** Prima rundă de cifre („14 pagini cu dialectic", „2750
+ancore") a fost citită dintr-un build **redus la 187 de articole** — pentru că suita `pytest`
+re-randează `output/` (`tests/conftest.py`, fixture `output_randat`). Capcana e documentată în
+`analiza/2026-11-07-analiza-multidimensionala.md` §1 și **am căzut exact în ea**: `build.json`
+spunea `article_count: 187`. După o re-randare curată: 6.221 articole, 346 pagini cu sinteză.
+Regula care iese de aici: **orice cifră despre `output/` se ia după o re-randare, niciodată după
+teste** — și se citește `build.json` înainte de a o crede.
+
+**2. Marcajul de pe card e dependent de fereastră.** 157 articole din stare au rezervă, dar doar
+**94 de carduri** o afișează în build-ul curent: marca apare pe cardurile efectiv randate, nu pe
+tot ce e în stare. Diferența nu e un bug, e fereastra de publicare — și trebuie spusă, ca să nu
+pară că funcția „nu merge".

@@ -181,3 +181,30 @@ def test_cardul_nu_schimba_textul_de_stare_editorial():
     card = render._env().get_template("_card.html").module.card
     html = str(card(_articol("SYNTHESIS_VALID")))
     assert "Sinteză din 3 publicații · 2 confirmări încrucișate · generată automat" in html
+
+
+def test_numele_publicatiei_duce_la_sursa_fara_link_extern_in_corp():
+    """Provenienta rămâne UN element (CLAUDE.md §7), dar trebuie să fie accesibilă din propoziție.
+
+    Inainte: ca sa verifici o afirmatie, cautai publicatia intr-o lista la coada paginii.
+    Acum: numele duce la ea prin ancoră internă. Linkul extern rămâne doar în `sources-box`.
+    """
+    from tests.test_render_dialectic import _articol, _articol_html, _pagina
+
+    html = _articol_html(_pagina(_articol("SYNTHESIS_VALID")))
+    sec = html[html.find('<section class="dialectic"'):]
+    sec = sec[:sec.find("</section>")]
+    assert 'class="sursa-link"' in sec, "numele publicațiilor nu mai sunt navigabile"
+    assert 'href="#sursa-' in sec
+    assert not [a for a in re.findall(r'<a [^>]*href="(?!#)[^"]*"', sec)]
+    assert 'id="sursa-' in html, "ținta ancorei (rândul sursei) lipsește din pagina"
+
+
+def test_textul_de_atribuire_ramane_propozitie():
+    """Ancora nu are voie să spargă textul: „— Alfa, Beta" se citește, nu se compilează."""
+    from tests.test_render_dialectic import _articol, _articol_html, _pagina
+
+    html = _articol_html(_pagina(_articol("SYNTHESIS_VALID")))
+    sec = html[html.find('<section class="dialectic"'):]
+    curat = re.sub(r'<a class="sursa-link"[^>]*></a>', "", sec)
+    assert "— Alfa, Beta" in curat

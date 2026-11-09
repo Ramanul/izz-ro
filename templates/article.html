@@ -139,6 +139,40 @@
       Numele publicațiilor sunt atribuire în text, nu un al doilea element „Surse": linkurile
       rămân doar în `sources-box` (CLAUDE.md §7). Fiecare afirmație a trecut verificarea
       mecanică din generator/dialectic.py. -#}
+  {#- Atribuirea devine LINK, nu doar nume (2026-11-08). Pana acum numele publicatiei statea
+      ca text langa fapt, iar linkul exista doar in `sources-box` la coada paginii: cititorul
+      care voia sa verifice o propozitie anume trebuia sa caute publicatia intr-o lista.
+      Acum numele e link direct la articolul publicatiei, cu `target=_blank` si `noopener`
+      ca restul linkurilor externe (aceeasi regula ca in surse.html).
+
+      Ce NU s-a facut: scoasa din text. Daca linkul devine atribuirea singura, `sources-box`
+      nu mai e „un singur element de provenienta" (CLAUDE.md §7) — ar fi al doilea. Deci
+      numele ramane scris in propozitie, doar ca link; marcajul „->" ar fi sugerat ca textul
+      duce la sursa, exact ce nu facem (nu reproducem articolul). -#}
+  {#- Atribuirea devine NAVIGABILA, nu doar nume (2026-11-08). Pana acum, ca sa verifici o
+      propozitie anume, trebuia sa cauti publicatia intr-o lista la coada paginii. Acum numele
+      din propozitie duce la ea in `sources-box`, unde stau linkul extern si rolul sursei.
+
+      De ce ANCORA si nu linkul extern: CLAUDE.md §7 (decizie proprietar 2026-07-04) cere ca
+      provenienta sa fie EXACT UN element — `sources-box` — iar linkurile externe sa ramana
+      acolo. Un link extern pe fiecare nume ar fi fost al doilea element de provenienta si ar
+      fi scos cititorul de pe pagina la primul clic pe o propozitie. Ancora respecta ambele:
+      numele ramane text atribuit, iar unicul link extern ramane unul singur.
+      Garda: tests/test_render_dialectic.py `test_faptele_poarta_publicatiile...` - zero link
+      extern in corp, un singur `sources-box`. -#}
+  {#- Atribuirea devine NAVIGABILA, nu doar nume (2026-11-08). Ca sa verifici o propozitie
+      anume trebuia sa cauti publicatia intr-o lista la coada paginii.
+
+      De ce ANCORA si nu link extern: CLAUDE.md §7 (decizie proprietar 2026-07-04) cere ca
+      provenienta sa fie EXACT UN element — `sources-box` — si ca linkurile externe sa ramana
+      acolo; un link extern pe fiecare nume ar fi al doilea element si ar scoate cititorul de
+      pe pagina la primul clic pe o propozitie. De ce ancora PER SURSA si nu `#surse`: daca
+      duci la caseta intreaga, omul tot trebuie sa caute randul, adica jumatate din drum.
+      Ancora e invizibila (fara text propriu), deci propozitia „— Alfa, Beta" se citeste la fel.
+      Garda: tests/test_garda_editoriala.py + test_render_dialectic (zero link extern in corp). -#}
+  {%- macro sursa_link(nume) -%}
+    {{ nume }}<a class="sursa-link" href="#sursa-{{ nume | slug_ancora }}" aria-label="Vezi sursa {{ nume }} în lista de la subsol"></a>{{- '' -}}
+  {%- endmacro %}
   <section class="dialectic" aria-label="Ce relatează publicațiile" data-pagefind-body>
     {% if dz.state == 'ASSUMED_SILENCE' %}
     <p class="body dialectic-silence">Datele din surse sunt în acest moment ireconciliabile. Nu redactăm o versiune comună; mai jos, versiunea fiecărei publicații, atribuită.</p>
@@ -146,7 +180,7 @@
     {% if dz.common %}
     <h2 class="dialectic-h">Confirmat de mai multe publicații</h2>
     <ul class="dialectic-list dialectic-common">
-      {% for f in dz.common %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% for f in dz.common %}<li>{{ f.text }} <span class="dialectic-src">— {% for n in f.src %}{{ sursa_link(n) }}{{ ', ' if not loop.last }}{% endfor %}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
       {% endfor %}
     </ul>
     {% endif %}
@@ -156,7 +190,7 @@
     <div class="dialectic-diverg">
       <p class="dialectic-axis">{{ dv.axis[:1] | upper }}{{ dv.axis[1:] }}</p>
       <ul class="dialectic-list">
-        {% for p in dv.pos %}<li>{{ p.text }} <span class="dialectic-src">— {{ p.src | join(', ') }}</span></li>
+        {% for p in dv.pos %}<li>{{ p.text }} <span class="dialectic-src">— {% for n in p.src %}{{ sursa_link(n) }}{{ ', ' if not loop.last }}{% endfor %}</span></li>
         {% endfor %}
       </ul>
     </div>
@@ -167,7 +201,7 @@
     {%- set multe_origini = dz.state == 'SINGLE_ORIGIN' and (dz.origini or 1) > 1 %}
     <h2 class="dialectic-h">{% if multe_origini %}Fiecare fapt, la o singură publicație{% elif dz.state == 'SINGLE_ORIGIN' %}Relatat dintr-o singură origine{% else %}Dintr-o singură origine{% endif %}</h2>
     <ul class="dialectic-list dialectic-single">
-      {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {{ f.src | join(', ') }}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
+      {% for f in dz.single %}<li>{{ f.text }} <span class="dialectic-src">— {% for n in f.src %}{{ sursa_link(n) }}{{ ', ' if not loop.last }}{% endfor %}{% if f.hedged %} · <em class="dialectic-hedge"><i class="trust--infer" aria-hidden="true"></i>cu rezervă la sursă</em>{% endif %}</span></li>
       {% endfor %}
     </ul>
     <p class="dialectic-note">{% if multe_origini %}Publicațiile abordează subiectul din unghiuri diferite: fiecare prezintă fapte distincte, fără ca detaliile să fie confirmate de o a doua sursă independentă.{% elif dz.state == 'SINGLE_ORIGIN' %}Publicațiile din acest grup pornesc de la aceeași relatare inițială sau de la o sursă comună (comunicat, agenție), deci nu sunt confirmări independente.{% else %}Neconfirmat de celelalte publicații din acest set; asta nu înseamnă că e fals.{% endif %}</p>
@@ -253,7 +287,7 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
-      {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
+      {% for s in srcs %}<li><a id="sursa-{{ s.name | slug_ancora }}" href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if grupuri_comune %}
     <p class="source-roles-note source-groups-note">Același grup media (din casetele editoriale verificate): {% for g in grupuri_comune %}{{ g.members | join(', ') }} — {{ g.group }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>

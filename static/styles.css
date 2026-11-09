@@ -512,6 +512,19 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
 /* Punctul din interiorul marcajului de rezerva: acelasi patrat rotit ca `.trust--infer`, la
    scara textului (7px e marimea punctului din card, prea mare intr-un rand de 13px). */
 .dialectic-hedge { display: inline-flex; align-items: center; gap: 4px; }
+/* Ancora spre lista de surse: INVIZIBILA ca text (nu are continut), dar un targhet de 24px
+   ca sa poata fi lovita cu degetul — 7px cat are punctul ar fi sub pragul de atingere.
+   Nu se subliniaza si nu schimba culoarea numelui: atribuirea ramane text, nu link colorat
+   (culoarea de actiune ar sugera ca duce in afara paginii). */
+.sursa-link {
+  display: inline-block; width: 24px; height: 24px;
+  /* Latime neta zero (24 - 24) => nu rup randul si nu mut textul; inaltimea reala de 24px
+     si marginile negative pe verticala o scot din cutia de linie, altfel ar inalta randul. */
+  margin-inline-start: -24px; margin-block: -6px;
+  vertical-align: middle; text-decoration: none;
+}
+/* Tinta ancorei: antetul e sticky, deci fara asta randul sursei ajunge sub el dupa salt. */
+.sources-box a[id^="sursa-"] { scroll-margin-top: 96px; }
 .dialectic-hedge i { width: 5px; height: 5px; border-radius: 0; transform: rotate(45deg); flex: 0 0 auto; }
 .time-range { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .dialectic-diverg { border-left: 2px solid var(--live); padding-left: var(--sp-12); margin: 0 0 var(--sp-12); }
