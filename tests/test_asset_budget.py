@@ -59,3 +59,20 @@ def test_deployment_guard_is_blocking_before_upload():
     assert workflow.index("--render-only") < workflow.index(command) < workflow.index("wrangler@")
     assert "||" not in workflow.split(command, 1)[1].splitlines()[0]
     assert 'if [ "$REF" != "refs/heads/main" ]; then' in workflow
+
+
+def test_per_shard_budget_allows_total_above_single_worker_limit(tmp_path, monkeypatch):
+    """Cu cioburile live, 24.000 de fisiere impartite intre doua cioburi (12k + 12k) incap sub 17k/ciob."""
+    sport_dir = tmp_path / "sport" / "stire"
+    politic_dir = tmp_path / "politic" / "stire"
+    sport_dir.mkdir(parents=True)
+    politic_dir.mkdir(parents=True)
+    p_sport = sport_dir / "index.html"
+    p_politic = politic_dir / "index.html"
+    p_sport.write_text("sport", encoding="utf-8")
+    p_politic.write_text("politic", encoding="utf-8")
+    monkeypatch.setattr(Path, "rglob", lambda self, pattern: iter([p_sport] * 12000 + [p_politic] * 12000))
+    assert asset_budget.main(["--output-dir", str(tmp_path), "--enforce"]) == 0
+    report = json.loads((tmp_path / "asset_budget.json").read_text(encoding="utf-8"))
+    assert report["total"] == 24001
+    assert report["max_shard_files"] == 12000

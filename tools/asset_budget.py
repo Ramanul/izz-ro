@@ -19,6 +19,12 @@ import os
 import pathlib
 import sys
 
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from generator import shard  # noqa: E402
+
 CEILING = int(os.getenv("OUTPUT_FILE_CEILING", "20000"))
 BUDGET = int(os.getenv("OUTPUT_FILE_BUDGET", "17000"))
 MAX_FILE_BYTES = 25 * 1024 * 1024
@@ -36,11 +42,14 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if args.enforce else 0
     by_ext: collections.Counter = collections.Counter()
     by_top: collections.Counter = collections.Counter()
+    by_shard: collections.Counter = collections.Counter()
+    live_shards = shard.live_plan()
     # Reserve the report exactly once, including repeated runs on the same tree.
     report_path = out / "asset_budget.json"
     total = 1
     by_ext["json"] = 1
     by_top["(root)"] = 1
+    by_shard["main"] = 1
     oversized = []
     for p in out.rglob("*"):
         if p.is_file() and p != report_path:
@@ -50,34 +59,38 @@ def main(argv: list[str] | None = None) -> int:
             by_ext[p.suffix.lower().lstrip(".") or "noext"] += 1
             rel = p.relative_to(out)
             by_top[rel.parts[0] if len(rel.parts) > 1 else "(root)"] += 1
-    ratio = total / CEILING
+            by_shard[shard.assign(rel.as_posix(), live_shards)] += 1
+    checked = max(by_shard.values()) if (live_shards and by_shard) else total
+    ratio = checked / CEILING
     level = "OK" if ratio < WARN else "WARNING" if ratio < HIGH else "HIGH" if ratio < CRIT else "CRITICAL"
     report = {
         "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "total": total,
+        "max_shard_files": checked,
         "limit": CEILING,
         "budget": BUDGET,
         "max_file_bytes": MAX_FILE_BYTES,
         "oversized_files": oversized,
-        "headroom": CEILING - total,
+        "headroom": CEILING - checked,
         "level": level,
         "by_extension": dict(by_ext.most_common()),
         "by_top_dir": dict(by_top.most_common(15)),
+        "by_shard": dict(by_shard.most_common()),
     }
     report_path.write_text(
         json.dumps(report, indent=1, ensure_ascii=False), encoding="utf-8")
     if report_path.stat().st_size > MAX_FILE_BYTES:
         oversized.append(report_path.name)
-    print(f"ASSET CENSUS: {total}/{CEILING} ({ratio:.1%}) | headroom {CEILING - total} | nivel {level}")
+    print(f"ASSET CENSUS: total {total} | max/ciob {checked}/{CEILING} ({ratio:.1%}) | headroom {CEILING - checked} | nivel {level}")
     print("extensii:", ", ".join(f"{k}:{v}" for k, v in list(by_ext.most_common())[:8]))
     print("directoare:", ", ".join(f"{k}:{v}" for k, v in list(by_top.most_common())[:8]))
     if level != "OK":
         print(f"::warning::asset budget la {ratio:.1%} din plafon (nivel {level})")
     errors = []
-    if total > CEILING:
-        errors.append(f"provider ceiling exceeded: {total} > {CEILING}")
-    elif total > BUDGET:
-        errors.append(f"safety budget exceeded: {total} > {BUDGET}")
+    if checked > CEILING:
+        errors.append(f"provider ceiling exceeded: {checked} > {CEILING}")
+    elif checked > BUDGET:
+        errors.append(f"safety budget exceeded: {checked} > {BUDGET}")
     if oversized:
         errors.append(f"file size exceeds {MAX_FILE_BYTES} bytes: {', '.join(oversized)}")
     for error in errors:
