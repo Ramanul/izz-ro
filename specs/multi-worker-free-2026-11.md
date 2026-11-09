@@ -301,3 +301,16 @@ Rularea `deploy-worker` `42598689519` (push pe main) a trecut toți pașii:
 - `izz-ro-local-stuvwxyz` (v. `a26f33b6`) pe rutele `izz.ro/local/s*`..`izz.ro/local/z*`.
 `build.json` = `f61ad0fee` pe toate cele 21 de cioburi live și pe principal. Sonda pe 35 de adrese
 (`f3_local6b_inainte.json` vs `f3_local6b_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
+
+## 19. Scoaterea categoriilor migrate din Workerul principal `izz-ro` (2026-11-09, confirmat pe live)
+
+PR #576 (`feat/shard-trim-main`), CI verde pe `38f48bc32`, squash-merge `925f1b477`.
+- `generator/shard.py`: `live_plan()` și `--live-only` păstrează în `dist/main` cioburile încă nepublicate (`subiect/`, 815 fișiere); `dist/main/_redirects` filtrat pe rutele `main`; `workers_origin_for()` comută `izz-ro.<cont>.workers.dev` pe `izz-ro-<ciob>.<cont>.workers.dev` pentru `visual_check.py` și `smoke_live.py`.
+- `deploy-worker.yml`: publică `izz-ro` cu `--assets dist/main`.
+- Rularea `deploy-worker` `42603797890` (push pe main) a trecut toți pașii: `dist/main` = **1.527 fișiere** (urcate 1.525 pe `izz-ro`, față de 10.103 înainte; v. `1d95422b`).
+- Sonda pe 26 de adrese (`trim_inainte.json` vs `trim_dupa.json`): 0 diferențe; `smoke_live.py` pe `izz-ro.andifreelancer2.workers.dev`: 5/5 articole și imagini 200.
+
+## 20. Felia 4, Pasul 1 — buget/supapă per ciob + `ARTICLE_TTL_DAYS = 21` (2026-11-09)
+
+- `generator/render.py` (`_taie_pe_cioburi`, `_write_build_metadata`), `tools/asset_budget.py` și `tests/test_buget_fisiere.py`: bugetul de 17.000 și plafonul de 20.000 se aplică acum pe fiecare Worker/ciob live separat, nu pe suma globală din `output/`.
+- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `11` la `21` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md`). Toate cele 6.869 de articole din `data/articles.json` rămân în fereastră (cel mai mare ciob: `cat-sport` cu 893 de articole în stare).
