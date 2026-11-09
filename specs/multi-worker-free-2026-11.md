@@ -242,3 +242,13 @@ Rularea `deploy-worker` `42584253451` (push pe main) a trecut toți pașii:
 - `izz-ro-cat-cultura` (193 fișiere, v. `2148ab6a`) pe rutele `izz.ro/cultura` și `izz.ro/cultura/*`.
 `build.json` = `e2d08d8be` pe toate cele 4 cioburi live și pe principal. Sonda pe 27 de adrese
 (`f3_inainte.json` vs `f3_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
+
+## 13. Felia 3, lotul 2 — `sanatate`, `general`, `judetean` (2026-11-09, confirmat pe live)
+
+PR #570 (`feat/shard-felia-3-lot2`), CI verde pe `632381560`, squash-merge `ff3bd0d10`.
+Rularea `deploy-worker` `42587666973` (push pe main) a trecut toți pașii:
+- `izz-ro-cat-sanatate` (188 fișiere, v. `e1613b53`) pe rutele `izz.ro/sanatate` și `izz.ro/sanatate/*`;
+- `izz-ro-cat-general` (299 fișiere, v. `c058768e`) pe rutele `izz.ro/general` și `izz.ro/general/*`;
+- `izz-ro-cat-judetean` (330 fișiere, v. `8c055b40`) pe rutele `izz.ro/judetean` și `izz.ro/judetean/*`.
+`build.json` = `ff3bd0d10` pe toate cele 7 cioburi live și pe principal. Sonda pe 27 de adrese
+(`f3_lot2_inainte.json` vs `f3_lot2_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
