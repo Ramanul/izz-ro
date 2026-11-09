@@ -308,7 +308,7 @@ LOCAL_SHARD_GROUPS = ["0123456789", "a", "p", "bc", "defghi", "jklmnoqr", "stuvw
 # (felia 2): `auto`, cea mai mica categorie cu trafic. Revenire: scoate numele de aici SI
 # `npx wrangler delete --name izz-ro-<ciob>` -- altfel Workerul ramane cu rutele lui si
 # serveste continut inghetat.
-# Felia 3, loturile 1-5 (2026-11-09): toate categoriile non-local.
+# Felia 3, loturile 1-6a (2026-11-09): toate cat-* + local-cifre, local-a, local-p.
 SHARDS_LIVE = [
     "cat-auto",
     "cat-ai",
@@ -324,6 +324,9 @@ SHARDS_LIVE = [
     "cat-sport",
     "cat-discounturi",
     "cat-regional",
+    "local-cifre",
+    "local-a",
+    "local-p",
 ]
 
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
