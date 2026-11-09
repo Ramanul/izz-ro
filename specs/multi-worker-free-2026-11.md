@@ -232,3 +232,13 @@ squash-merge `3d817ac11`. Rularea `deploy-worker` 42582355846 (push pe main) a t
 **riscul tokenului e închis: tokenul din GitHub are dreptul de a lega rute.** `build.json` =
 `3d817ac11` pe ciob și pe principal. Sonda pe 13 adrese, înainte și după: aceleași coduri, CSP
 prezent. Rămâne de măsurat în Analytics: invocările scriptului nu cresc (criteriu §4, felia 2).
+
+## 12. Felia 3, lotul 1 — `ai`, `tech`, `cultura` (2026-11-09, confirmat pe live)
+
+PR #569 (`feat/shard-felia-3`), CI verde pe `afc23c6d1`, squash-merge `e2d08d8be`.
+Rularea `deploy-worker` `42584253451` (push pe main) a trecut toți pașii:
+- `izz-ro-cat-ai` (57 fișiere, v. `dfff6819`) pe rutele `izz.ro/ai` și `izz.ro/ai/*`;
+- `izz-ro-cat-tech` (150 fișiere, v. `6e300f48`) pe rutele `izz.ro/tech` și `izz.ro/tech/*`;
+- `izz-ro-cat-cultura` (193 fișiere, v. `2148ab6a`) pe rutele `izz.ro/cultura` și `izz.ro/cultura/*`.
+`build.json` = `e2d08d8be` pe toate cele 4 cioburi live și pe principal. Sonda pe 27 de adrese
+(`f3_inainte.json` vs `f3_dupa.json`): 0 diferențe (aceleași coduri 200/307/404, Location și CSP).
