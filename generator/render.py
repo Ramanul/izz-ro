@@ -1691,7 +1691,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _write(os.path.join(OUT_DIR, "offline", "index.html"),
            env.get_template("offline.html").render(**_base_ctx("/offline/")))
     _render_azi(env, by_date)
-    _render_sub_prag(env)
+    _render_sub_prag(env, articles)
     _write_sitemap(by_date)
     _write_robots()
     _write_security_txt()
@@ -1979,7 +1979,37 @@ _MOTIVE_INGESTIE = {
 }
 
 
-def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
+def _verificare_sinteze(articles: list) -> dict | None:
+    """Agregatul verificării mecanice a sintezelor, pe TOT ce e publicat acum.
+
+    De ce la nivel de build, nu de pagină: numărul de afirmații căzute e mic și e concentrat.
+    Măsurat 2026-11-08 pe `data/articles.json`: 437 articole cu dialectic, din care doar 11 au
+    cel puțin un fapt respins. O marcă per articol ar apărea pe 2,5% din pagini — adică
+    invizibilă exact acolo unde transparența ar conta. Agregatul arată cifra pe care
+    `method.md` §3 o descrie deja în proză („ce nu trece verificarea nu se publică").
+
+    Onestitatea cere și numitorul, nu doar numărătorul: se publică și câte sinteze au trecut
+    FĂRĂ nicio afirmație respinsă, altfel „N afirmații scoase" ar sugera o rată de eșec fără
+    bază de comparație.
+    """
+    cu_sinteza = cu_respinse = respinse = 0
+    for a in articles:
+        dz = a.get("dialectic")
+        if not (isinstance(dz, dict) and a.get("model") == "C"):
+            continue
+        cu_sinteza += 1
+        r = int(dz.get("rejected") or 0)
+        if r:
+            cu_respinse += 1
+            respinse += r
+    if not cu_sinteza:
+        return None
+    return {"sinteze": cu_sinteza, "cu_respinse": cu_respinse, "respinse": respinse,
+            "curate": cu_sinteza - cu_respinse}
+
+
+def _sub_prag(triage: dict | None, moderare: dict | None,
+              articles: list | None = None) -> list:
     """Grupurile registrului /sub-prag/, din ultima rulare consemnată și din ultima aplicare a
     moderării. Doar contoare; rândurile cu zero nu se arată (nu sunt informație)."""
     grupuri = []
@@ -2015,6 +2045,24 @@ def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
                             "nota": "Fiecare afirmație a unei sinteze trebuie să trimită la propozițiile din "
                                     "care provine; ce nu trece verificarea nu se publică.",
                             "randuri": [r for r in randuri if r["n"]]})
+    verificare = _verificare_sinteze(articles or [])
+    if verificare:
+        pct = 100.0 * verificare["cu_respinse"] / verificare["sinteze"]
+        randuri = [
+            {"eticheta": "Sinteze publicate acum pe site", "n": verificare["sinteze"]},
+            {"eticheta": "Sinteze în care cel puțin o afirmație a fost scoasă la verificare",
+             "n": verificare["cu_respinse"]},
+            {"eticheta": "Afirmații scoase în total (citare, cifră sau text copiat)",
+             "n": verificare["respinse"]},
+        ]
+        grupuri.append({"titlu": "Verificarea sintezelor, pe tot ce e publicat acum",
+                        "nota": "Numărătoare pe tot conținutul publicat, nu pe ultima rulare. "
+                                f"{verificare['curate']} "
+                                f"{'sinteză a trecut' if verificare['curate'] == 1 else 'sinteze au trecut'} "
+                                "fără nicio afirmație scoasă "
+                                f"({100 - pct:.1f}% din total); restul au publicat varianta verificată, "
+                                "cu afirmațiile căzute eliminate — nu cu ele reformulate.",
+                        "randuri": [r for r in randuri if r["n"]]})
     if moderare:
         randuri = [
             {"eticheta": "Duplicate ale unui eveniment deja publicat", "n": int(moderare.get("dedup") or 0)},
@@ -2029,9 +2077,10 @@ def _sub_prag(triage: dict | None, moderare: dict | None) -> list:
     return [g for g in grupuri if g["randuri"]]
 
 
-def _render_sub_prag(env: Environment) -> None:
+def _render_sub_prag(env: Environment, articles: list | None = None) -> None:
     from . import jurnal_triage, moderation
-    grupuri = _sub_prag(jurnal_triage.ultimul_rand(), dict(moderation.ULTIMA_APLICARE) or None)
+    grupuri = _sub_prag(jurnal_triage.ultimul_rand(), dict(moderation.ULTIMA_APLICARE) or None,
+                        articles)
     _write(os.path.join(OUT_DIR, "sub-prag", "index.html"),
            env.get_template("sub_prag.html").render(**_base_ctx(
                "/sub-prag/", nav_section="stiri", grupuri=grupuri,

@@ -145,3 +145,39 @@ def test_rezerva_la_sursa_e_marcata_vizual_nu_doar_tipografic():
         "marca de rezervă lipsește din una dintre listele dialectice (comun/unică)")
     assert "trust--infer" in tpl.split('class="dialectic-hedge"', 1)[1][:120], (
         "marca de rezervă nu poartă clasa semantică indigo")
+
+
+def test_cardul_poarta_marca_de_rezerva_cand_sinteza_o_are():
+    """Amprenta epistemica trebuie sa fie vizibila din prima pagina, nu la al doilea clic.
+
+    Cardul spune cate confirmari are sinteza, dar nu spunea daca o afirmatie din ea si-a
+    pierdut rezerva sursei. Verificat pe datele reale (8 nov): 437 articole cu dialectic,
+    157 cu cel putin un fapt cu rezerva — deci semnalul are unde sa apara.
+    """
+    from generator import render
+    from tests.test_render_dialectic import _articol
+
+    card = render._env().get_template("_card.html").module.card
+    cu_rezerva = str(card(_articol("SYNTHESIS_VALID")))   # fixture-ul are un fapt hedged
+    assert "trust--infer" in cu_rezerva and "cu rezervă" in cu_rezerva
+
+    # Fara fapt cu rezerva, marca NU apare: un punct care apărea pe toate cardurile ar
+    # deveni decor, exact ce legenda conditionata evita.
+    fara = _articol("SYNTHESIS_VALID")
+    for f in fara["dialectic"]["common"] + fara["dialectic"]["single"]:
+        f["hedged"] = False
+    assert "cu rezervă" not in str(card(fara))
+
+
+def test_cardul_nu_schimba_textul_de_stare_editorial():
+    """Marca e un element NOU, nu o rescriere: contractul de text ramane cel testat.
+
+    `test_render_dialectic::test_cardul_spune_cate_confirmari_nu_doar_ca_e_multi_sursa`
+    fixeaza formularea. Aici se verifica doar ca adaugarea nu a atins-o.
+    """
+    from generator import render
+    from tests.test_render_dialectic import _articol
+
+    card = render._env().get_template("_card.html").module.card
+    html = str(card(_articol("SYNTHESIS_VALID")))
+    assert "Sinteză din 3 publicații · 2 confirmări încrucișate · generată automat" in html

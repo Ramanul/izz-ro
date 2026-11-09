@@ -113,3 +113,91 @@ Din delta de CSS, ~700 B sunt comentariul-regulă din capul fișierului (nu ajun
 1. **Amprenta epistemică pe card, nu doar pe articol** — astăzi cardul spune „Sinteză din N publicații · M confirmări încrucișate", dar nu are marcajul de rezervă. Un card care arată „ar fi" altfel decât „a fost" ar face diferența vizibilă din prima pagină, nu doar la al doilea clic.
 2. **Traseul afirmație→propoziție din sursă**, care ar da sens albastrului: cere ancore per propoziție în DOM (informația există în `dialectic.py`, `evidence_ids`), nu doar o culoare. Culoarea fără mecanism e decor.
 3. **Niciun scor numeric de încredere.** Propunerea nu cere asta, dar e următorul pas „firesc" al oricărei palete epistemice — și ar contrazice `/principii/`: „nu măsurăm adevărul prin voturi, culori sau scoruri AI".
+
+---
+
+## 7. Felia a doua: amprenta pe card și cifra agregată (tot 2026-11-08)
+
+Cele două lucruri lăsate „în continuare" la §6 s-au făcut. Ambele au schimbat cifrele în
+timpul lucrului, iar asta e partea utilă a raportului.
+
+### 7.1 Amprenta epistemică pe card
+
+Cardul spunea *„Sinteză din N publicații · M confirmări încrucișate · generată automat"* —
+adică **câte** confirmări are sinteza, nu dacă o afirmație din ea și-a pierdut rezerva
+sursei. Un card care arată „ar fi" exact ca „a fost" trimite cititorul la al doilea clic
+ca să afle diferența.
+
+Acum, când sinteza are cel puțin un fapt `hedged`, rândul de meta primește un punct indigo
++ două cuvinte: **„cu rezervă"** (explicația stă în `title` și în legenda de pe articol).
+Textul de stare rămâne **neschimbat** — e contract editorial, fixat de
+`test_render_dialectic::test_cardul_spune_cate_confirmari_nu_doar_ca_e_multi_sursa`.
+
+| Măsurat pe date reale (`data/articles.json`) | |
+|---|---:|
+| Articole cu dialectic | 437 |
+| Articole cu cel puțin un fapt cu rezervă | **157** |
+| Marcaje „cu rezervă" în build-ul randat | 121 |
+
+Diferența 157 → 121 nu e o eroare: marca apare doar pe cardurile **efectiv randate** (fereastra
+de actualitate + paginile de categorie), nu pe toate cele 437 din stare.
+
+### 7.2 Cifra agregată: cea care schimbă prioritățile
+
+Planul inițial era să expun numărul de afirmații scoase **per articol**. Măsurătoarea l-a
+desființat înainte de a fi scris:
+
+| Măsurat | |
+|---|---:|
+| Sinteze publicate | 437 |
+| Sinteze cu cel puțin un fapt respins | **11** (2,5%) |
+| Afirmații scoase, în total | 11 |
+
+O marcă per articol ar fi apărut pe **11 pagini din 6.659**. Adică exact tipul de funcție care
+există în cod, trece testele și nu vede niciun cititor — „verde în CI, invizibil pe live".
+
+Deci am pus-o unde se vede: `/sub-prag/` are acum o secțiune pe **tot conținutul publicat**,
+nu pe ultima rulare:
+
+> **Verificarea sintezelor, pe tot ce e publicat acum**
+> 336 sinteze au trecut fără nicio afirmație scoasă (97,1% din total); restul au publicat
+> varianta verificată, cu afirmațiile căzute eliminate — nu cu ele reformulate.
+>
+> | | |
+> |---|---:|
+> | Sinteze publicate acum pe site | 346 |
+> | Sinteze în care cel puțin o afirmație a fost scoasă la verificare | 10 |
+> | Afirmații scoase în total (citare, cifră sau text copiat) | 11 |
+
+Onestitatea care contează aici e **numitorul**. „10 sinteze cu afirmații scoase" sună
+alarmant; „10 din 346, adică 97,1% au trecut curat" e informația. O pagină de transparență
+care publică doar numărătorul face exact ce reproșează altora: sugerează o rată fără bază
+de comparație.
+
+### 7.3 De ce NU s-a făcut al doilea punct din §6
+
+*„Traseul afirmație→propoziție din sursă"* — ar fi dat sens albastrului. Blocat de o
+constrângere legală, nu tehnică: `dialectic.py` păstrează propozițiile sursei **doar în
+memorie, în timpul generării** (`Block.chunks`), iar în stare rămân doar faptele
+reformulate plus **numele** publicațiilor. `method.md` o spune explicit: *„Textul integral al
+surselor e citit doar în timpul generării și nu se păstrează nicăieri"*.
+
+Ca să existe o ancoră afirmație→propoziție ar trebui **stocat textul sursă** (sau hash-uri
+per propoziție, plus textul ca să fie afișabil). Asta ar reintroduce prin ușa din dos exact
+ce scrubul juridic a scos. Alternativa — o ancoră care nu duce nicăieri — ar fi o culoare
+care marchează o funcție absentă, adică decor. **Nu se face fără o decizie de stocare
+luată explicit**, iar decizia aceea nu e a mea.
+
+Ce rămâne fezabil și util: albastrul (`--navy`) să marcheze **legătura care există deja** —
+numele publicației de lângă afirmație, clicabil spre `sources-box`. Aia e un link real, nu
+o promisiune.
+
+### 7.4 Stare
+
+| | Înainte de felie | După |
+|---|---:|---:|
+| Teste | 3.263 trec | **3.267 trec** |
+| `ruff` | curat | curat |
+| `a11y_static` | 0 încălcări tari | 0 încălcări tari |
+| Marcaje pe card | 0 | 121 |
+| Cifre noi pe `/sub-prag/` | 0 | 3 + numitor |

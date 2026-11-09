@@ -162,3 +162,34 @@ def test_origini_independente_fara_suprapunere_nu_sunt_numite_o_singura_origine(
     a["dialectic"]["origini"] = 1
     html = _articol_html(_pagina(a))
     assert "cu o singură origine" in html and "aceeași relatare inițială" in html
+
+
+def test_sub_prag_publica_verificarea_agregata_a_sintezelor():
+    """Cifra de sinteze cu afirmații scoase trebuie să fie pe site, cu numitorul ei.
+
+    Măsurat 2026-11-08: 437 sinteze, 11 cu cel puțin un fapt respins. Un număr mic, dar exact
+    genul de cifră care devine înșelătoare dacă se publică singură — de aceea testul cere și
+    numitorul, nu doar numărătorul.
+    """
+    articole = [
+        {"model": "C", "slug": "a", "dialectic": {"rejected": 2, "state": "SYNTHESIS_VALID"}},
+        {"model": "C", "slug": "b", "dialectic": {"rejected": 0, "state": "SYNTHESIS_VALID"}},
+        {"model": "C", "slug": "c", "dialectic": {"rejected": 1, "state": "SINGLE_ORIGIN"}},
+        {"model": "B", "slug": "d"},   # fără sinteză: nu intră în numitor
+    ]
+    v = render._verificare_sinteze(articole)
+    assert v == {"sinteze": 3, "cu_respinse": 2, "respinse": 3, "curate": 1}
+
+    grupuri = render._sub_prag(None, None, articole)
+    bloc = next(g for g in grupuri if "Verificarea sintezelor" in g["titlu"])
+    cifre = {r["eticheta"]: r["n"] for r in bloc["randuri"]}
+    assert cifre["Sinteze publicate acum pe site"] == 3
+    assert cifre["Sinteze în care cel puțin o afirmație a fost scoasă la verificare"] == 2
+    assert "1 sinteză a trecut fără nicio afirmație scoasă" in bloc["nota"]
+
+
+def test_sub_prag_nu_emite_verificarea_cand_nu_exista_sinteze():
+    """Fără sinteze, secțiunea dispare — un rând „0 din 0" nu e informație."""
+    assert render._verificare_sinteze([{"model": "B"}, {"model": "C"}]) is None
+    grupuri = render._sub_prag(None, None, [{"model": "B"}])
+    assert not any("Verificarea sintezelor" in g["titlu"] for g in grupuri)

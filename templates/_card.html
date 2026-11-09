@@ -47,8 +47,19 @@
   {%- elif a.model == 'C' %}{% set stare, text = 'ok', 'Sinteză multi-sursă · generată automat' %}
   {%- else %}{% set stare, text = 'plain', 'Rezumat dintr-o sursă · generat automat' %}{% endif %}
   {% set card_srcs = a.sources if (a.model == 'C' and a.sources) else [{'name': a.source_name, 'url': a.original_link}] %}
+  {#- Amprenta epistemica pe CARD (2026-11-08). Textul de stare rămâne neschimbat — e contract
+      editorial, fixat de test_render_dialectic — dar el spune cate confirmari are sinteza, nu
+      daca o afirmație din ea si-a pierdut rezerva sursei. Un card care arata „ar fi" exact ca
+      „a fost" trimite cititorul la al doilea clic ca sa afle diferenta. Semnalul e un punct
+      indigo + doua cuvinte, nu o propozitie: pe card, explicatia stă în `title` si în legenda
+      de pe pagina de articol. -#}
+  {%- set are_rezerva = (((dz.common or []) + (dz.single or [])) | selectattr('hedged') | list | length > 0) if dz else false %}
   <p class="card-meta">
     <span class="trust trust--{{ stare }}" title="Cum este construită această informație"><i aria-hidden="true"></i>{{ text }}</span>
+    {%- if are_rezerva %}
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="trust trust--infer" title="Cel puțin o afirmație din sinteză păstrează rezerva sursei („ar fi”, „acuzat”, „suspectat”) — nu este prezentată ca fapt stabilit"><i aria-hidden="true"></i>cu rezervă</span>
+    {%- endif %}
     <span class="sep" aria-hidden="true">·</span>
     <time datetime="{{ a.published }}">{{ a.published_human }}</time>
     {% if not a.anunt_fara_corp %}
