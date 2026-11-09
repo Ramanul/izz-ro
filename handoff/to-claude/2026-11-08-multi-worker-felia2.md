@@ -14,6 +14,8 @@ Plan complet: `specs/multi-worker-free-2026-11.md` (5 felii, §4; rezultate §9�
 Pașii 1–4 de mai jos sunt făcuți: merge `3d817ac11`, deploy-worker verde (rutele s-au legat din CI),
 sonda pe 13 adrese identică cu înainte. Detalii: spec §11–§22. **Felia 3 COMPLETĂ (21 cioburi LIVE, #569..#575, `f61ad0fee`)**, **categoriile migrate scoase din `izz-ro` (#576, `925f1b477`, `dist/main` = 1.527 fișiere)** și **Felia 4 COMPLETĂ (#577 `47abf0490` 11→21 zile, #578 `7323ccbd4` 21→45 zile, pas 3 `ARTICLE_TTL_DAYS = 90`, max/ciob = 1.527 fișiere)**. **Rămâne:** verificarea în Analytics că invocările scriptului `izz-ro` scad față de săptămâna dinainte și decizia separată pentru Felia 5 (sursa imaginilor).
 
+**Telemetrie 9 nov (spec §23):** invocări `izz-ro` 907 → 1 după #579; cei 2.238 de 504 vin din Early Hints (`earlyHintsCache`, origine 0), nu din Worker. Confirmarea pe zi întreagă: 10 nov.
+
 ## Următorul pas (13 nov) — ISTORIC, făcut pe 9 nov
 1. Fetch + rebase #568; CI verde pe head; scoate-l din `## Open` în STATE.md înainte de merge.
 2. Merge (`--match-head-commit`), apoi `gh workflow run deploy-worker.yml -f confirmare=deploy`. Urmărești rularea până la capăt.

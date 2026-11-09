@@ -326,3 +326,12 @@ PR #578 (`feat/shard-felia-4-ttl45`), CI verde pe `03c02f4da`, squash-merge `732
 ## 22. Felia 4, Pasul 3 — `ARTICLE_TTL_DAYS = 90` (2026-11-09 — Felia 4 COMPLETĂ)
 
 - `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `45` la `90` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md` și `notes/`), închizând Felia 4 (§4).
+- PR #579 (`feat/shard-felia-4-ttl90`), squash-merge `714abdbdd`; rularea `deploy-worker` `42631557848` verde: max/ciob 1.527/20.000 (7,6%). Sonda pe 26 de adrese: 0 diferențe; eșantion de 50 de articole și 110 imagini din toate categoriile active: 0 pagini rupte, 0 imagini rupte (criteriul §5).
+
+## 23. Invocările `izz-ro` și cele 2.238 de 504 (2026-11-09, IZZ-0456)
+
+Cifrele brute vin de la asistentul din panoul Cloudflare (GraphQL Analytics); interpretarea e verificată pe cod.
+- **Săptămânal:** 662 invocări (26 oct – 1 nov) → 2.433 (2–9 nov). Saltul începe pe 8 nov (1.042), adică după #566: fără `not_found_handling`, fiecare ratare invocă Workerul, iar fereastra era încă 11 zile.
+- **După feliile 3–4:** pe 9 nov, 907 invocări între 00:00 și 14:05 UTC, **1** după 14:05 UTC (după #579). 0 erori de script din 1.950 de invocări pe 8–9 nov. Ziua întreagă se compară pe 10 nov.
+- **504 (2.238 pe 8–9 nov) nu vin din Worker:** toate au `originResponseStatus = 0`, `originIP` gol, protocol `UNK` și `requestSource = earlyHintsCache` (stratul Early Hints al Cloudflare). Căile cu 504 (`/`, `/offline/`, `/economic/`) sunt fișiere statice, iar timeout-ul oglinzii (2 s) întoarce 404, nu 504. Prima explicație a asistentului („timeout la oglinda gh-pages”) era greșită: în §5 se folosesc cifrele lui, nu deducțiile.
+- **Rămâne:** criteriul §5 „invocările scad” se închide cu ziua de 10 nov; cauza 504 din Early Hints nu e investigată (setare de zonă, nu cod).
