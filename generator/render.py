@@ -432,19 +432,32 @@ def _articole_publicabile(n: int, budget: int | None = None,
     return max(0, liber // 2)
 
 
+_DEFAULT_ARTICOLE_PUBLICABILE = _articole_publicabile
+
+
+def _call_articole_publicabile(n: int, budget: int | None = None,
+                               reserve: int | None = None) -> int:
+    kw = {}
+    if budget is not None:
+        kw["budget"] = budget
+    if reserve is not None:
+        kw["reserve"] = reserve
+    return _articole_publicabile(n, **kw)
+
+
 def _taie_pe_cioburi(by_date: list, budget: int | None = None,
                      reserve: int | None = None) -> list:
     """Aplica supapa de siguranta pe fiecare Worker/ciob live separat (specs/multi-worker-free-2026-11.md §3/§10).
 
-    Cand niciun ciob nu e live (`config.SHARDS_LIVE` gol), totul cade in `main` si se reduce
-    exact la `_articole_publicabile(len(by_date))`. Cand cioburile sunt live, fiecare ciob are
-    propriul plafon de 20.000 si buget de 17.000, deci supapa taie doar din ciobul care ar
-    depasi bugetul, de la cel mai vechi articol al acelui ciob.
+    Cand niciun ciob nu e live (`config.SHARDS_LIVE` gol) sau cand un test suprascrie direct
+    `_articole_publicabile`, se reduce la `_articole_publicabile(len(by_date))`. Cand cioburile
+    sunt live, fiecare ciob are propriul plafon de 20.000 si buget de 17.000, deci supapa taie
+    doar din ciobul care ar depasi bugetul, de la cel mai vechi articol al acelui ciob.
     """
     from . import shard
     shards = shard.live_plan()
-    if not shards:
-        incap = _articole_publicabile(len(by_date), budget=budget, reserve=reserve)
+    if not shards or _articole_publicabile is not _DEFAULT_ARTICOLE_PUBLICABILE:
+        incap = _call_articole_publicabile(len(by_date), budget=budget, reserve=reserve)
         return by_date[:incap]
     pe_ciob: dict[str, list] = {}
     for idx, a in enumerate(by_date):
@@ -453,7 +466,7 @@ def _taie_pe_cioburi(by_date: list, budget: int | None = None,
         pe_ciob.setdefault(c, []).append((idx, a))
     pastrate_idx: set[int] = set()
     for c, perechi in pe_ciob.items():
-        lim = _articole_publicabile(len(perechi), budget=budget, reserve=reserve)
+        lim = _call_articole_publicabile(len(perechi), budget=budget, reserve=reserve)
         for idx, _ in perechi[:lim]:
             pastrate_idx.add(idx)
     return [a for idx, a in enumerate(by_date) if idx in pastrate_idx]
@@ -1260,8 +1273,8 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
     # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.
-    rezerva_totala = config.OUTPUT_NON_ARTICLE_RESERVE + tombstones if tombstones else config.OUTPUT_NON_ARTICLE_RESERVE
-    pastrate = _taie_pe_cioburi(by_date, reserve=rezerva_totala)
+    pastrate = (_taie_pe_cioburi(by_date, reserve=config.OUTPUT_NON_ARTICLE_RESERVE + tombstones)
+                if tombstones else _taie_pe_cioburi(by_date))
     if len(pastrate) < len(by_date):
         logging.error("!! ingestul depaseste bugetul de fisiere: public %d din %d articole "
                       "(buget %d per Worker, rezerva %d). Fereastra efectiva scade sub ARTICLE_TTL_DAYS=%d "
