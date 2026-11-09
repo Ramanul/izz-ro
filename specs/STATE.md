@@ -17,7 +17,6 @@
 
 ## Open
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
-- **Multi-Worker Free [IZZ-0454], felia 2/5 (#568 deschis, CI verde):** pilot `auto` confirmat pe live, apoi OPRIT 8 nov (Worker șters, pauză până 13 nov). Reluare: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
 - **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.
 - **Encoding la `subprocess` [#549 merged 7 nov, `2c1aa33`]:** 32 de apeluri `text=True` primesc `encoding="utf-8", errors="replace"`; CI și live verificate 7 nov. Note: `handoff/to-claude/2026-11-07-subprocess-encoding*.md`.
