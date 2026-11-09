@@ -13,10 +13,10 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-11-09 (`dist/main` 1.527 #576 merged; Felia 4 pas 1 #577 merged; pas 2: TTL 21→45).
+**Updated:** 2026-11-09 (Multi-Worker feliile 2–4: 21 cioburi live, `dist/main` 1.527, TTL 11→90).
 
 ## Open
-- **Multi-Worker Free [IZZ-0454], feliile 2–3 + `dist/main` + Felia 4 pas 1 LIVE (#575 merged, #576 merged, #577 merged 9 nov `47abf0490`):** 21 cioburi live, max/ciob 1.527 fișiere (7,6% din 20k), 219 adrese 0 diferențe. Felia 4 pas 2: `ARTICLE_TTL_DAYS=45`. Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
+- **Multi-Worker Free [IZZ-0454], feliile 2–4 COMPLETE (#575 merged, #576 merged, #577 merged, #578 merged `7323ccbd4`):** 21 cioburi live, max/ciob 1.527 fișiere (7,6% din 20k), 245 adrese 0 diferențe. Felia 4 pas 3: `ARTICLE_TTL_DAYS=90`. Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
 - **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.
@@ -26,7 +26,7 @@
 - **PWA + alerte push [IZZ-0430/0431] — PE MAIN (#434 merged):** fără namespace KV + 4 secrete (`infra/PUSH-SETUP.md`), rutele dau 503.
 - **Media pe carduri [IZZ-0403/0404 → IZZ-0416]:** portrete PD/CC0, siluete de județ, `covers.py`; marcaj AI Act la prima expunere [IZZ-0420/0423]. Pozele noi apar pe măsură ce `fetch_leadphotos`/`fetch_eventphotos` rulează în build.
 - **Harta [IZZ-0405, 0433, 0434]:** pini după precizie, proveniența în panoul județului, gesturi tactile. #454 merged: aria de click = umplerea (`pointer-events:fill`), garda citește ordinea de pictare (`tests/test_harta_arie_de_click.py`).
-- **FEREASTRA TTL — 45 zile (Felia 4 pas 2, aprobată 9 nov):** buget 17.000 și supapă per ciob (`config.SHARDS_LIVE`); max ciob 1.527 fișiere (7,6% din 20k). Detalii: `generator/config.py`.
+- **FEREASTRA TTL — 90 zile (Felia 4 pas 3, aprobată 9 nov):** buget 17.000 și supapă per ciob (`config.SHARDS_LIVE`); max ciob 1.527 fișiere (7,6% din 20k). Detalii: `generator/config.py`.
 - **Free-readiness — gazda ÎNCĂ PAID [IZZ-0313]:** [IZZ-0386, 0391, 0399, 0421, 0424].
 - **`izz-failover` — SCOS DIN TRAFIC, 31 oct (decizie proprietar):** `izz.ro/*` stă pe `izz-ro` (`wrangler.jsonc`); revenire: `infra/README-failover.md`. Auditurile se fac pe `izz-ro.andifreelancer2.workers.dev`. Oglinda: arborele publicat 904 MB (7 nov; 774 MB pagini HTML), sub plafonul automat de 950 MB din jobul `mirror` — `curata_oglinda.py plafon` taie doar pagini >21 zile si cel mult 30%/rulare. Repo-ul pe disc (2,93 GB) e istoric; micsorarea lui cere rescrierea istoriei, deci ramane decizia proprietarului.
 

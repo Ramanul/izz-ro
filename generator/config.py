@@ -469,7 +469,10 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # 21 -> 45 (2026-11-09, Felia 4 Pasul 2, aprobat de proprietar in chat): la TTL=21 (#577,
 # 47abf0490, run 42609450933) cel mai mare Worker are 1.527 fisiere (main), cat-sport 959,
 # local-a 874 (7,6% din plafonul de 20.000).
-ARTICLE_TTL_DAYS = 45
+# 45 -> 90 (2026-11-09, Felia 4 Pasul 3 — Felia 4 COMPLETA, aprobat de proprietar in chat):
+# la TTL=45 (#578, 7323ccbd4, run 42613345998) cel mai mare Worker are 1.527 fisiere (7,6%
+# din plafonul de 20.000).
+ARTICLE_TTL_DAYS = 90
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie

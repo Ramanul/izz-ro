@@ -10,10 +10,9 @@ Plan complet: `specs/multi-worker-free-2026-11.md` (5 felii, §4; rezultate §9�
   - **OPRIT 8 nov seara** (`wrangler delete`), la cererea proprietarului: fără merge, ciobul ar fi rămas înghețat. După ștergere, live identic cu înainte.
   - Consultări: consult-merge-567, consult-felia2-design, consult-felia2-diff (rezerva Argon).
 
-## Reluat 9 nov — feliile 2–3, `dist/main` + Felia 4 pas 1 LIVE, pas 2 (`TTL = 45`)
+## Reluat 9 nov — feliile 2–4 COMPLETE (`ARTICLE_TTL_DAYS = 90`)
 Pașii 1–4 de mai jos sunt făcuți: merge `3d817ac11`, deploy-worker verde (rutele s-au legat din CI),
-sonda pe 13 adrese identică cu înainte. Detalii: spec §11–§21. **Felia 3 COMPLETĂ (21 cioburi LIVE, #569..#575, `f61ad0fee`)**, **categoriile migrate scoase din `izz-ro` (#576, `925f1b477`, `dist/main` = 1.527 fișiere)**, **Felia 4 pas 1 LIVE (#577, `47abf0490`, fereastră 11→21 zile, max/ciob = 1.527 fișiere)** și **Felia 4 pas 2 (`ARTICLE_TTL_DAYS = 45`)**. **Rămâne:** pasul 3 din felia 4 (`45 → 90`, cu „da”) și
-verificarea în Analytics că invocările scriptului nu cresc. Reamintirea de vineri: pornește de aici.
+sonda pe 13 adrese identică cu înainte. Detalii: spec §11–§22. **Felia 3 COMPLETĂ (21 cioburi LIVE, #569..#575, `f61ad0fee`)**, **categoriile migrate scoase din `izz-ro` (#576, `925f1b477`, `dist/main` = 1.527 fișiere)** și **Felia 4 COMPLETĂ (#577 `47abf0490` 11→21 zile, #578 `7323ccbd4` 21→45 zile, pas 3 `ARTICLE_TTL_DAYS = 90`, max/ciob = 1.527 fișiere)**. **Rămâne:** verificarea în Analytics că invocările scriptului `izz-ro` scad față de săptămâna dinainte și decizia separată pentru Felia 5 (sursa imaginilor).
 
 ## Următorul pas (13 nov) — ISTORIC, făcut pe 9 nov
 1. Fetch + rebase #568; CI verde pe head; scoate-l din `## Open` în STATE.md înainte de merge.

@@ -317,6 +317,12 @@ PR #577 (`feat/shard-felia-4-ttl21`), CI verde pe `0d174147c`, squash-merge `47a
 - `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `11` la `21` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md`).
 - Rularea `deploy-worker` `42609450933` (push pe main) a trecut toți pașii: `10.177` fișiere în 22 de cioburi, **max/ciob = 1.527** pe `main` (7,6% din plafonul de 20.000; `cat-sport` 959, `local-a` 874, `local-jklmnoqr` 800). Sonda pe 26 de adrese (`f4_pas1_dupa.json` vs `trim_inainte.json`): 0 diferențe.
 
-## 21. Felia 4, Pasul 2 — `ARTICLE_TTL_DAYS = 45` (2026-11-09)
+## 21. Felia 4, Pasul 2 — fereastră 21 → 45 zile (2026-11-09, confirmat pe live)
 
-- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `21` la `45` de zile (criteriul §5: arhivă servită direct fără oglindă ≥ 45 de zile). Aliniat în `generator/render.py`, `README.md`, `content/legal/method.md` și `notes/`.
+PR #578 (`feat/shard-felia-4-ttl45`), CI verde pe `03c02f4da`, squash-merge `7323ccbd4`.
+- `generator/config.py`: fereastra urcă de la `21` la `45` de zile (criteriul §5: arhivă servită direct fără oglindă ≥ 45 de zile).
+- Rularea `deploy-worker` `42613345998` (push pe main) a trecut toți pașii: `10.177` fișiere în 22 de cioburi, **max/ciob = 1.527** pe `main` (7,6% din plafonul de 20.000). Sonda pe 26 de adrese (`f4_pas2_dupa.json` vs `trim_inainte.json`): 0 diferențe.
+
+## 22. Felia 4, Pasul 3 — `ARTICLE_TTL_DAYS = 90` (2026-11-09 — Felia 4 COMPLETĂ)
+
+- `generator/config.py`: `ARTICLE_TTL_DAYS` urcă de la `45` la `90` de zile (aliniat în `generator/render.py`, `README.md`, `content/legal/method.md` și `notes/`), închizând Felia 4 (§4).
