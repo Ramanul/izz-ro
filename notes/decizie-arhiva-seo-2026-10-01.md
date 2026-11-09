@@ -4,8 +4,8 @@ Data: 2026-10-01 · Context: audit Codex (P0.3) + analize ZCode din aceeași zi 
 
 ## Problema
 
-`ARTICLE_TTL_DAYS = 21` (actualizare 9 noiembrie, Felia 4 Pasul 1 [IZZ-0454]; anterior 11 din 26 octombrie, 12 după Q5 [IZZ-0422], iar la redactare era 20) →
-articolele ies din `output/` după ~21 zile → URL-urile
+`ARTICLE_TTL_DAYS = 45` (actualizare 9 noiembrie, Felia 4 Pasul 2 [IZZ-0454]; anterior 21 în Pasul 1, 11 din 26 octombrie, 12 după Q5 [IZZ-0422], iar la redactare era 20) →
+articolele ies din `output/` după ~45 zile → URL-urile
 indexate de Google ajung la 404. E o decizie de capacitate (plafonul Workers Free de 20.000
 fișiere/versiune; live 1 oct: 17.122 fișiere, marjă ~2.900). Arhiva veche NU se pierde: istoricul
 git o păstrează integral, iar `tools/arhiva.py` o poate reconstrui — dar Google nu vede git.
