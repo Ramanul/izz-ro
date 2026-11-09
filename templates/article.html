@@ -221,6 +221,19 @@
     {%- set comune = dz.common or [] %}
     {%- set unice = dz.single or [] %}
     {%- set are_rezerva = (comune | selectattr('hedged') | list) or (unice | selectattr('hedged') | list) %}
+    {#- Rezerva PIERDUTA, spusa in cifre (2026-11-08). `forced` inseamna exact asta: textul
+        sursei avea un marcator de incertitudine („ar fi", „acuzat", „suspectat"), iar formularea
+        noastra nu il mai are. Nu e o euristica pe textul nostru, e o comparatie determinista cu
+        propozitiile citate, facuta in generator/dialectic.py — deci se poate AFISA, nu doar
+        raporta. Masurat pe 1921 de fapte publicate: 112 (5,8%) sunt in cazul asta. -#}
+    {%- set pierdute = ((comune + unice) | selectattr('forced') | list) | length %}
+    {%- if pierdute %}
+    <p class="dialectic-note dialectic-pierdute">
+      <strong>{{ pierdute }} {{ 'afirmație are' if pierdute == 1 else 'afirmații au' }} la sursă o rezervă pe care formularea de mai sus nu o păstrează</strong>
+      („ar fi”, „acuzat”, „suspectat”). Afirmațiile rămân atribuite publicațiilor, dar citiți-le ca
+      relatări, nu ca fapte stabilite.
+    </p>
+    {%- endif %}
     {%- if comune or unice or dz.diverg %}
     {#- `aria-label` pe un <p> e ignorat de majoritatea cititoarelor de ecran; textul introductiv
         ascuns vizual e varianta care chiar se anunță. -#}

@@ -208,3 +208,25 @@ def test_textul_de_atribuire_ramane_propozitie():
     sec = html[html.find('<section class="dialectic"'):]
     curat = re.sub(r'<a class="sursa-link"[^>]*></a>', "", sec)
     assert "— Alfa, Beta" in curat
+
+
+def test_rezerva_pierduta_este_spusa_in_cifre_pe_pagina():
+    """Cea mai onesta informatie din tot lantul: cate afirmatii sunt mai sigure decat sursa.
+
+    `forced` e determinist (propozitiile citate aveau marcator de incertitudine, formularea nu),
+    deci nu e o euristica pe care s-o tinem in log. Masurat 2026-11-08: 112 din 1921 de fapte
+    publicate (5,8%), in 88 de articole (20,1%).
+    """
+    from tests.test_render_dialectic import _articol, _pagina
+
+    fara = _pagina(_articol("SYNTHESIS_VALID"))
+    assert "dialectic-pierdute" not in fara, "cifra apare si cand nu exista fapte fara rezerva"
+
+    a = _articol("SYNTHESIS_VALID")
+    a["dialectic"]["common"][1]["forced"] = True
+    cu = _pagina(a)
+    assert "dialectic-pierdute" in cu
+    assert "1 afirmație are la sursă o rezervă" in cu
+    # pluralul e o regula de limba, nu un detaliu: „2 afirmație are" ar arata ca un bug
+    a["dialectic"]["single"][0]["forced"] = True
+    assert "2 afirmații au la sursă o rezervă" in _pagina(a)

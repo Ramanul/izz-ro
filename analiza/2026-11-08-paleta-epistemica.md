@@ -245,3 +245,64 @@ teste** — și se citește `build.json` înainte de a o crede.
 **94 de carduri** o afișează în build-ul curent: marca apare pe cardurile efectiv randate, nu pe
 tot ce e în stare. Diferența nu e un bug, e fereastra de publicare — și trebuie spusă, ca să nu
 pară că funcția „nu merge".
+
+---
+
+## 9. Felia a patra: rezerva pierdută, spusă în cifre (tot 2026-11-08)
+
+Prioritatea 1 din documentul de la care a pornit toată discuția era: *„blocarea automată când
+rezumatul crește gradul de certitudine față de sursă"*. Am măsurat întâi, ca să știu despre ce
+vorbim. Cifra a schimbat felul problemei.
+
+### 9.1 Măsurătoarea (1.921 de fapte publicate, 437 sinteze)
+
+| | n | % |
+|---|---:|---:|
+| fapte care poartă rezervă (`hedged`) | 241 | 12,5% |
+| fapte unde sursa era rezervată, iar formularea **a pierdut** rezerva (`forced`) | **112** | **5,8%** |
+| articole cu cel puțin un astfel de fapt | 88 | 20,1% |
+
+Nu e un caz teoretic: **o afirmație din 17** e publicată mai sigur decât sursa ei.
+
+### 9.2 Ce s-a livrat: cifra, nu blocarea
+
+Pe pagina fiecărei sinteze care are astfel de fapte apare acum, imediat după liste:
+
+> **4 afirmații au la sursă o rezervă pe care formularea de mai sus nu o păstrează** („ar fi",
+> „acuzat", „suspectat"). Afirmațiile rămân atribuite publicațiilor, dar citiți-le ca relatări,
+> nu ca fapte stabilite.
+
+70 de pagini în build-ul curent. De ce e cifra o dovadă și nu o presupunere: `forced` se
+calculează **determinist** în `dialectic.py` — se compară propozițiile citate din sursă cu
+formularea noastră, nu se ghicește. Nu e euristica `rezerva_pierduta` din `verifica_sinteza.py`
+(aceea rămâne advisory, fiindcă poate privi un detaliu secundar care nici nu ajunge în rezumat).
+
+### 9.3 De ce NU s-a făcut blocarea, deși era prioritatea 1
+
+Trei motive, toate verificabile în cod:
+
+1. **Nu e un gate de publicare, e o decizie de redactare.** `forced` = „formularea noastră a
+   pierdut o rezervă care exista în citat". Blocarea la 20,1% din articole ar însemna să
+   amâni o cincime din sinteze pentru un cuvânt — iar alternativele sunt amândouă proaste:
+   publicate cu rezerva pierdută (ce se întâmplă azi, dar acum **spus**) sau amânate în bloc
+   (site mai gol, fără câștig de adevăr, fiindcă faptul rămâne relatat de publicații).
+2. **Nu se leagă la `grounding_gate.py`.** Gate-ul acela rulează pe fluxul B (rezumat dintr-o
+   sursă), unde `noteaza()` primește textul sursei. În fluxul C textul per-sursă nu se
+   păstrează (scrub juridic), deci exact acolo unde sunt cele 112 fapte nu există nicio
+   dovadă pe disc pe care un gate să o citească la release.
+3. **Politica de prag cere date, nu intuiție** — și datele arată că semnalul e lat, nu îngust:
+   5,8% din fapte, răspândite pe 20% din articole. Un prag pus azi ar fi fost ales din
+   impresie, exact ce `verifica_sinteza.py` interzice explicit.
+
+**Ce ar face blocarea corectă posibilă:** reîncercarea de reformulare *înainte* de publicare,
+când `forced` apare pe un fapt care intră în textul scurt — nu respingerea articolului. Asta
+cere buget AI (fiecare reîncercare e un apel) și o măsurătoare pe rulări reale: câte reușesc
+din prima. Nu e o felie de o linie, e o schimbare de buget.
+
+### 9.4 Stare
+
+| | Înainte de felie | După |
+|---|---:|---:|
+| Teste | 3.269 trec | **3.270 trec** |
+| Pagini care declară cifra | 0 | **70** |
+| `ruff` / `a11y_static` | curat / 0 tari | curat / 0 tari |
