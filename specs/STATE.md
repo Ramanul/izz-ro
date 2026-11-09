@@ -13,10 +13,10 @@
 > Where the rest lives: `specs/regim-reguli.md` — unified audit closure ·
 > `specs/registru.tsv` — decisions · `CLAUDE.md` — canonical contract.
 
-**Updated:** 2026-11-09 (felia 3 loturile 1-6a Multi-Worker live).
+**Updated:** 2026-11-09 (felia 3 Multi-Worker completa, toate 21 cioburile live).
 
 ## Open
-- **Multi-Worker Free [IZZ-0454], felia 3 1-6a LIVE (#574 merged 9 nov, `023101545`):** 17 cioburi live din CI, 167 adrese neschimbate. Următor: felia 3 lotul 6b (`local-bc`..`local-stuvwxyz`). Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
+- **Multi-Worker Free [IZZ-0454], felia 3 COMPLETĂ (#575 merged 9 nov, `f61ad0fee`):** toate cele 21 cioburi live din CI, 167 adrese neschimbate. Următor: scoaterea categoriilor din principal + felia 4. Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
 - **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.

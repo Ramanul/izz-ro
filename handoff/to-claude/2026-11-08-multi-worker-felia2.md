@@ -12,7 +12,7 @@ Plan complet: `specs/multi-worker-free-2026-11.md` (5 felii, §4; rezultate §9�
 
 ## Reluat 9 nov — felia 2 LIVE
 Pașii 1–4 de mai jos sunt făcuți: merge `3d817ac11`, deploy-worker verde (rutele s-au legat din CI),
-sonda pe 13 adrese identică cu înainte. Detalii: spec §11–§17. **Felia 3, loturile 1-6a (14 `cat-*` + `local-cifre`, `local-a`, `local-p`) LIVE** (#569..#574, `023101545`, run `42593967577`, 154 adrese identice). **Rămâne:** felia 3 lotul 6b (`local-bc`, `local-defghi`, `local-jklmnoqr`, `local-stuvwxyz`, cere „da”) și
+sonda pe 13 adrese identică cu înainte. Detalii: spec §11–§18. **Felia 3 COMPLETĂ (toate cele 21 de cioburi: 14 `cat-*` + 7 `local-*`) LIVE** (#569..#575, `f61ad0fee`, run `42598689519`, 154 adrese identice). **Rămâne:** scoaterea categoriilor din principal + felia 4 (cere „da”) și
 verificarea în Analytics că invocările scriptului nu cresc. Reamintirea de vineri: pornește de aici.
 
 ## Următorul pas (13 nov) — ISTORIC, făcut pe 9 nov
