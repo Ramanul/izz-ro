@@ -49,3 +49,12 @@ def test_http_error_details_not_returned():
 
 def test_baseline_25_is_in_catalog_check():
     assert "gemini-2.5-flash" in check.MODELS
+
+
+def test_model_legend_matches_catalog_order(monkeypatch, capsys):
+    monkeypatch.setattr(check, "MODELS", ("model-b", "model-a"))
+    monkeypatch.setattr(check, "check_key", lambda key: ("ok", {"model-a"}))
+    check.main()
+    output = capsys.readouterr().out
+    assert "modele 1=nu, 2=da" in output
+    assert "1=model-b; 2=model-a" in output
