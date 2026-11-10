@@ -50,26 +50,7 @@ jobs:
       - name: Lint (ruff)
         run: python -m ruff check .
       - name: Pytest
-        run: python -m pytest tests/ -q --junitxml="$RUNNER_TEMP/pytest-diagnostic.xml"
-      - name: Diagnostic test failures
-        if: failure()
-        run: |
-          python - <<'PYCODE'
-          import os
-          import re
-          import xml.etree.ElementTree as ET
-          path = os.path.join(os.environ["RUNNER_TEMP"], "pytest-diagnostic.xml")
-          if os.path.exists(path):
-              for case in ET.parse(path).iter("testcase"):
-                  if case.find("failure") is not None or case.find("error") is not None:
-                      name = f"{case.get('classname', '')}.{case.get('name', '')}"
-                      name = ''.join(c if c.isalnum() or c in '._-[]' else '_' for c in name)
-                      print(f"::error title=Failed test::{name[:300]}")
-                      if name == "tests.test_pr_fantoma.test_niciun_pr_fantoma_in_state_open":
-                          failure = case.find("failure")
-                          refs = sorted(set(re.findall(r"#[0-9]+", (failure.text or "") if failure is not None else "")))
-                          print(f"::error title=Stale references::{', '.join(refs)}")
-          PYCODE
+        run: python -m pytest tests/ -q
       - name: Contractul titlurilor oficiale
         run: python tools/title_quality_audit.py
       - name: Sanatatea surselor RSS (manual)
