@@ -45,3 +45,7 @@ def test_http_error_details_not_returned():
         raise urllib.error.HTTPError(request.full_url, 403, "secret-value", {}, io.BytesIO(b"secret-value"))
 
     assert check.check_key("secret-value", opener) == ("http_403", set())
+
+
+def test_baseline_25_is_in_catalog_check():
+    assert "gemini-2.5-flash" in check.MODELS

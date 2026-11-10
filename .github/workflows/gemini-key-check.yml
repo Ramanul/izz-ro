@@ -1,7 +1,7 @@
 name: Gemini key catalog check
 
 # O singura verificare la publicarea acestui workflow; nu ruleaza la PR si nici periodic.
-# Citeste doar catalogul Google, fara sinteza, continut editorial sau raspunsuri brute in log.
+# Citeste doar catalogul Google, inclusiv modelul vechi 2.5, fara sinteza sau continut editorial.
 on:
   push:
     branches: [main]
