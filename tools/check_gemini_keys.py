@@ -10,7 +10,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-MODELS = ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite")
+MODELS = ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash")
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models"
 
 
@@ -55,7 +55,8 @@ def main():
         models = ", ".join(f"{i}={'da' if model in found else 'nu'}" for i, model in enumerate(MODELS, 1))
         level = "notice" if status == "ok" else "warning"
         print(f"::{level} title=Gemini cheia {number}::catalog={status}; modele {models}")
-    print("::notice title=Interpretare::1=3.8-flash; 2=3.6-flash; 3=3.5-flash-lite; catalogul nu garanteaza cota sau generare")
+    mapping = "; ".join(f"{i}={model}" for i, model in enumerate(MODELS, 1))
+    print(f"::notice title=Interpretare::{mapping}; catalogul nu garanteaza cota sau generare")
 
 
 if __name__ == "__main__":
