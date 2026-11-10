@@ -1,7 +1,7 @@
 """Provider Gemini prin REST (fara SDK/grpc).
 
-GEMINI_API_KEY poate contine mai multe chei (separate prin virgula/spatiu) pentru
-failover tehnic; cotele sunt per proiect, deci cheile nu cresc cota disponibilă.
+GEMINI_API_KEY poate contine mai multe chei (separate prin virgula/spatiu).
+Cheile suplimentare sunt opt-in; cotele sunt per proiect, nu per cheie.
 """
 import json
 import os
@@ -48,14 +48,21 @@ MOTIVE_OPRIRE: dict = {}
 # `or` (nu doar default-ul getenv): in GitHub Actions ${{ vars.X }} nesetat da "",
 # nu absenta -> tratam sirul gol tot ca "direct la Google".
 BASE_URL = (os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com").rstrip("/")
-ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent?key={key}"
+ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent"
 THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
 REQUEST_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT") or "30")
 
 
 def _keys() -> list:
-    return [k for k in re.split(r"[,\s]+", os.getenv("GEMINI_API_KEY", "").strip()) if k]
+    # Lista initiala ramane neschimbata, inclusiv cand contine deja mai multe chei.
+    keys = [k for k in re.split(r"[,\s]+", os.getenv("GEMINI_API_KEY", "").strip()) if k]
+    if os.getenv("GEMINI_EXTRA_KEYS_ENABLED", "").strip().lower() == "true":
+        for name in ("GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            for key in re.split(r"[,\s]+", os.getenv(name, "").strip()):
+                if key and key not in keys:
+                    keys.append(key)
+    return keys
 
 
 class GeminiProvider(Provider):
@@ -83,6 +90,16 @@ class GeminiProvider(Provider):
         }).encode("utf-8")
 
     def _complete(self, system: str, user: str) -> str:
+        try:
+            return self._complete_request(system, user)
+        except Exception as exc:
+            # Erorile upstream pot contine date sensibile, inclusiv in raspunsul HTTP.
+            message = str(exc)
+            for key in sorted(self._keys, key=len, reverse=True):
+                message = message.replace(key, "[REDACTED]")
+            raise RuntimeError(f"Gemini {type(exc).__name__}: {message}") from None
+
+    def _complete_request(self, system: str, user: str) -> str:
         if not self._keys:
             raise RuntimeError("GEMINI_API_KEY lipsește.")
         if THROTTLE:
@@ -94,11 +111,11 @@ class GeminiProvider(Provider):
             model_rejected = False
             for _ in range(len(self._keys)):
                 key = self._keys[self._idx]
-                url = ENDPOINT.format(model=model, key=key)
+                url = ENDPOINT.format(model=model)
                 for attempt in range(RETRIES_PER_KEY):
                     try:
                         req = urllib.request.Request(
-                            url, data=body, headers={"Content-Type": "application/json"}
+                            url, data=body, headers={"Content-Type": "application/json", "x-goog-api-key": key}
                         )
                         with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
                             data = json.load(resp)
