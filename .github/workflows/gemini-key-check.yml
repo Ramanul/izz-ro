@@ -1,0 +1,30 @@
+name: Gemini key catalog check
+
+# O singura verificare la publicarea acestui workflow; nu ruleaza la PR si nici periodic.
+# Citeste doar catalogul Google, fara sinteza, continut editorial sau raspunsuri brute in log.
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/gemini-key-check.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Check Gemini catalogs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_2: ${{ secrets.GEMINI_API_KEY_2 }}
+          GEMINI_API_KEY_3: ${{ secrets.GEMINI_API_KEY_3 }}
+          GEMINI_API_KEY_4: ${{ secrets.GEMINI_API_KEY_4 }}
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+        run: python tools/check_gemini_keys.py
