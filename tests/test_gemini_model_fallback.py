@@ -134,3 +134,54 @@ def test_actions_and_local_example_share_gemini_configuration():
     for local_setting, actions_setting in settings:
         assert local_setting in env_example
         assert workflow.count(actions_setting) == 4
+
+
+def test_extra_keys_are_opt_in_and_preserve_legacy_list(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "primary, legacy")
+    monkeypatch.setenv("GEMINI_API_KEY_2", "second, primary")
+    monkeypatch.setenv("GEMINI_API_KEY_3", "third second")
+    monkeypatch.setenv("GEMINI_API_KEY_4", "fourth third")
+    monkeypatch.delenv("GEMINI_EXTRA_KEYS_ENABLED", raising=False)
+    assert gemini._keys() == ["primary", "legacy"]
+    monkeypatch.setenv("GEMINI_EXTRA_KEYS_ENABLED", "true")
+    assert gemini._keys() == ["primary", "legacy", "second", "third", "fourth"]
+
+
+def test_fallback_uses_header_and_redacts_errors(monkeypatch):
+    import pytest
+
+    monkeypatch.setenv("GEMINI_API_KEY", "secret-first")
+    monkeypatch.setenv("GEMINI_API_KEY_2", "secret-second")
+    monkeypatch.setenv("GEMINI_EXTRA_KEYS_ENABLED", "true")
+    monkeypatch.setattr(gemini, "MODELS", ["model"])
+    monkeypatch.setattr(gemini, "THROTTLE", 0)
+    monkeypatch.setattr(gemini, "RETRIES_PER_KEY", 1)
+    seen = []
+
+    def fake_urlopen(request, timeout):
+        assert "secret-first" not in request.full_url
+        assert "secret-second" not in request.full_url
+        seen.append(request.get_header("X-goog-api-key"))
+        if len(seen) == 1:
+            raise _http_error(request, 429)
+        return _Response("second worked")
+
+    monkeypatch.setattr(gemini.urllib.request, "urlopen", fake_urlopen)
+    assert gemini.GeminiProvider()._complete("system", "user") == "second worked"
+    assert seen == ["secret-first", "secret-second"]
+
+    def leaking_error(request, timeout):
+        raise urllib.error.URLError("upstream exposed secret-first and secret-second")
+
+    monkeypatch.setattr(gemini.urllib.request, "urlopen", leaking_error)
+    with pytest.raises(RuntimeError) as exc:
+        gemini.GeminiProvider()._complete("system", "user")
+    assert "secret-first" not in str(exc.value)
+    assert "secret-second" not in str(exc.value)
+    assert "[REDACTED]" in str(exc.value)
+
+
+def test_workflow_gates_extra_secrets():
+    workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "build.yml").read_text(encoding="utf-8")
+    for n in (2, 3, 4):
+        assert workflow.count(f"vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_{n}") == 4
