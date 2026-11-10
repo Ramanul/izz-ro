@@ -50,7 +50,21 @@ jobs:
       - name: Lint (ruff)
         run: python -m ruff check .
       - name: Pytest
-        run: python -m pytest tests/ -q
+        run: python -m pytest tests/ -q --junitxml="$RUNNER_TEMP/pytest-diagnostic.xml"
+      - name: Diagnostic test failures
+        if: failure()
+        run: |
+          python - <<'PYCODE'
+          import os
+          import xml.etree.ElementTree as ET
+          path = os.path.join(os.environ["RUNNER_TEMP"], "pytest-diagnostic.xml")
+          if os.path.exists(path):
+              for case in ET.parse(path).iter("testcase"):
+                  if case.find("failure") is not None or case.find("error") is not None:
+                      name = f"{case.get('classname', '')}.{case.get('name', '')}"
+                      name = ''.join(c if c.isalnum() or c in '._-[]' else '_' for c in name)
+                      print(f"::error title=Failed test::{name[:300]}")
+          PYCODE
       - name: Contractul titlurilor oficiale
         run: python tools/title_quality_audit.py
       - name: Sanatatea surselor RSS (manual)
