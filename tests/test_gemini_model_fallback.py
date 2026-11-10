@@ -183,5 +183,6 @@ def test_fallback_uses_header_and_redacts_errors(monkeypatch):
 
 def test_workflow_gates_extra_secrets():
     workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" / "build.yml").read_text(encoding="utf-8")
+    assert workflow.count("GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}") == 4
     for n in (2, 3, 4):
-        assert workflow.count(f"vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_{n}") == 4
+        assert workflow.count(f"vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_{n}") == 4

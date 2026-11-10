@@ -101,11 +101,11 @@ jobs:
       - name: Ruleaza pipeline (fetch + AI, buget)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Cheile noi raman dezactivate pana la verificarea cotelor si a conditiilor Google.
-          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'false' }}
-          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_2 || '' }}
-          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_3 || '' }}
-          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_4 || '' }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
           GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
           GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
           GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
@@ -168,11 +168,11 @@ jobs:
         env:
           MAX_PORTRAIT_LOOKUPS: "20"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Cheile noi raman dezactivate pana la verificarea cotelor si a conditiilor Google.
-          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'false' }}
-          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_2 || '' }}
-          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_3 || '' }}
-          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_4 || '' }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
           GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
           GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
           GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
@@ -196,11 +196,11 @@ jobs:
         env:
           MAX_LEAD_LOOKUPS: "20"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Cheile noi raman dezactivate pana la verificarea cotelor si a conditiilor Google.
-          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'false' }}
-          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_2 || '' }}
-          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_3 || '' }}
-          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_4 || '' }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
           GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
           GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
           GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
@@ -212,11 +212,11 @@ jobs:
         env:
           MAX_EVENT_LOOKUPS: "10"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Cheile noi raman dezactivate pana la verificarea cotelor si a conditiilor Google.
-          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'false' }}
-          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_2 || '' }}
-          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_3 || '' }}
-          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED == 'true' && secrets.GEMINI_API_KEY_4 || '' }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
           GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
           GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
           GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
