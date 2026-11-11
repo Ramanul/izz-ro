@@ -332,6 +332,85 @@ def _today_ro() -> str:
     return f"{_RO_DAYS[dt.weekday()]}, {dt.day} {_RO_MONTHS[dt.month]} {dt.year}"
 
 
+# Cuvinte de legătură — clase închise (prepoziții, conjuncții, copule, pronume, articole
+# nehotărâte) fără nicio valoare de căutare. Lista e DELIBERAT subțire: substantivele,
+# adjectivele și verbele de conținut nu se ating, iar cuvintele care pot FI conținut sunt
+# exclise explicit — „peste" (pește), „mai" (luna mai), literele care sunt cifre romane
+# („Liga I" / „Liga II" → `i`, `ii`). Diacriticele le ia `slugify` înainte, deci formele
+# de mai jos sunt ASCII.
+# Acoperă exact ce măsura raportul de SEO de pe 7 nov 2026 pe child pages:
+# `/…/…-in-valoare-de-500-de-miliarde-de/`, `/…/…-riscul-de-valuri-de-frig-in/`.
+_SLUG_JOARDE = frozenset({
+    "a", "ai", "am", "ar", "as", "au", "ca", "care", "ce", "cu", "de", "decat",
+    "deasupra", "din", "ea", "ei", "el", "ele", "este", "fara", "fata", "fi", "fost",
+    "impotriva", "in", "inaintea", "langa", "la", "le", "lor", "lui", "o", "pe",
+    "pentru", "prin", "printr", "sa", "se", "si", "sub", "un", "una", "unei",
+    "unor", "unui",
+})
+
+
+def _e_prescurtare(piese: list, i: int) -> bool:
+    """Tokenul de pe poziția `i` face parte dintr-o abreviere: are un vecin de-o singură
+    literă („S.A.\" → `s-a`, „CFR S.A.\" → `cfr-s-a`).
+
+    Fără garda asta, curățarea macină abrevierile: „Aquaserv S.A.\" ajungea `aquaserv-s`,
+    fiindcă `a` e în listă ca articol nehotărât. Măsurat pe starea de pe 7 nov 2026: 21 de
+    titluri cu „S.A.\" / „S.R.L.\", toate comunicate oficiale de utilități și hotărâri. Un
+    vecin de-o singură literă nu apare întâmplător lângă o prepoziție — apare când titlul
+    scrie o inițială, deci e semnătura unei abrevieri, nu un zgomot de sintaxă.
+
+    Cifrele NU sunt vecini eligibili: „nr. 4 din" nu e abreviere, iar coada de ordinal
+    („liga a 3-a") se taie mai departe — invariantul principal e că niciun slug nu se
+    termină într-un cuvânt de legătură, iar o inițială alăturată unei cifre nu o încalcă.
+    """
+    def o_litera(t):
+        return len(t) == 1 and t.isalpha()
+
+    din_stanga = i > 0 and o_litera(piese[i - 1])
+    din_dreapta = i + 1 < len(piese) and o_litera(piese[i + 1])
+    return din_stanga or din_dreapta
+
+
+def _curata_slug(s: str) -> str:
+    """Slug fără cuvinte de legătură. Dacă zgomotul e tot slug-ul, îl lasă intact.
+
+    Un slug de zece token-uri din care patru sunt prepoziții ocupă spațiu în SERP și în
+    bugetul de 80 de caractere fără să susțină nicio căutare, deci curățarea vine ÎNAINTE de
+    trunchiere: ce rămâne din buget se umple cu cuvinte care contează.
+
+    Măsurat pe starea comisă de pe 7 nov 2026, pe aceleași 7.324 de titluri, formula veche
+    vs. cea nouă: medie 67,7 → 62,0 caractere, iar 1.378 din cele 2.486 de titluri care
+    treceau de limita de 80 încap acum fără trunchiere. Coliziuni noi pe categorie: 0 — 103
+    în ambele formule, toate rezolvate deja de sufixul „-2" care exista pentru dedup.
+
+    Efect colateral numit, nu ascuns: un „și" vecin cu o inițială rămâne în slug
+    („Liga I și Liga II" → `liga-i-si-liga-ii`), pentru că garda de abreviere se uită la
+    vecini. A lăsa un cuvânt în plus nu pierde informație; a tăia unul greșit, da.
+    """
+    piese = [t for t in s.split("-") if t]
+    curat = "-".join(t for i, t in enumerate(piese)
+                     if t not in _SLUG_JOARDE or _e_prescurtare(piese, i))
+    return curat or s
+
+
+def _fara_coada_joarda(s: str, minim: int) -> str:
+    """Taie de la coada unui slug token-urile de legătură rămase după o tăietură.
+
+    Se oprește din retragere când restul ar scădea sub `minim`: un slug care se termină
+    într-o prepoziție e mai bun decât un slug de două cuvinte. Se oprește și pe o abreviere
+    (`...-s-a`) — aceeași regulă, aceeași funcție, ca să nu existe două definiri ale
+    „zgomotului de la coadă\" care să divergă.
+    """
+    while True:
+        piese = s.split("-")
+        coada = piese[-1]
+        if coada not in _SLUG_JOARDE or len(s) - len(coada) - 1 < minim:
+            return s
+        if _e_prescurtare(piese, len(piese) - 1):
+            return s
+        s = "-".join(piese[:-1])
+
+
 def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
     """Taie la limita de cuvant, nu la mijloc: `...pentru-masuri-de-econom` citea ca output
     de masina. Masurat pe arhiva de 7001 articole: 1254 (17.9%) erau taiate la mijloc.
@@ -339,12 +418,23 @@ def _taie_slug(s: str, limita: int = 80, minim: int = 40) -> str:
     `minim` e garda pentru cazul patologic — un titlu cu un cuvant foarte lung exact peste
     limita ar fi retezat la nimic daca am da mereu inapoi pana la ultima cratima. Sub prag,
     taietura brutala ramane preferabila unui slug de doua cuvinte.
+
+    A doua garda e pentru coadă: o tăietură lăsată pe o prepoziție (`...-frig-in`,
+    `...-titular-la`) se citea ca o propoziție neterminată — 897 din 7.324 de slug-uri
+    stocate (12,2%) se terminau exact așa pe starea de pe 7 nov 2026, cele mai multe
+    fiind titluri deja trunchiate la sursă. Pe ce produce formula nouă: 0.
     """
     if len(s) <= limita:
-        return s
+        return _fara_coada_joarda(s, minim)
     taiat = s[:limita]
     i = taiat.rfind("-")
-    return taiat[:i] if i >= minim else taiat
+    return _fara_coada_joarda(taiat[:i] if i >= minim else taiat, minim)
+
+
+def _slug_de_baza(titlu: str) -> str:
+    """Titlul → baza slug-ului public: transliterat, fără zgomot, tăiat la cuvânt."""
+    slugat = slugify(titlu or "stire")
+    return _taie_slug(_curata_slug(slugat)) if slugat else "stire"
 
 
 def assign_slugs(articles: list) -> None:
@@ -375,7 +465,7 @@ def assign_slugs(articles: list) -> None:
     for a in articles:
         if a.get("slug"):
             continue
-        base = _taie_slug(slugify(a.get("title") or a.get("original_title") or "stire") or "stire")
+        base = _slug_de_baza(a.get("title") or a.get("original_title") or "stire")
         # Un slug pur numeric ar ocupa /<cat>/2/, adica exact calea unei pagini de paginare —
         # iar articolele se scriu DUPA paginile de listare, deci ar suprascrie-o tacut si
         # linkul „2" din navigatie ar deschide un articol. Azi 0 din 1733 de titluri produc
@@ -1734,6 +1824,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     _render_sub_prag(env)
     _write_sitemap(by_date)
     _write_robots()
+    _write_llms()
     _write_security_txt()
     # dovada de domeniu pentru IndexNow: motorul citeste cheia de la radacina
     _write(os.path.join(OUT_DIR, f"{config.INDEXNOW_KEY}.txt"), config.INDEXNOW_KEY + "\n")
@@ -2600,6 +2691,86 @@ def _write_robots() -> None:
     """Anunta DOAR sitemap-urile scrise de rularea curenta (`_SITEMAPS_WRITTEN`)."""
     lines = "".join(f"Sitemap: {config.SITE['url']}/{name}\n" for name in _SITEMAPS_WRITTEN)
     _write(os.path.join(OUT_DIR, "robots.txt"), f"User-agent: *\nAllow: /\n{lines}")
+
+
+def _write_llms() -> None:
+    """/llms.txt — site-ul explicat motoarelor de limbaj, după https://llmstxt.org.
+
+    De ce există. Promisiunea produsului e deja „aceleași date pentru oameni și pentru
+    roboți”: HTML randat pe server, JSON-LD `@graph`, feeduri, sitemap-uri. `llms.txt` e
+    ultimul pas al aceleiași idei — o singură pagină de index, în formatul pe care un agent
+    îl citește fără să ghicească structura. Cerut în auditul de SEO de pe 7 nov 2026 (pct. 7),
+    cu atât mai mult cu cât există o rubrică `/ai/`.
+
+    Ce NU face. Nu promite că vreun crawler anume îl consumă: la preluarea ideii
+    (`specs/recon-github-stiri-2026-08-05.md` §23) rezerva era consemnată pe față —
+    beneficiul e speculativ, costul e mic. Asta e tot ce se poate declara despre el, și
+    singurul motiv pentru care se scrie.
+
+    Forma e fixă: `# titlu`, `> rezumat`, paragraf de detaliu, apoi secțiuni `## nume` cu
+    linii `- [etichetă](url): descriere`. Toate datele vin din `config`, deci în fișier nu
+    intră nimic venit din afară.
+    """
+    u = config.SITE["url"]
+    etichete = {cat: config.CATEGORY_LABELS.get(cat, cat.capitalize())
+                for cat in config.CATEGORIES}
+
+    def sectiune(titlu, linii):
+        return f"## {titlu}\n" + "\n".join(linii)
+
+    categorii = [f"- [{etichete[cat]}]({u}/{cat}/): știri din categoria {etichete[cat]}, "
+                 f"titlu, rezumat și lista publicațiilor care au relatat subiectul."
+                 for cat in config.CATEGORIES]
+    utilitare = [
+        f"- [Ce s-a întâmplat azi]({u}/azi/): listă cronologică pe ziua curentă, doar titluri "
+        f"și numărul de surse.",
+        f"- [Harta știrilor]({u}/harta/): distribuția pe județe a știrilor locale, pe zile.",
+        f"- [Ghiduri]({u}/ghiduri/): pagini evergreen despre drepturi și termene (pensii, "
+        f"alocații, buletin, ANAF).",
+        f"- [Calendar]({u}/calendar/): termene publice care urmează.",
+        f"- [Surse monitorizate]({u}/surse/): catalogul feedurilor din care se citește, cu "
+        f"originea fiecărei știri.",
+        f"- [Ce nu a trecut filtrul]({u}/sub-prag/): itemele respinse de garda de calitate, "
+        f"cu motivul.",
+        f"- [Căutare]({u}/cauta/): indexul intern pe tot corpusul aflat în fereastră.",
+    ]
+    # exact ce a emis rularea asta, nu o listă presupusă — același motiv pentru care
+    # `robots.txt` citește `_SITEMAPS_WRITTEN`.
+    descoperire = [f"- [Flux principal RSS]({u}/feed.xml)",
+                   f"- [Fluxul corecțiilor RSS]({u}/corectii/feed.xml)"]
+    descoperire += [f"- [{nume}]({u}/{nume})" for nume in _SITEMAPS_WRITTEN]
+    descoperire.append(f"- [robots.txt]({u}/robots.txt)")
+    transparenta = [
+        f"- [Principii editoriale]({u}/principii/)",
+        f"- [Cum se face o sinteză]({u}/legal/method/)",
+        f"- [Corecții publice]({u}/legal/corrections/)",
+        f"- [Politica de retragere]({u}/legal/takedown/)",
+        f"- [Contact]({u}/legal/contact/)",
+    ]
+    detaliu = (
+        f"{config.SITE['name']} urmărește {len(config.SOURCES)} de feeduri publice — naționale, "
+        "județene și ale unor instituții locale — și publică pentru fiecare eveniment o singură "
+        "pagină: titlu, rezumat, lista publicațiilor care l-au relatat și link spre textul "
+        "original. Construcția e automată și deterministă: sintezele multi-sursă sunt generate "
+        "cu un model AI, marcate „generat automat” pe pagină, trec printr-o gardă de calitate "
+        "(titluri trunchiate, dubluri, știri fără substanță, spam) și pot fi retrase public, cu "
+        f"motivul consemnat. O știre rămâne în fereastră {config.ARTICLE_TTL_DAYS} zile, apoi "
+        "iese din index; linkurile către sursele originale rămân valabile."
+    )
+    text = (
+        f"# {config.SITE['name']}\n\n"
+        f"> {config.SITE['tagline']}. Agregator românesc de știri: surse publice citite, "
+        "deduplicate și rezumate, cu publicația originală vizibilă la fiecare subiect.\n\n"
+        f"{detaliu}\n\n"
+        "Textele aparțin publicațiilor citate. Citează IZZ.ro ca agregator, nu ca autor "
+        "original, și preia linkul sursei alăturate pentru fiecare faptă.\n\n"
+        + "\n\n".join((sectiune("Secțiuni", categorii),
+                       sectiune("Utilitare", utilitare),
+                       sectiune("Feeds și descoperire", descoperire),
+                       sectiune("Transparență", transparenta)))
+        + "\n"
+    )
+    _write(os.path.join(OUT_DIR, "llms.txt"), text)
 
 
 def _write_security_txt() -> None:

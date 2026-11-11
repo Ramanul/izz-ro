@@ -16,6 +16,12 @@
      vizitatorul acolo. Fara el, categoriile arata exact ca inainte. #}
   {% if intro %}<p class="empty">{{ intro }}</p>{% endif %}
   {% if articles %}
+  {#- nivel intermediar, nu decor: cardurile sunt acum <h3> (structura homepage-ului:
+      secțiune = h2, articol = h3). Fără acest <h2>, o pagină de categorie ar sări de la
+      <h1> la <h3> — exact „saritura de nivel" pe care `tools/a11y_static.py` o numără.
+      Ascuns vizual: lista de pe /cat/ are deja titlul categoriei ca <h1>, un al doilea
+      titlu văzut ar fost duplicat de design. -#}
+  <h2 class="visually-hidden">Ultimele știri{% if not intro %} — {{ category | cat_label }}{% endif %}</h2>
   <section class="grid">
     {% for a in articles %}{{ card(a) }}{% endfor %}
   </section>

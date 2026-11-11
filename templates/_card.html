@@ -26,7 +26,11 @@
   {%- endif %}
   <p class="card-kicker"><span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}</span>{% if a.anunt_fara_corp %} <span class="badge-extra">Anunț oficial</span>{% endif %}</p>
   {% if a.moderation_note %}<p class="moderation-note">{{ a.moderation_note }}</p>{% endif %}
-  <h2 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h2>
+  {#- h3, nu h2: pe prima pagină titlul de știre stă sub un <h2> de secțiune, iar șaptezeci
+      de h2-uri egale nu spuneau lui Google nimic ierarhic (raportul de SEO de pe 7 nov 2026,
+      pct. 4: 60 de h2 și 2 h3 pe /). SECȚIUNEA e nivelul h2, ARTICOLUL e h3 — pe paginile care
+      nu au secțiune (categoria, 404) șablonul emite un h2 propriu, ca să nu sară un nivel. -#}
+  <h3 class="card-title"><a href="{{ base }}/{{ a.category }}/{{ a.slug }}/">{{ a.display_title or a.title }}</a></h3>
   {#- `anunt_fara_corp` = anunt oficial publicat ca titlu + link, fara teaser (decizie proprietar
       2026-08-04, specs/sinteza-fara-substanta.md). Elementele fara continut NU se emit deloc:
       `.card` e flex cu `gap`, deci un `<p>` gol ar lasa exact o gaura in card. -#}
@@ -63,7 +67,9 @@
         dezvaluirea o da randul de meta („generat automat"), iar pagina de articol poarta
         ai-mark + ai-note + meta digitalSourceType. REGULI-SINTEZA.md §4.3. -#}
     <span class="sources-inline"><b>{{ 'Sursă' if card_srcs | length == 1 else 'Surse' }}:</b>
-      {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</span>
+      {#- Formula de atribuire (contract §7): `noopener noreferrer`, fără `nofollow` —
+        propunerea de `nofollow` din auditul SEO de pe 7 nov 2026 a fost respinsă de proprietar. -#}
+    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</span>
   </p>
 </article>
 {% endmacro %}

@@ -236,6 +236,7 @@
   <div class="sources-box">
     <h2>{{ 'Sursă' if srcs | length == 1 else 'Surse' }}</h2>
     <ul>
+      {#- Formula de atribuire (contract §7): `noopener noreferrer`, fără `nofollow`. -#}
       {% for s in srcs %}<li><a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }} &rarr;</a>{% if a.surse_roluri and a.surse_roluri[s.name] %} <span class="source-role">{{ a.surse_roluri[s.name] }}</span>{% if a.modificari_tacute and s.name in a.modificari_tacute %} <span class="source-role" title="Faptele din textul publicației s-au schimbat cu peste 20% după prima citire — de regulă o știre în curs, completată">actualizat de redacție după prima citire</span>{% endif %}{% elif a.first_source and s.name == a.first_source and srcs | length > 1 %} <span class="first-badge" title="Prima publicare observată în setul de surse monitorizate">publicată prima</span>{% endif %}</li>{% endfor %}
     </ul>
     {% if grupuri_comune %}
