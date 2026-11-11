@@ -13,6 +13,8 @@
  * Fără dependențe, fără rute, fără trafic HTTP: rulează doar la cron.
  */
 
+import { ruleazaPaznic } from "./r2-paznic.js";
+
 const KV_KEY = "status";
 const FETCH_TIMEOUT_MS = 10000; // 10s per origine, acoperă fetch + citirea corpului
 const ALERT_STREAK = 2;
@@ -174,5 +176,13 @@ export default {
         console.error(`WATCHDOG ALERT: KV write failed - ${errText(err)}`);
       })
     );
+
+    // Paznicul de cost R2 (r2-paznic.js). Rulează DUPĂ sonde și separat de ele: e inert
+    // fără R2_PAZNIC_BUCKET, iar un eșec al lui nu are voie să strice verificarea originilor.
+    try {
+      await ruleazaPaznic(env);
+    } catch (err) {
+      console.error(`R2 PAZNIC ALERT: rulare eșuată - ${errText(err)}`);
+    }
   },
 };
