@@ -31706,12 +31706,6 @@
   "motiv_loc": "loc_exclus_tematic",
   "motiv_ent": "ent_fara_entitati"
  },
- "3395f77ab91f742c": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_exclus_tematic",
-  "motiv_ent": "ent_nenotabila"
- },
  "887384eb5ecf9f1d": {
   "miss": true,
   "v": 3,
@@ -32416,5 +32410,144 @@
   "name": "Țintești",
   "kind": "locality",
   "qid": "Q2716829"
+ },
+ "1d640ffadcffdd53": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "3d828a096b21f316": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "04a4fb8022b47f8e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "6333d88e3606c127": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "3578ea1d19d1085e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "6881192247d8a338": {
+  "cover": "leads/alexandru-nazare.c.jpg",
+  "art": "leads/alexandru-nazare.jpg",
+  "webp": "leads/alexandru-nazare.webp",
+  "artist": "Octavianul",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Alexandru_Nazare_at_Romanian_Government_press_briefing.jpg",
+  "name": "Alexandru Nazare",
+  "kind": "entity"
+ },
+ "0b7d6d07265ec8f5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "563e8562d0d11a2f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_respinsa_de_judecator"
+ },
+ "737120e4b7d4fdd0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a574442a473f8af6": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "096c1c1202e0852b": {
+  "cover": "leads/volodimir-zelenski.c.jpg",
+  "art": "leads/volodimir-zelenski.jpg",
+  "webp": "leads/volodimir-zelenski.webp",
+  "artist": "Press Service of the President of Ukraine",
+  "license": "CC BY 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:New_Year%27s_Eve_from_President_of_Ukraine_Volodymyr_Zelensky_(31-12-2025)_(cropped).jpg",
+  "name": "Volodimir Zelenski",
+  "kind": "entity"
+ },
+ "c5b56324d79ee104": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b662fb9cce2b1adc": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "a1278292b7ea39a4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "8a2c417d60cc4928": {
+  "cover": "leads/loc-Q518992.c.jpg",
+  "art": "leads/loc-Q518992.jpg",
+  "webp": "leads/loc-Q518992.webp",
+  "artist": "Țetcu Mircea Rareș",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Uzina_C%C4%83lan.jpg",
+  "name": "Călan",
+  "kind": "locality",
+  "qid": "Q518992"
+ },
+ "3a3fa45d1ca26cf8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "6d89ef78e0a24e73": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "39eda7b6485362ef": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "a7e92b4d561b4f67": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "904478e46cde8e56": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "571fe9c5cfb33218": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
