@@ -101,6 +101,12 @@ def a_doua_incercare():
         _PREFIX_REINCERCARE = ""
 
 
+def este_reincercare() -> bool:
+    """True în interiorul `a_doua_incercare()` — o gardă care amână la prima încercare poate
+    ceda la a doua, ca un cluster să nu fie reluat la nesfârșit (Argon, 8.11.2026)."""
+    return bool(_PREFIX_REINCERCARE)
+
+
 def _numara(cheie: str, n: int = 1) -> None:
     if _PREFIX_REINCERCARE and cheie.startswith("amanate_"):
         cheie = _PREFIX_REINCERCARE + cheie

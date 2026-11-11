@@ -67,14 +67,9 @@
         dezvaluirea o da randul de meta („generat automat"), iar pagina de articol poarta
         ai-mark + ai-note + meta digitalSourceType. REGULI-SINTEZA.md §4.3. -#}
     <span class="sources-inline"><b>{{ 'Sursă' if card_srcs | length == 1 else 'Surse' }}:</b>
-      {#- `nofollow` pe linkul către sursă, nu pe atribuire: textul e al publicației, iar un
-        agregator nou care trimite zeci de linkuri DoFollow pe pagină spre același set de
-        domeniuri seamănă, văzut din afară, cu o fermă de linkuri (raportul de SEO din
-        7 nov 2026, pct. 1: 57 de externe DoFollow pe prima pagină, 0 backlinkuri primite).
-        Vizibil și urmat de cititor rămâne la fel — `nofollow` nu ascunde sursa, doar nu o
-        recomandă algoritmilor. Creditele Wikimedia (mai sus, în `credit_foto`) rămân
-        DoFollow: un link de atribuire de licență nu e o recomandare SEO, e o obligație. -#}
-    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="nofollow noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</span>
+      {#- Formula de atribuire (contract §7): `noopener noreferrer`, fără `nofollow` —
+        propunerea de `nofollow` din auditul SEO de pe 7 nov 2026 a fost respinsă de proprietar. -#}
+    {% for s in card_srcs %}<a href="{{ s.url | href_extern }}"{# nosemgrep: generic.html-templates.security.var-in-href.var-in-href #} target="_blank" rel="noopener noreferrer">{{ s.name }}</a>{{ ', ' if not loop.last }}{% endfor %}</span>
   </p>
 </article>
 {% endmacro %}

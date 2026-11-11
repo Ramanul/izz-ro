@@ -873,7 +873,6 @@ REGULI_ACTIVE = frozenset({
     'Ține-l scurt.',
     'Nu arma nicio buclă autonomă / CronCreate recurent',
     'Cine face merge în `main`',
-    'După orice merge, anunță celălalt cont',
     'Nu face curse pe `main`.',
     'Mandat PERMANENT de merge, pe verde — REGULĂ TARE.',
     'Un task per declanșare.',

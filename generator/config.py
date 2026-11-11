@@ -293,6 +293,46 @@ CATEGORIES = ["general", "regional", "judetean", "local",
               "politic", "economic", "extern", "sport", "ai",
               "tech", "auto", "sanatate", "cultura", "lifestyle", "discounturi"]
 
+# ── CIOBURI (mai multe Workere Free, specs/multi-worker-free-2026-11.md) ──────────────────
+# Fiecare categorie primeste un Worker propriu pe ruta `izz.ro/<categorie>/*`; `local/` e prea
+# mare pentru un singur Worker la 10x, deci se imparte dupa PRIMUL CARACTER al numelui din
+# `local/` (rutele Workers accepta doar `*` la coada -- felia 0, IZZ-0455, a confirmat pe live
+# rutele pe litera si pe cifra). Grupurile sunt pe distributia MASURATA a primelor litere
+# (2026-11-08: a 552, p 499, c 329, s 173, u 165, o 150, r 147, d 145), nu pe alfabet egal.
+# Cifrele merg impreuna: paginarea categoriei e `/local/<n>/`. Un caracter care nu e in niciun
+# grup ramane pe Workerul principal -- exact unde l-ar trimite si rutarea, deci nu se rupe nimic.
+SHARD_SUBJECT_PREFIX = "subiect/"
+LOCAL_SHARD_GROUPS = ["0123456789", "a", "p", "bc", "defghi", "jklmnoqr", "stuvwxyz"]
+# Cioburile PUBLICATE ca Workere proprii (`deploy-worker.yml`, inaintea principalului, fail-closed).
+# Restul raman servite de principal, care pana la felia 4 are oricum toate fisierele. Pilot
+# (felia 2): `auto`, cea mai mica categorie cu trafic. Revenire: scoate numele de aici SI
+# `npx wrangler delete --name izz-ro-<ciob>` -- altfel Workerul ramane cu rutele lui si
+# serveste continut inghetat.
+# Felia 3 completa (2026-11-09): toate cele 21 de cioburi (14 cat-* + 7 local-*).
+SHARDS_LIVE = [
+    "cat-auto",
+    "cat-ai",
+    "cat-tech",
+    "cat-cultura",
+    "cat-sanatate",
+    "cat-general",
+    "cat-judetean",
+    "cat-lifestyle",
+    "cat-politic",
+    "cat-economic",
+    "cat-extern",
+    "cat-sport",
+    "cat-discounturi",
+    "cat-regional",
+    "local-cifre",
+    "local-a",
+    "local-p",
+    "local-bc",
+    "local-defghi",
+    "local-jklmnoqr",
+    "local-stuvwxyz",
+]
+
 # Categorii in INSAMANTARE: nou-adaugate, cu surse de volum mic — pot fi goale fara sa pice
 # QA (warn, nu FAIL). Se scot de aici dupa ce categoria s-a populat stabil.
 SEED_CATEGORIES = {"regional", "judetean", "local", "ai"}
@@ -421,7 +461,18 @@ RELATED_MIN_SHARED = 2         # "Articole conectate": minim entitati comune. 1 
 # 12 -> 11 (2026-10-25, owner approved in chat): a7bf06ae has 13.025 raw articles
 # in the date-based 12-day window, above the 12.600 early safety floor. Eleven days
 # retain 11.833 (767 spare); the actual publication floor/quality guards are unchanged.
-ARTICLE_TTL_DAYS = 11
+# 11 -> 21 (2026-11-09, Felia 4 Pasul 1, aprobat de proprietar in chat; IZZ-0454,
+# specs/multi-worker-free-2026-11.md §4/§10): toate cele 21 de cioburi sunt live si
+# categoriile migrate au fost scoase din dist/main (#576, 925f1b477: main = 1.527 fisiere,
+# cel mai mare ciob = local-a cu 1.076 fisiere). Bugetul de 17.000 si plafonul de 20.000
+# se aplica acum per Worker/ciob, nu global pe output/.
+# 21 -> 45 (2026-11-09, Felia 4 Pasul 2, aprobat de proprietar in chat): la TTL=21 (#577,
+# 47abf0490, run 42609450933) cel mai mare Worker are 1.527 fisiere (main), cat-sport 959,
+# local-a 874 (7,6% din plafonul de 20.000).
+# 45 -> 90 (2026-11-09, Felia 4 Pasul 3 — Felia 4 COMPLETA, aprobat de proprietar in chat):
+# la TTL=45 (#578, 7323ccbd4, run 42613345998) cel mai mare Worker are 1.527 fisiere (7,6%
+# din plafonul de 20.000).
+ARTICLE_TTL_DAYS = 90
 
 # Plafonul de fisiere al gazdei. Gazda e un Worker cu Static Assets de pe 2026-08-22
 # (#211, 40ac007), iar contul se intoarce pe **Workers FREE** din 2026-09-22 (decizie

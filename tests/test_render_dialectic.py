@@ -91,7 +91,8 @@ def test_rolul_fiecarei_surse_e_langa_ea_in_cuvinte_civice():
     assert "prima relatare observată" in box
     assert "detalii suplimentare" in box
     assert "text comun cu altă publicație (posibil comunicat)" in box
-    assert "Confirmări încrucișate" in box
+    # «Confirmări încrucișate» a plecat din casetă (paragraful de metodă, 8.11.2026); cifra e în
+    # eticheta de sus, verificată la linia 62.
 
 
 @pytest.mark.parametrize("state", ["SYNTHESIS_VALID", "SINGLE_ORIGIN", "ASSUMED_SILENCE"])

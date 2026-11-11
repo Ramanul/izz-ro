@@ -18,10 +18,13 @@
     // Obligatoriu cand scriptul citeste assets-urile din cod: fara numele asta de binding,
     // env.ASSETS e undefined iar fallback-ul moare cu 500 (prins pe preview, IZZ-0428).
     "binding": "ASSETS",
-    // Pages DEDUCEA singur 404.html; Workers NU o face — fara linia asta,
-    // orice URL inexistent intoarce un 404 gol si pagina noastra 404.html
-    // (output/404.html) nu mai e servita niciodata.
-    "not_found_handling": "404-page",
+    // FARA `not_found_handling` (2026-11-07). Cu "404-page", stratul de assets raspundea
+    // singur la orice ratare cu 404.html si Workerul NU era invocat: fallback-ul spre oglinda
+    // era mort in productie (masurat: 18 din 20 articole vechi 200 pe oglinda, 404 pe primar,
+    // cu antetele lui 404.html). Fara optiune, ratarea invoca Workerul (inclusiv navigarea:
+    // `assets_navigation_prefers_asset_serving` lucreaza doar cand not_found_handling e setat),
+    // iar Workerul serveste el 404.html (`/404`) cand oglinda nu are pagina. Cost: o invocare
+    // per ratare, nu per vizualizare; fisierele existente raman pe calea gratuita a activelor.
     // Implicitul e „assets intai, Worker doar la ratau". Pentru /push/* si /sw.js
     // functioneaza si asa (nu exista fisiere cu numele astea in output/), dar functioneaza
     // DIN INTAMPLARE: ajunge cineva sa adauge un fisier `push/...` si alertele mor tacut.
@@ -54,6 +57,10 @@
   // (17 iul - 5 aug 2026). visual/monitor/harta-smoke/harta-data au nevoie de o
   // origine curata; pe Workers, aceea e subdomeniul workers.dev.
   "workers_dev": true,
+  // Observabilitate (ramura obs/worker-observability, 7 nov 2026): loguri per cerere pentru
+  // diagnosticarea 504 cu originResponseStatus 0, cand nu exista loguri de Worker.
+  // Nepublicat: se activeaza doar dupa deploy aprobat de proprietar.
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
   // Din 2026-10-31 ruta publica sta aici, nu in infra/wrangler.toml: Workerul de assets serveste
   // direct, deci fisierele existente nu mai consuma plafonul Free de 100.000 de invocari/zi.
   // Masurat inainte: varf 99.170 pe 9 oct, 98,8% din invocari prin izz-failover. ORDINEA conteaza:

@@ -449,3 +449,109 @@ def test_dublari_cuvinte_prinde_repetitia_consecutiva():
     assert dublari_cuvinte("Da, da, e clar") == []          # interjecție, cu virgulă
     assert dublari_cuvinte("Ac Acesta a fost momentul") == []  # fragment ≠ cuvânt repetat
     assert dublari_cuvinte("Meciul s-a încheiat 2-2") == []
+
+
+# ---- Contradicții cheie: rezultatele penalty (cazul Mbappé vs Maroc, CM 2026) ----
+
+def test_penalty_transformat_dar_sursa_ratat_e_semnalat():
+    """Cazul real, iulie 2026: sinteză spunea „transformat”, toate surse spuneau „ratat”."""
+    sursa = ("În minutul 28 Mbappé a ratat penalty-ul, lovitura fiind apărată de "
+             "portarul Bounou.")
+    rezumat = "Mbappé a transformat penalty-ul în fața Marocului."
+    coduri = {p.cod for p in verifica("", rezumat, sursa)}
+    assert "contradicție_cheie" in coduri
+
+
+def test_penalty_ratat_in_sincron_cu_sursa_nu_e_semnalat():
+    sursa = "Mbappé a ratat penalty-ul, apărat de Bono."
+    rezumat = "Mbappé a ratat penalty-ul în fața Marocului."
+    assert not any(p.cod == "contradicție_cheie" for p in verifica("", rezumat, sursa))
+
+
+def test_golul_ulterior_din_alta_propozitie_nu_anula_semnalul():
+    """BUG PRINS ÎNAINTE DE LIVRARE (2026-11-07): propoziția penalty-ului își spune
+    rezultatul („a ratat”), iar golul din minutul 60 e în propoziția următoare. Cu o
+    fereastră pur de caractere, sursa părea ambiguă („scor” + „lipsa”) și garda tăcea
+    exact pe cazul care a produs eroarea. Contextul se citește pe propoziții."""
+    sursa = ("Mbappé a ratat penalty-ul în minutul 28, apărat de Bono. "
+             "Francezul a marcat totuși în minutul 60.")
+    rezumat = "Mbappé a transformat penalty-ul."
+    assert any(p.cod == "contradicție_cheie" for p in verifica("", rezumat, sursa))
+
+
+def test_rezultatul_in_propozitia_urmatoare_e_prins():
+    """Forma reală Digisport: propoziția penalty-ului NU spune rezultatul, ci cea
+    următoare („a irosit însă șansa... a parat lovitura”). Se citește ca un om:
+    propoziția penalty-ului, apoi cea următoare doar dacă prima tace."""
+    sursa = ("În minutul 25 Franța a beneficiat de un penalty, după ce Mbappé a fost "
+             "faultat de Mazraoui. Starul francez a irosit însă șansa, portarul Bounou "
+             "a parat lovitura.")
+    rezumat = "Mbappé a transformat penalty-ul."
+    assert any(p.cod == "contradicție_cheie" for p in verifica("", rezumat, sursa))
+
+
+def test_sursa_cu_ambele_rezultate_nu_se_semnaleaza_conservator():
+    """„ratat penalty-ul, apoi a marcat” — verbele nu se pot atribui rezultatului
+    penalty, deci e etapizat conservator (nu fals pozitiv)."""
+    sursa = "Mbappé a ratat penalty-ul, dar a marcat ulterior."
+    rezumat = "Mbappé a transformat penalty-ul."
+    assert not any(p.cod == "contradicție_cheie" for p in verifica("", rezumat, sursa))
+
+
+def test_prosport_cu_ambele_rezultate_in_context_nu_se_semnaleaza():
+    """Forma reală ProSport (două meciuri, două rezultate) — conservator, fără semnal:
+    un fals pozitiv pe un articol corect e mai scump decât un semnal lipsă."""
+    sursa = ("Penalty! Cu Paraguay s-a obținut, Mbappe a transformat. "
+             "Cu Maroc, l-a ratat.")
+    rezumat = "Mbappé a transformat penalty-ul."
+    assert not any(p.cod == "contradicție_cheie" for p in verifica("", rezumat, sursa))
+
+
+def test_titlu_cu_transformat_dar_sursa_ratat_e_semnalat():
+    sursa = "Mbappé a ratat penalty-ul, apărat de Bono."
+    titlu = "Mbappé transformează penalty-ul în fața Marocului"
+    assert any(p.cod == "contradicție_cheie" for p in verifica(titlu, "", sursa))
+
+
+def test_contradicție_cheie_penalty_direct():
+    from generator.verifica_sinteza import contradicție_cheie_penalty
+    assert contradicție_cheie_penalty(
+        "Mbappé a transformat penalty-ul.",
+        "Mbappé a ratat penalty-ul, apărat de Bono.") is True
+    assert contradicție_cheie_penalty(
+        "Mbappé a ratat penalty-ul.",
+        "Mbappé a ratat penalty-ul, apărat de Bono.") is False
+    assert contradicție_cheie_penalty(
+        "Mbappé a transformat penalty-ul.",
+        "Mbappé a marcat din penalty.") is False
+    assert contradicție_cheie_penalty(
+        "Echipa a obținut un penalty.",
+        "Mbappé a ratat penalty-ul, apărat de Bono.") is False
+    assert contradicție_cheie_penalty(
+        "Mbappé a transformat penalty-ul.",
+        "Mbappé a fost faultat în careu de Mazraoui.") is False
+
+
+def test_contradicție_cheie_nu_e_blocanta():
+    """Advisory, nu blocant: codul nou NU e în `_BLOCKING` (aceeași disciplină ca
+    `cuvant_deformat_sursa` — activarea blocking-ului vine după măsurare pe rulări)."""
+    from generator.raport_copiere import _BLOCKING
+    assert "contradicție_cheie" not in _BLOCKING
+
+
+def test_penalty_forme_inflectate_sunt_prinse():
+    """„penaltiul” (hotărâre de guvern a limbii) nu trebuie să scape de tipar."""
+    from generator.verifica_sinteza import contradicție_cheie_penalty
+    assert contradicție_cheie_penalty(
+        "Mbappé a transformat penaltiul.", "Mbappé a ratat penaltiul.") is True
+
+
+def test_stirile_juridice_cu_penal_nu_sunt_penalty():
+    """Fals pozitiv de evitat: „Codul penal / dosar penal” e beatul juridic al site-ului,
+    nu un penalty de fotbal — tiparul nu are voie să lege rezultatul de acolo."""
+    from generator.verifica_sinteza import contradicție_cheie_penalty, _contexte_penalty
+    assert _contexte_penalty("Ancheta vizează un dosar penal complex.") == []
+    assert _contexte_penalty("Instanța a aplicat Codul penal.") == []
+    assert contradicție_cheie_penalty(
+        "Suspectul a fost reținut în dosarul penal.",
+        "Instanța a dispus măsura arestului la domiciliu în dosarul penal.") is False

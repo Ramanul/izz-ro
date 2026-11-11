@@ -54,7 +54,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 ## 5. Flux obligatoriu
 0. **Nu arma nicio buclă autonomă / CronCreate recurent** care se conduce singură prin backlog.
 1. **Cine face merge în `main`** decide proprietarul; executorul îl execută sub mandatul permanent de la §5.4.
-2. **După orice merge, anunță celălalt cont** prin canalul operațional agreat și actualizează starea.
+2. [ABROGAT — vezi §5.7]
 3. **Nu face curse pe `main`.** Push direct pe `main` permis (proprietar, 2026-10-25) după teste+ruff verzi și fetch+rebase; PR când trebuie CI complet. PR-urile deschise se rezolvă primele.
 4. **Mandat PERMANENT de merge, pe verde — REGULĂ TARE.** Decizie proprietar 2026-09-13
    [IZZ-0382]: executorul face merge în `main` FĂRĂ să ceară acordul per PR. Acoperă PR-urile
@@ -102,10 +102,7 @@ Spec îndeplinită · comanda relevantă trecută · lint/test/type-check dispon
 - **O axă, o casă.** Nu cross-posta același item între axa geo și tematică.
 - **Schimbările de clustering se verifică empiric.** Probează over-merge și under-merge pe eșantioane reale.
 - **Diversitatea surselor.** Nu agrava concentrarea pe familia Digi / RCS-RDS.
-- **Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).** Exact un element `Sursă` / `Surse`, după corp; carduri cu `sources-inline`, articol cu `sources-box`, hero cu aside-ul φ; link extern cu `target="_blank" rel="noopener noreferrer"`; pe linkul către
-  sursa de știri se adaugă `nofollow` (2026-11-07, audit SEO pct. 1 — sursa rămâne vizibilă și
-  urmată de cititor, doar nu e recomandată algoritmic), pe creditul de imagine nu. Garda:
-  `tests/test_seo_limite.py`.
+- **Formula de atribuire — PERMANENTĂ (decizie proprietar 2026-07-04).** Exact un element `Sursă` / `Surse`, după corp; carduri cu `sources-inline`, articol cu `sources-box`, hero cu aside-ul φ; link extern cu `target="_blank" rel="noopener noreferrer"`.
 - **Nu confunda unealta cu capacitatea.** O unealtă existentă nu dovedește că suprafața este accesibilă în sesiunea curentă.
 - **O limitare se declară cu comanda care a eșuat, nu din memorie.**
 - **Necunoscutul se închide, nu se raportează.** „Rămâne necunoscut" e concluzie validă DOAR după ce ai numit experimentul care l-ar decide și l-ai rulat, dacă e ieftin și reversibil. Cere acces pe care nu-l ai? Spune ce anume lipsește și cine îl are — nu doar că nu știi.
@@ -127,9 +124,7 @@ Nu modifica fără instrucțiune explicită: logica de sinteză/atribuire Model 
 **Când amâni ceva, spune care din două e — REGULĂ TARE:** *blocat de politică* (cere o decizie pe care proprietarul nu a dat-o) sau *blocat de capacitate* (unealta lipsește / a eșuat). Al doilea se declară cu comanda care a eșuat (§7), nu din memorie. „Zonă protejată" fără una din cele două e amânare deghizată.
 
 ## 11. SEO
-SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Gărzile specifice (title și
-descriere în bugetul SERP, `nofollow` pe surse, slug fără zgomot, `llms.txt`) stau în
-`tests/test_seo_limite.py`. Istoricul este în `specs/istoric-operational.md`.
+SEO rezolvat; nu se reauditează fără descoperire nouă, specifică. Istoricul este în `specs/istoric-operational.md`.
 
 ## 12. Unelte și aprobări
 ### 12a. Inventarul uneltelor — regulă tare

@@ -1,24 +1,44 @@
 """Provider Gemini prin REST (fara SDK/grpc).
 
-GEMINI_API_KEY poate contine MAI MULTE chei (separate prin virgula/spatiu): la 429
-pe o cheie, trece automat pe urmatoarea (failover) — dubleaza quota free-tier.
+GEMINI_API_KEY poate contine mai multe chei (separate prin virgula/spatiu).
+Cheile suplimentare sunt opt-in; cotele sunt per proiect, nu per cheie.
 """
 import json
 import os
 import re
+import socket
 import time
 import urllib.error
 import urllib.request
 
 from .base import Provider
 
-# `-latest` alias (nu o versiune fixata): modelele fixate sunt retrase periodic de
-# Google (ex. gemini-2.5-flash-lite -> 404 "no longer available"), aliasul nu.
-MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
+# Modelele sunt încercate serial, în ordinea configurată. GEMINI_MODEL rămâne
+# compatibil pentru configurațiile vechi cu un singur model.
+DEFAULT_MODELS = (
+    "gemini-3.8-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
+)
+
+
+def _models() -> list[str]:
+    configured = (os.getenv("GEMINI_MODELS") or os.getenv("GEMINI_MODEL") or "").strip()
+    if not configured:
+        return list(DEFAULT_MODELS)
+    result = []
+    for model in re.split(r"[,\s]+", configured):
+        if model and model not in result:
+            result.append(model)
+    return result or list(DEFAULT_MODELS)
+
+
+MODELS = _models()
+MODEL = MODELS[0]
 # Plafonul de output. Trebuie sa creasca CU config.BATCH_SIZE: un lot model-B de 10 articole
 # produce ~2000 de tokeni de JSON, iar un array trunchiat e pierdut TACUT de _parse_json_array
-# (regex-ul nu gaseste `]` de inchidere -> []). 4096 da spatiu pentru 10 articole + model C.
-MAX_OUTPUT_TOKENS = int(os.getenv("GEMINI_MAX_OUTPUT_TOKENS", "4096"))
+# (regex-ul nu gaseste `]` de inchidere -> []). 8192 lasa spatiu pentru loturi si model C.
+MAX_OUTPUT_TOKENS = int(os.getenv("GEMINI_MAX_OUTPUT_TOKENS") or "8192")
 # finishReason al fiecărui răspuns 200, pe rulare (main.py îl pune în jurnalul de triaj).
 MOTIVE_OPRIRE: dict = {}
 # Baza URL a API-ului. Poti ruta prin Cloudflare AI Gateway (cache, retry,
@@ -28,13 +48,21 @@ MOTIVE_OPRIRE: dict = {}
 # `or` (nu doar default-ul getenv): in GitHub Actions ${{ vars.X }} nesetat da "",
 # nu absenta -> tratam sirul gol tot ca "direct la Google".
 BASE_URL = (os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleapis.com").rstrip("/")
-ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent?key={key}"
+ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent"
 THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
+REQUEST_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT") or "30")
 
 
 def _keys() -> list:
-    return [k for k in re.split(r"[,\s]+", os.getenv("GEMINI_API_KEY", "").strip()) if k]
+    # Lista initiala ramane neschimbata, inclusiv cand contine deja mai multe chei.
+    keys = [k for k in re.split(r"[,\s]+", os.getenv("GEMINI_API_KEY", "").strip()) if k]
+    if os.getenv("GEMINI_EXTRA_KEYS_ENABLED", "").strip().lower() == "true":
+        for name in ("GEMINI_API_KEY_2", "GEMINI_API_KEY_3", "GEMINI_API_KEY_4"):
+            for key in re.split(r"[,\s]+", os.getenv(name, "").strip()):
+                if key and key not in keys:
+                    keys.append(key)
+    return keys
 
 
 class GeminiProvider(Provider):
@@ -62,40 +90,62 @@ class GeminiProvider(Provider):
         }).encode("utf-8")
 
     def _complete(self, system: str, user: str) -> str:
+        try:
+            return self._complete_request(system, user)
+        except Exception as exc:
+            # Erorile upstream pot contine date sensibile, inclusiv in raspunsul HTTP.
+            message = str(exc)
+            for key in sorted(self._keys, key=len, reverse=True):
+                message = message.replace(key, "[REDACTED]")
+            raise RuntimeError(f"Gemini {type(exc).__name__}: {message}") from None
+
+    def _complete_request(self, system: str, user: str) -> str:
+        if not self._keys:
+            raise RuntimeError("GEMINI_API_KEY lipsește.")
         if THROTTLE:
             time.sleep(THROTTLE)
         body = self._payload(system, user)
         last_exc = None
-        # incearca fiecare cheie, cu cateva reincercari pe cheie
-        for _ in range(len(self._keys)):
-            key = self._keys[self._idx]
-            url = ENDPOINT.format(model=MODEL, key=key)
-            for attempt in range(RETRIES_PER_KEY):
-                try:
-                    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
-                    with urllib.request.urlopen(req, timeout=40) as resp:
-                        data = json.load(resp)
-                    # De ce s-a oprit modelul, numărat pe rulare: MAX_TOKENS taie coada unui
-                    # lot (obiectele lipsă ies „nemapate"), SAFETY/RECITATION întorc 200 fără
-                    # text (lotul cade întreg). Fără contor, ambele se văd doar ca amânări.
-                    motiv = ((data.get("candidates") or [{}])[0].get("finishReason")
-                             or "NECUNOSCUT")
-                    MOTIVE_OPRIRE[motiv] = MOTIVE_OPRIRE.get(motiv, 0) + 1
-                    return data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                except urllib.error.HTTPError as exc:
-                    # corpul raspunsului contine motivul exact (ex. ce camp e refuzat
-                    # la 400 INVALID_ARGUMENT) — fara el diagnosticul e ghicit
+        # Încearcă modelele pe rând; fiecare cerere se încheie înaintea următoarei.
+        for model in MODELS:
+            model_rejected = False
+            for _ in range(len(self._keys)):
+                key = self._keys[self._idx]
+                url = ENDPOINT.format(model=model)
+                for attempt in range(RETRIES_PER_KEY):
                     try:
-                        detail = exc.read(600).decode("utf-8", "replace").strip()
-                    except Exception:
-                        detail = ""
-                    if detail:
-                        exc.msg = f"{exc.msg} | {detail}"
-                    last_exc = exc
-                    if exc.code in (429, 500, 503):
-                        if attempt < RETRIES_PER_KEY - 1:
-                            time.sleep(2 ** (attempt + 1))
-                        break  # cheie limitata -> trece la urmatoarea
-                    raise
-            self._idx = (self._idx + 1) % len(self._keys)  # failover pe cheia urmatoare
+                        req = urllib.request.Request(
+                            url, data=body, headers={"Content-Type": "application/json", "x-goog-api-key": key}
+                        )
+                        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+                            data = json.load(resp)
+                        # De ce s-a oprit modelul, numărat pe rulare: MAX_TOKENS taie coada unui
+                        # lot, iar SAFETY/RECITATION pot întoarce 200 fără text.
+                        motiv = ((data.get("candidates") or [{}])[0].get("finishReason")
+                                 or "NECUNOSCUT")
+                        MOTIVE_OPRIRE[motiv] = MOTIVE_OPRIRE.get(motiv, 0) + 1
+                        return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    except urllib.error.HTTPError as exc:
+                        try:
+                            detail = exc.read(600).decode("utf-8", "replace").strip()
+                        except Exception:
+                            detail = ""
+                        if detail:
+                            exc.msg = f"{exc.msg} | {detail}"
+                        last_exc = exc
+                        if exc.code in (429, 500, 502, 503, 504):
+                            if attempt < RETRIES_PER_KEY - 1:
+                                time.sleep(2 ** (attempt + 1))
+                                continue
+                            break  # limită/eroare temporară: încearcă următoarea cheie/model
+                        if exc.code in (400, 404):
+                            model_rejected = True
+                            break  # model indisponibil sau incompatibil: încearcă următorul
+                        raise
+                    except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
+                        last_exc = exc
+                        break  # timeout/rețea: încearcă următoarea cheie/model
+                self._idx = (self._idx + 1) % len(self._keys)
+                if model_rejected:
+                    break
         raise last_exc

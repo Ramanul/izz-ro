@@ -101,6 +101,14 @@ jobs:
       - name: Ruleaza pipeline (fetch + AI, buget)
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
+          GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
           AI_PROVIDER: gemini
           MAX_AI_CALLS_PER_RUN: ${{ github.event.inputs.max_ai_calls != '' && github.event.inputs.max_ai_calls || '40' }}
           # Cascada de provideri GRATUITI. Fiecare are cota proprie si niciunul nu factureaza
@@ -160,6 +168,14 @@ jobs:
         env:
           MAX_PORTRAIT_LOOKUPS: "20"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
+          GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
           AI_PROVIDER: gemini
         run: python tools/fetch_portraits.py
 
@@ -180,6 +196,14 @@ jobs:
         env:
           MAX_LEAD_LOOKUPS: "20"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
+          GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
           AI_PROVIDER: gemini
         run: python tools/fetch_leadphotos.py
 
@@ -188,6 +212,14 @@ jobs:
         env:
           MAX_EVENT_LOOKUPS: "10"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Fallback activ implicit; seteaza variabila la false pentru dezactivare.
+          GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}
+          GEMINI_API_KEY_2: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_2 || '' }}
+          GEMINI_API_KEY_3: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_3 || '' }}
+          GEMINI_API_KEY_4: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_4 || '' }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+          GEMINI_MAX_OUTPUT_TOKENS: ${{ vars.GEMINI_MAX_OUTPUT_TOKENS }}
+          GEMINI_TIMEOUT: ${{ vars.GEMINI_TIMEOUT }}
           AI_PROVIDER: gemini
         run: python tools/fetch_eventphotos.py
 

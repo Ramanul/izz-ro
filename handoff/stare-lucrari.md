@@ -392,6 +392,7 @@ Citește răspunsul Arenei la review-ul sistemului de economie de context (chatu
 - Cerere: „# rezolvă pe repo cu push pe main”, pe raportul unui tool extern. Arena nu poate
   împinge pe `main` din sesiunea ei (limitare de platformă, nu de chef): branch
   `arena/1b1317c8-izz-ro` → PR #554, gata de merge când vrei tu.
+- **Corecție 11 nov 2026:** pct. 1 (`nofollow` pe surse) a fost RESPINS de proprietar și scos înainte de aterizare [IZZ-0457]; rândul de mai jos descrie starea de pe 7 nov.
 - Aplicat: pct. 1 (`nofollow` pe surse, 59/65 pe prima pagină; creditele Wikimedia rămân
   DoFollow), pct. 2 (slug fără cuvinte de legătură + fără prepoziție atârnată: 793 → 0 cozi,
   194 → 4 slug-uri la limita de 80, permalinkurile publicate neschimbate), pct. 3 (title 44 → 57,

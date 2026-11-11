@@ -20,8 +20,8 @@ import sys
 import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from generator import config          # noqa: E402
-from generator.render import _articole_publicabile  # noqa: E402
+from generator import config, shard   # noqa: E402
+from generator.render import _articole_publicabile, _taie_pe_cioburi  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -60,6 +60,31 @@ def _in_fereastra_ttl(articole: list) -> int:
     ultima = datetime.date.fromisoformat(max(date))
     prag = (ultima - datetime.timedelta(days=config.ARTICLE_TTL_DAYS)).isoformat()
     return sum(1 for d in date if d > prag)
+
+
+def _max_ciob_in_fereastra_ttl(articole: list) -> int:
+    """Cel mai mare numar de articole dintr-un singur Worker/ciob live in fereastra TTL.
+
+    Cu 21 de cioburi live (`config.SHARDS_LIVE`), plafonul de 20.000 si bugetul de 17.000
+    se aplica per Worker, nu global pe toate Workerele adunate (specs/multi-worker-free-2026-11.md §3/§10).
+    """
+    date = [(a.get("published") or "")[:10] for a in articole if (a.get("published") or "")[:10]]
+    if not date:
+        return 0
+    ultima = datetime.date.fromisoformat(max(date))
+    prag = (ultima - datetime.timedelta(days=config.ARTICLE_TTL_DAYS)).isoformat()
+    live_shards = shard.live_plan()
+    if not live_shards:
+        return sum(1 for d in date if d > prag)
+    pe_ciob: dict[str, int] = {}
+    for a in articole:
+        d = (a.get("published") or "")[:10]
+        if not d or d <= prag:
+            continue
+        rel = f"{a.get('category', 'general')}/{a.get('slug') or 'stire'}/index.html"
+        c = shard.assign(rel, live_shards)
+        pe_ciob[c] = pe_ciob.get(c, 0) + 1
+    return max(pe_ciob.values()) if pe_ciob else 0
 
 
 def test_bugetul_configurat_sta_sub_plafonul_gazdei():
@@ -109,22 +134,34 @@ def test_fereastra_TTL_incape_fara_sa_intervina_supapa():
     mai scurta decat `ARTICLE_TTL_DAYS` fara ca nimeni sa fi decis asta. Raspunsul e sa
     cobori TTL-ul (o decizie), nu sa ridici bugetul (o minciuna despre plafonul gazdei).
     """
-    n = int(_in_fereastra_ttl(_stare()) * FRACTIA_PUBLICATA)
+    n = int(_max_ciob_in_fereastra_ttl(_stare()) * FRACTIA_PUBLICATA)
     assert _articole_publicabile(n) == n, (
-        f"la TTL={config.ARTICLE_TTL_DAYS} s-ar publica {n} articole, dar in "
+        f"la TTL={config.ARTICLE_TTL_DAYS} cel mai mare ciob ar publica {n} articole, dar in "
         f"OUTPUT_FILE_BUDGET={config.OUTPUT_FILE_BUDGET} cu rezerva "
         f"{config.OUTPUT_NON_ARTICLE_RESERVE} incap doar {_articole_publicabile(n)}. "
-        f"Vezi specs/cloudflare-free-2026-09.md.")
+        f"Vezi specs/multi-worker-free-2026-11.md.")
 
 
 @pytest.mark.stare_partajata
 def test_podeaua_absoluta_ramane_deasupra_ferestrei_TTL():
-    """Chiar si fara nicio coperta, paginile trebuie sa incapa. Asta e limita dura."""
-    n = _in_fereastra_ttl(_stare())
+    """Chiar si fara nicio coperta, paginile din cel mai mare ciob trebuie sa incapa."""
+    n = _max_ciob_in_fereastra_ttl(_stare())
     maxim_pagini = config.OUTPUT_FILE_BUDGET - config.OUTPUT_NON_ARTICLE_RESERVE
     assert n <= maxim_pagini, (
-        f"{n} articole in fereastra TTL, dar sub buget incap doar {maxim_pagini} pagini. "
-        f"Aici nicio optimizare de imagini nu mai ajuta: trebuie TTL mai mic.")
+        f"{n} articole in cel mai mare ciob din fereastra TTL, dar sub buget incap doar {maxim_pagini} pagini. "
+        f"Aici nicio optimizare de imagini nu mai ajuta: trebuie impartit ciobul sau TTL mai mic.")
+
+
+def test_supapa_pe_cioburi_taie_doar_ciobul_plin():
+    """Un ciob plin nu taie articolele din alt ciob care sta sub buget."""
+    art_sport = [{"category": "sport", "slug": f"s-{i}", "published": f"2026-11-09T10:{i:02d}:00Z"}
+                 for i in range(10)]
+    art_auto = [{"category": "auto", "slug": f"a-{i}", "published": f"2026-11-09T09:{i:02d}:00Z"}
+                for i in range(3)]
+    # Buget 20, rezerva 10 -> 10 fisiere libere per ciob => 5 articole cu coperta per ciob
+    pastrate = _taie_pe_cioburi(art_sport + art_auto, budget=20, reserve=10)
+    assert sum(1 for a in pastrate if a["category"] == "sport") == 5
+    assert sum(1 for a in pastrate if a["category"] == "auto") == 3
 
 
 def test_fereastra_de_coperti_nu_inghite_bugetul():

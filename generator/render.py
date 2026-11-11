@@ -522,6 +522,46 @@ def _articole_publicabile(n: int, budget: int | None = None,
     return max(0, liber // 2)
 
 
+_DEFAULT_ARTICOLE_PUBLICABILE = _articole_publicabile
+
+
+def _call_articole_publicabile(n: int, budget: int | None = None,
+                               reserve: int | None = None) -> int:
+    kw = {}
+    if budget is not None:
+        kw["budget"] = budget
+    if reserve is not None:
+        kw["reserve"] = reserve
+    return _articole_publicabile(n, **kw)
+
+
+def _taie_pe_cioburi(by_date: list, budget: int | None = None,
+                     reserve: int | None = None) -> list:
+    """Aplica supapa de siguranta pe fiecare Worker/ciob live separat (specs/multi-worker-free-2026-11.md §3/§10).
+
+    Cand niciun ciob nu e live (`config.SHARDS_LIVE` gol) sau cand un test suprascrie direct
+    `_articole_publicabile`, se reduce la `_articole_publicabile(len(by_date))`. Cand cioburile
+    sunt live, fiecare ciob are propriul plafon de 20.000 si buget de 17.000, deci supapa taie
+    doar din ciobul care ar depasi bugetul, de la cel mai vechi articol al acelui ciob.
+    """
+    from . import shard
+    shards = shard.live_plan()
+    if not shards or _articole_publicabile is not _DEFAULT_ARTICOLE_PUBLICABILE:
+        incap = _call_articole_publicabile(len(by_date), budget=budget, reserve=reserve)
+        return by_date[:incap]
+    pe_ciob: dict[str, list] = {}
+    for idx, a in enumerate(by_date):
+        rel = f"{a.get('category', 'general')}/{a.get('slug') or 'stire'}/index.html"
+        c = shard.assign(rel, shards)
+        pe_ciob.setdefault(c, []).append((idx, a))
+    pastrate_idx: set[int] = set()
+    for c, perechi in pe_ciob.items():
+        lim = _call_articole_publicabile(len(perechi), budget=budget, reserve=reserve)
+        for idx, _ in perechi[:lim]:
+            pastrate_idx.add(idx)
+    return [a for idx, a in enumerate(by_date) if idx in pastrate_idx]
+
+
 def _fara_date_viitoare(articles: list) -> list:
     """Scoate din lista publicata articolele cu `published` in viitor (marja 48 h).
 
@@ -777,11 +817,11 @@ def _render_harta_shell(source: str, canonical_path: str, county_code: str | Non
     title = (f"Știri din {county_label} — Harta știrilor IZZ.ro"
              if county_code else "Harta știrilor — IZZ.ro")
     description = (
-        f"Știri locale și județene localizate în {county_label}, afișate pe harta IZZ.ro. "
-        "Numărul indică evenimentele sau relatările afișate, nu statistica oficială a incidentelor."
+        f"Știri locale și județene localizate în {county_label}, pe harta IZZ.ro. "
+        "Numărul arată evenimentele afișate, nu o statistică oficială a incidentelor."
         if county_code else
-        "Harta interactivă a știrilor localizate din România. Explorează evenimentele și relatările "
-        "pe județe, orașe și comune. Numărul nu este o statistică oficială a incidentelor."
+        "Harta știrilor localizate din România: evenimente și relatările lor pe județe, orașe și "
+        "comune. Numărul nu e o statistică oficială a incidentelor."
     )
     canonical = config.SITE["url"] + canonical_path
     text = source
@@ -1323,15 +1363,15 @@ def build(articles: list, mod: dict | None = None) -> None:
 
     # Supapa de siguranta a plafonului gazdei. Taie ACUM, inainte de orice scriere, ca
     # paginile de subiect, paginarea, sitemapurile si feedul sa vada exact ce se publica.
-    incap = (_articole_publicabile(len(by_date), reserve=config.OUTPUT_NON_ARTICLE_RESERVE + tombstones)
-             if tombstones else _articole_publicabile(len(by_date)))
-    if incap < len(by_date):
+    pastrate = (_taie_pe_cioburi(by_date, reserve=config.OUTPUT_NON_ARTICLE_RESERVE + tombstones)
+                if tombstones else _taie_pe_cioburi(by_date))
+    if len(pastrate) < len(by_date):
         logging.error("!! ingestul depaseste bugetul de fisiere: public %d din %d articole "
-                      "(buget %d, rezerva %d). Fereastra efectiva scade sub ARTICLE_TTL_DAYS=%d "
+                      "(buget %d per Worker, rezerva %d). Fereastra efectiva scade sub ARTICLE_TTL_DAYS=%d "
                       "-- coboara TTL-ul sau remasoara rezerva cu tools/count_output.py.",
-                      incap, len(by_date), config.OUTPUT_FILE_BUDGET,
+                      len(pastrate), len(by_date), config.OUTPUT_FILE_BUDGET,
                       config.OUTPUT_NON_ARTICLE_RESERVE, config.ARTICLE_TTL_DAYS)
-        by_date = by_date[:incap]
+        by_date = pastrate
 
     _ataseaza_legaturi(by_date)
     editorial_now = datetime.now(timezone.utc)
@@ -1753,7 +1793,7 @@ def build(articles: list, mod: dict | None = None) -> None:
     # Pagina 404 nu e o categorie goala, e capatul unui link mort — si cel mai frecvent motiv
     # NU e o adresa gresita, ci un articol EXPIRAT. `config.ARTICLE_TTL_DAYS` (vezi config), iar
     # `state.expire()` scoate articolul din stare, deci pagina lui nu se mai randeaza:
-    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (11). Oglinda gh-pages
+    # orice permalink partajat iese din fereastra de ARTICLE_TTL_DAYS (90). Oglinda gh-pages
     # e plasa, nu o a doua arhiva construita aici. (Era o saptamana pana la #197, ridicat
     # la 30 fiindca Google raportase 193 de pagini indexate care dadeau 404, apoi coborat
     # la 12 din cauza plafonului de fisiere.) Masurat pe live 8/8, cu control pozitiv
@@ -1858,28 +1898,41 @@ def _write_build_metadata(article_count: int, cautare: dict | None = None) -> No
     # Cheile JSON raman stabile pentru ca probele externe sa nu depinda de ordinea dict-ului Python.
     _write(os.path.join(OUT_DIR, "build.json"), json.dumps(payload, ensure_ascii=False, sort_keys=True) + "\n")
 
-    if file_count > config.OUTPUT_FILE_CEILING:
+    from . import shard
+    live_shards = shard.live_plan()
+    if live_shards:
+        pe_ciob: dict[str, int] = {}
+        for root_dir, _, fs in os.walk(OUT_DIR):
+            for fn in fs:
+                rel = os.path.relpath(os.path.join(root_dir, fn), OUT_DIR).replace(os.sep, "/")
+                c = shard.assign(rel, live_shards)
+                pe_ciob[c] = pe_ciob.get(c, 0) + 1
+        checked_count = max(pe_ciob.values()) if pe_ciob else file_count
+    else:
+        checked_count = file_count
+
+    if checked_count > config.OUTPUT_FILE_CEILING:
         # Zgomotos, nu doar logat. Un `logging.error` lasa randarea sa iasa cu cod 0: jobul de
         # continut ramane verde, Cloudflare refuza deploy-ul supradimensionat fara sa raporteze
         # inapoi, si esecul reapare abia in `release-probe`, 25 de minute mai tarziu. Acela e
         # incidentul din 2026-08-21, si un rand de log in plus nu l-ar fi oprit. Exceptia se
         # ridica DUPA scrierea lui build.json, ca diagnosticul sa supravietuiasca esecului.
         raise RuntimeError(
-            f"output/ are {file_count} fisiere, peste plafonul gazdei "
+            f"output/ are {checked_count} fisiere pe un Worker (total {file_count}), peste plafonul gazdei "
             f"({config.OUTPUT_FILE_CEILING}): Cloudflare ar refuza deploy-ul TACUT. "
             f"Remasoara cu tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE, "
             f"sau coboara ARTICLE_TTL_DAYS.")
-    if file_count > config.OUTPUT_FILE_BUDGET:
+    if checked_count > config.OUTPUT_FILE_BUDGET:
         # Intre buget si plafon: inca se deployeaza, dar rezerva a derivat. Avertisment, nu
         # moarte -- o marja stramta nu trebuie sa doboare publicarea cand deploy-ul ar trece.
-        logging.error("!! output-ul are %d fisiere, peste bugetul de %d (plafon %d). Rezerva "
+        logging.error("!! output-ul are %d fisiere pe cel mai mare Worker (total %d), peste bugetul de %d (plafon %d). Rezerva "
                       "pentru fisierele din afara articolelor (%d) e prea mica -- remasoara cu "
                       "tools/count_output.py si corecteaza OUTPUT_NON_ARTICLE_RESERVE.",
-                      file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_FILE_CEILING,
+                      checked_count, file_count, config.OUTPUT_FILE_BUDGET, config.OUTPUT_FILE_CEILING,
                       config.OUTPUT_NON_ARTICLE_RESERVE)
     else:
-        print(f">> output: {file_count} fisiere "
-              f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - file_count})")
+        print(f">> output: {file_count} fisiere total, max/Worker {checked_count} "
+              f"(buget {config.OUTPUT_FILE_BUDGET}, marja {config.OUTPUT_FILE_BUDGET - checked_count})")
 
 
 def _fraza_in_text(fraza: str, text: str) -> bool:

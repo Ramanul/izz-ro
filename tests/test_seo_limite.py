@@ -2,9 +2,9 @@
 
 Fiecare test apără o proprietate, nu un simptom — raportul număra instance:
 
-1. **Linkul către sursă poartă `nofollow`** (pct. 1, „scurgerea de autoritate”): 57 de linkuri
-   externe DoFollow pe prima pagină, zero backlinkuri primite. Creditul de imagine (Wikimedia,
-   licență) rămâne DoFollow — e obligație de licență, nu recomandare algoritmică.
+1. **Linkul către sursă respectă formula de atribuire** (contract §7): `noopener noreferrer`,
+   fără `nofollow`. Auditul propunea `nofollow` (pct. 1); proprietarul a respins propunerea
+   pe 11 nov 2026, deci testul apără formula permanentă, nu propunerea.
 2. **Slug fără cuvinte de legătură și fără prepoziție atârnată la coadă** (pct. 2).
 3. **Title 50–60 / descriere 120–160 pe prima pagină** (pct. 3).
 4. **Ierarhie: secțiunea e `<h2>`, articolul e `<h3>`; niciun `<img>` fără `alt`, nicio
@@ -64,9 +64,9 @@ def _un_articol(output_randat) -> str:
     return ""
 
 
-# --- 1. nofollow pe surse, DoFollow pe atribuire ----------------------------------------
+# --- 1. formula de atribuire pe surse ----------------------------------------------------
 
-def test_fiecare_link_catre_sursa_poarta_nofollow(output_randat):
+def test_fiecare_link_catre_sursa_respecta_formula(output_randat):
     pagini = [_citit(output_randat, "index.html"),
               _citit(output_randat, "surse", "index.html"),
               _un_articol(output_randat)]
@@ -76,7 +76,8 @@ def test_fiecare_link_catre_sursa_poarta_nofollow(output_randat):
             for bucata in re.findall(bloc, html, re.S):
                 for url, rel in _linkuri_ext(bucata):
                     vazute += 1
-                    assert "nofollow" in rel, (url, rel)
+                    assert "nofollow" not in rel, (url, rel)
+                    assert "noopener" in rel and "noreferrer" in rel, (url, rel)
     assert vazute > 0, "testul nu a găsit niciun link de sursă de verificat"
 
 

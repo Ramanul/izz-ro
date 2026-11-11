@@ -38,7 +38,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-from generator import state, htmlart, localities, photojudge  # noqa: E402
+from generator import state, htmlart, localities, photojudge, render  # noqa: E402
 from generator.process import get_provider  # noqa: E402
 
 # reutilizam pipeline-ul Wikidata deja validat (potrivire stricta, licenta, notorietate)
@@ -80,31 +80,73 @@ def is_public_domain(short_name: str) -> bool:
     return bool(_PD_OK.match((short_name or "").strip()))
 
 
+def is_acceptable_lead_license(short_name: str) -> bool:
+    """Public domain / CC0 sau CC BY / CC BY-SA (care se afiseaza cu credit)."""
+    return is_public_domain(short_name) or render._is_credit_required_license(short_name)
+
+
 def is_landscape(w: int, h: int) -> bool:
     return bool(w) and bool(h) and w >= h * LANDSCAPE_RATIO
 
 
-def is_big_enough(w: int) -> bool:
-    """Coperta og e 1200x630; sub atat imaginea ar fi marita si vizibil interpolata."""
-    return bool(w) and w >= localities.MIN_WIDTH
+def is_acceptable_format(w: int, h: int) -> bool:
+    """Landscape clasic sau portret vertical / patrat decupabil curat (w/h >= 0.5, latime/inaltime >= 400)."""
+    if not (w and h):
+        return False
+    if is_landscape(w, h):
+        return True
+    return w >= 400 and h >= 400 and (w / h) >= 0.5
+
+
+def is_big_enough(w: int, h: int = 0) -> bool:
+    """Coperta og e 1200x630; imaginea trebuie sa acopere dimensiunea fara interpolare excesiva."""
+    return bool(w) and (w >= localities.MIN_WIDTH or (h >= localities.MIN_WIDTH and w >= 600))
 
 
 def qualifies(info: dict) -> bool:
-    """info = {width,height,license,...}. Poate deveni LEAD (carduri/og) daca e
-    destul de mare, landscape SI atribuire-libera."""
-    return is_big_enough(info.get("width", 0)) and \
-        is_landscape(info.get("width", 0), info.get("height", 0)) and \
-        is_public_domain(info.get("license", ""))
+    """info = {width,height,license,...}. Poate deveni LEAD daca e
+    destul de mare, are format decupabil curat SI licenta compatibila (PD/CC0 sau CC BY cu credit)."""
+    return is_big_enough(info.get("width", 0), info.get("height", 0)) and \
+        is_acceptable_format(info.get("width", 0), info.get("height", 0)) and \
+        is_acceptable_lead_license(info.get("license", ""))
 
 
-def crop_to(im, w: int, h: int):
-    """Redimensioneaza + incadreaza central la exact w x h (fara deformare)."""
+def crop_to(im, w: int, h: int, focus_y: float | None = None):
+    """Redimensioneaza + incadreaza la exact w x h (fara deformare).
+    Daca focus_y este specificat (0.0 .. 1.0), centrarea verticala se orienteaza
+    in jurul punctului cerut, protejand capul si fata de decupare arbitrara.
+    """
     sw, sh = im.size
     scale = max(w / sw, h / sh)
     nw, nh = max(w, round(sw * scale)), max(h, round(sh * scale))
     im = im.resize((nw, nh), Image.LANCZOS)
-    left, top = (nw - w) // 2, (nh - h) // 2
+    left = (nw - w) // 2
+    if focus_y is not None:
+        target_y = round(nh * focus_y)
+        top = target_y - h // 2
+        top = max(0, min(top, nh - h))
+    else:
+        top = (nh - h) // 2
     return im.crop((left, top, left + w, top + h))
+
+
+def _get_focus_y(name: str, info: dict) -> float | None:
+    """Calculeaza punctul vertical de focalizare (0.0 .. 1.0) pentru incadrarea portretelor."""
+    w, h = info.get("width", 0), info.get("height", 0)
+    if is_landscape(w, h):
+        return None
+    try:
+        incadrare = htmlart.incadrare_portrete()
+        portraits = json.load(open(render.PORTRAITS_JSON, encoding="utf-8"))
+        p = portraits.get(htmlart._norm_name(name))
+        if p and p.get("img") and p["img"] in incadrare:
+            poz = incadrare[p["img"]].get("poz", "")
+            if "%" in poz:
+                py_val = float(poz.split()[1].replace("%", ""))
+                return max(0.15, min(py_val / 100.0, 0.45))
+    except Exception:
+        pass
+    return 0.28
 
 
 def commons_lead_info(filename: str) -> dict | None:
@@ -124,12 +166,12 @@ def commons_lead_info(filename: str) -> dict | None:
     return None
 
 
-def _save_renditions(data: bytes, slug: str) -> dict | None:
+def _save_renditions(data: bytes, slug: str, focus_y: float | None = None) -> dict | None:
     """Din rendite descarcata produce cover+art+webp incadrate. None daca invalida."""
     import io
     im = Image.open(io.BytesIO(data)).convert("RGB")
-    cover = crop_to(im, COVER_W, COVER_H)
-    art = crop_to(im, ART_W, ART_H)
+    cover = crop_to(im, COVER_W, COVER_H, focus_y=focus_y)
+    art = crop_to(im, ART_W, ART_H, focus_y=focus_y)
     cov_p = os.path.join(OUTDIR, f"{slug}.c.jpg")
     art_p = os.path.join(OUTDIR, f"{slug}.jpg")
     web_p = os.path.join(OUTDIR, f"{slug}.webp")
@@ -193,11 +235,51 @@ def index_localitati(cache: dict) -> dict:
     return idx
 
 
+_TRAGIC_TERMS = re.compile(
+    r"\b("
+    r"accident(?:e|ul|ele)?|"
+    r"decedat(?:ă|i|e)?|"
+    r"deces(?:e|ul|ele)?|"
+    r"mort(?:ă|i|e|ea|ilor)?|"
+    r"mortal(?:ă|i|e)?|"
+    r"omor(?:ul|uri)?|"
+    r"omorât(?:ă|i|e)?|"
+    r"ucis(?:ă|i|e)?|"
+    r"crim(?:ă|e|a|ele)?|"
+    r"criminal(?:ă|i|e)?|"
+    r"cadavru(?:l|ri)?|"
+    r"viol(?:ul|uri)?|"
+    r"violat(?:ă|i|e)?|"
+    r"incendiu(?:l|ri)?|"
+    r"explozie|explozii|"
+    r"percheziți(?:i|e|ile)?|"
+    r"dna|"
+    r"cătușe|"
+    r"arestat(?:ă|i|e)?|"
+    r"reținut(?:ă|i|e)?|"
+    r"sinucidere|sinucideri|"
+    r"sinucis(?:ă|i|e)?|"
+    r"tragedi(?:e|i|ile)?|"
+    r"înecat(?:ă|i|e)?"
+    r")\b",
+    re.I,
+)
+
+
+def is_tragic_or_negative(text: str) -> bool:
+    """Verifica daca textul contine termeni de tragedie, accident, deces sau penal grav."""
+    return bool(_TRAGIC_TERMS.search(text or ""))
+
+
 def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     """(intrare, motiv) pentru fotografia LOCALITATII unei stiri venite de la primaria ei.
 
     Se incearca INAINTEA rutei pe entitati, fiindca e mult mai fiabila: cheia e slug-ul
     determinist al sursei (`pl_<judet>_<localitate>`), nu entitatile extrase din text.
+
+    Garda Negativa Epistemica (Argon): stirile locale despre tragedii, accidente, decese
+    sau fapte penale grave nu au voie sa poarte fotografia insorita a localitatii/primariei.
+    Cititorul ar asocia cladirea/reperul cu scena accidentului sau fapta penala.
 
     Poarta de licenta e `localities.usable` (CC0/PD si CC BY/BY-SA, NC/ND respinse), nu
     `qualifies` (doar PD/CC0). Bariera stricta din 2026-08-19 (01d6107) exista fiindca atunci
@@ -214,6 +296,11 @@ def lead_for_locality(a: dict, by_name: dict, memo: dict | None = None):
     `memo` (`{qid: intrare | motiv}`) tine rezultatul per LOCALITATE in rulare: a doua stire
     din aceeasi localitate nu mai face nicio cerere de retea.
     """
+    title = a.get("title", "")
+    summary = a.get("synthesis") or a.get("teaser") or ""
+    if is_tragic_or_negative(f"{title} {summary}"):
+        return None, "loc_exclus_tematic"
+
     rec = localities.locality_for_article(a, by_name)
     if not rec:
         if not localities.eligible(a):
@@ -294,11 +381,12 @@ def lead_for_article(a: dict, provider=None):
         if len(data) < 3000:
             continue
         slug = fp.slugish(name)
-        rend = _save_renditions(data, slug)
+        focus_y = _get_focus_y(name, info)
+        rend = _save_renditions(data, slug, focus_y=focus_y)
         if not rend:
             continue
         return {**rend, "artist": info["artist"], "license": info["license"],
-                "page": info["page"], "name": name}, "ent_ok"
+                "page": info["page"], "name": name, "kind": "entity"}, "ent_ok"
     return None, _ETAPE_ENT[etapa]
 
 
@@ -331,17 +419,34 @@ def main() -> int:
     print(f">> localitati cu poza deja in cache: {len(memo)}")
     done = refolosite = 0
     motive: dict = {}
-    # Stirile primariilor INTAI (stabil: in rest ramane ordinea starii, cele mai noi primele).
-    # O interogare de localitate rezolva apoi, fara retea, toate stirile acelei localitati;
-    # o interogare pe entitati rezolva cel mult un articol (3 hit-uri din ~10.000, masurat
-    # 2026-10-17). Plafonul merge deci intai acolo unde o cerere aduce cele mai multe poze.
-    for a in sorted(arts, key=lambda x: 0 if localities.eligible(x) else 1):
+    # Prioritizare pe categorii (Argon): articolul #1 (cel mai recent) din fiecare
+    # categorie primeste prioritate de interogare (0), creand cate o ancora vizuala pe
+    # fiecare rubrica a primei pagini. Urmeaza restul stirilor locale (1), apoi fluxul general (2).
+    seen_cats = set()
+    first_in_cat = set()
+    for a in arts:
+        cat = a.get("category")
+        if cat and cat not in seen_cats:
+            seen_cats.add(cat)
+            first_in_cat.add(htmlart.art_id(a))
+
+    def _prioritate_articol(x: dict) -> int:
+        aid = htmlart.art_id(x)
+        if aid in first_in_cat:
+            return 0
+        if localities.eligible(x):
+            return 1
+        return 2
+
+    for a in sorted(arts, key=_prioritate_articol):
         aid = htmlart.art_id(a)
         if not _needs_lookup(aid, a, cache):
             continue
-        # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon.
+        # Localitatea cu poza deja cunoscuta se rezolva FARA retea, deci fara plafon
+        # (cu conditia sa nu fie o stire de tragedie/accident -- Garda Negativa Argon).
         rec = localities.locality_for_article(a, by_name)
-        if rec and isinstance(memo.get(rec["qid"]), dict):
+        title_text = f"{a.get('title', '')} {a.get('synthesis') or a.get('teaser') or ''}"
+        if rec and isinstance(memo.get(rec["qid"]), dict) and not is_tragic_or_negative(title_text):
             cache[aid] = {**memo[rec["qid"]], "name": rec["display"]}
             refolosite += 1
             continue

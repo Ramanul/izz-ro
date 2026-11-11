@@ -23,6 +23,9 @@ from urllib.parse import urljoin, urlsplit, urlunsplit
 
 from playwright.sync_api import sync_playwright
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from generator import shard  # noqa: E402
+
 BASE = os.getenv("BASE_URL", "https://izz.ro").rstrip("/")
 SHOT_DIR = os.getenv("SHOT_DIR", "shots")
 fails = []
@@ -47,6 +50,8 @@ def _is_site_host(host, base_host):
     base_host = (base_host or "").lower()
     return bool(host) and (
         host == base_host or host == "izz.ro" or host.endswith(".izz.ro")
+        or (host.endswith(".workers.dev") and base_host.endswith(".workers.dev")
+            and host.startswith("izz-ro"))
     )
 
 
@@ -54,17 +59,23 @@ def _rewrite_site_origin(route, base_parts):
     """Trimite linkurile canonice izz.ro prin originea de test (de ex. workers.dev).
 
     Originea workers.dev evita challenge-ul WAF, dar homepage-ul poate avea linkuri
-    absolute spre izz.ro. Rescriem doar hostname-urile proprii; sursele externe raman intacte.
+    absolute spre izz.ro, iar pe workers.dev rutarea de zona nu muta categoriile pe
+    cioburi. Rescriem doar hostname-urile proprii spre originea ciobului care are
+    fisierul; sursele externe raman intacte.
     """
     requested = urlsplit(route.request.url)
-    if (_is_site_host(requested.hostname, base_parts.hostname)
-            and requested.hostname != base_parts.hostname):
-        target = urlunsplit((
-            base_parts.scheme, base_parts.netloc, requested.path, requested.query, ""
-        ))
-        route.continue_(url=target)
-    else:
-        route.continue_()
+    if _is_site_host(requested.hostname, base_parts.hostname):
+        origin = shard.workers_origin_for(
+            f"{base_parts.scheme}://{base_parts.netloc}", requested.path
+        )
+        origin_parts = urlsplit(origin)
+        if (requested.scheme, requested.netloc) != (origin_parts.scheme, origin_parts.netloc):
+            target = urlunsplit((
+                origin_parts.scheme, origin_parts.netloc, requested.path, requested.query, ""
+            ))
+            route.continue_(url=target)
+            return
+    route.continue_()
 
 
 def _check_mobile_overflow(page, label):

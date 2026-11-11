@@ -18,6 +18,128 @@ from generator import diacritice
 from generator.process import repara_diacritice
 from tools import qa_check
 
+# --- primitivele: forme normalizate, potriviri si corpul publicat ---------------------------
+
+def test_forme_diacritice_text_gol():
+    assert diacritice.forme_diacritice("") == set()
+    assert diacritice.forme_diacritice(" \n\t ") == set()
+    assert diacritice.forme_diacritice(None) == set()
+
+
+def test_forme_diacritice_text_fara_diacritice():
+    assert diacritice.forme_diacritice("STIRI fara diacritice: DN1, 2026!") == set()
+    assert diacritice.forme_diacritice("1234 !? -") == set()
+
+
+def test_forme_diacritice_majuscule_duplicate_si_cratime():
+    sursa = "ȘTIRI: Știri despre ȚARĂ; știri, țară și apă termală."
+    assert diacritice.forme_diacritice(sursa) == {"stiri", "tara", "si", "apa", "termala"}
+    assert diacritice.forme_diacritice("apă-termală") == {"apa-termala"}
+
+
+def test_forme_diacritice_literele_izolate_sunt_incluse():
+    """Comportament actual suspect: regex-ul cere o litera initiala, nu minim doua caractere.
+
+    Literele izolate intra in set, desi comentariul lui _CUVANT spune altceva; de exemplu,
+    „ă” si „â” din sursa devin cheia „a”, care poate coincide cu „a” din textul generat.
+    """
+    assert diacritice.forme_diacritice("ă â î ș ț Ă Â Î Ș Ț") == {"a", "i", "s", "t"}
+
+
+def test_cuvinte_pierdute_text_gol():
+    sursa = "ȘTIRI despre apă termală."
+    assert diacritice.cuvinte_pierdute("", "") == []
+    assert diacritice.cuvinte_pierdute(sursa, "") == []
+    assert diacritice.cuvinte_pierdute("", "stiri apa termala") == []
+    assert diacritice.cuvinte_pierdute(sursa, None) == []
+    assert diacritice.cuvinte_pierdute(None, "stiri apa termala") == []
+
+
+def test_cuvinte_pierdute_sursa_fara_diacritice():
+    sursa = "STIRI fara diacritice: DN1, 2026."
+    assert diacritice.cuvinte_pierdute(sursa, "STIRI fara diacritice") == []
+    assert diacritice.cuvinte_pierdute(sursa, "stiri dn") == []
+
+
+def test_cuvinte_pierdute_pastreaza_ordinea_si_duplicatele_din_generat():
+    sursa = "ȘTIRI despre apă termală și măsuri."
+    generat = "MĂSURI: apa, Știri! știri, apa termala."
+    assert diacritice.cuvinte_pierdute(sursa, generat) == [
+        "masuri", "apa", "stiri", "stiri", "apa", "termala"]
+
+
+def test_cuvinte_pierdute_include_si_cuvintele_cu_diacritice_pastrate():
+    """Pierderea partiala nu scoate din lista cuvintele care si-au pastrat diacriticele."""
+    assert diacritice.cuvinte_pierdute(
+        "Știri despre apă termală.", "Știri despre apa termală.") == [
+            "stiri", "apa", "termala"]
+
+
+def test_cuvinte_pierdute_toate_diacriticele_pastrate_nu_inseamna_lista_goala():
+    """Comportament actual suspect fata de nume: sunt potriviri normalizate, nu pierderi filtrate.
+
+    Chiar si textul identic, cu toate diacriticele pastrate, intoarce toate potrivirile.
+    Verificarea separata a diacriticelor din generat apartine predicatului lipsesc_diacriticele.
+    """
+    sursa = "ȘTIRI despre apă termală."
+    assert diacritice.cuvinte_pierdute(sursa, "Știri despre apă termală.") == [
+        "stiri", "apa", "termala"]
+    assert diacritice.cuvinte_pierdute(sursa, sursa) == ["stiri", "apa", "termala"]
+
+
+def test_cuvinte_pierdute_fara_coincidente_intoarce_lista_goala():
+    assert diacritice.cuvinte_pierdute(
+        "Știri despre apă termală.", "Noutăți despre izvoare calde.") == []
+
+
+def test_corp_generat_articol_sau_campuri_goale():
+    assert diacritice.corp_generat({}) == ""
+    assert diacritice.corp_generat({"model": "B", "teaser": None}) == ""
+    assert diacritice.corp_generat({"model": "B", "teaser": " \n\t "}) == ""
+    assert diacritice.corp_generat({"model": "C", "title": "ȘTIRI", "synthesis": None}) == ""
+
+
+def test_corp_generat_modelele_non_C_folosesc_teaserul_si_elimina_spatiile_exterioare():
+    art = {"model": "B", "title": "Titlu ignorat", "synthesis": "Sinteză ignorată",
+           "teaser": " \nSTIRI fara diacritice.\t"}
+    assert diacritice.corp_generat(art) == "STIRI fara diacritice."
+    art["model"] = "c"                              # modelul C se compara exact, fara lower()
+    assert diacritice.corp_generat(art) == "STIRI fara diacritice."
+
+
+def test_corp_generat_pastreaza_majusculele_si_diacriticele():
+    art = {"model": "B", "title": "Titlu ignorat", "teaser": " \nȘTIRI despre ȚARĂ!\t"}
+    assert diacritice.corp_generat(art) == "ȘTIRI despre ȚARĂ!"
+
+
+def test_corp_generat_C_foloseste_sinteza_fara_titlu_sau_teaser():
+    art = {"model": "C", "title": "ȘTIRI", "teaser": "Teaser ignorat",
+           "synthesis": " \nSinteză publicată.\t"}
+    assert diacritice.corp_generat(art) == "Sinteză publicată."
+
+
+def test_corp_generat_C_include_toate_textele_dialectice_si_accepta_sinteza_lipsa():
+    art = {"model": "C", "title": "Titlu ignorat", "teaser": "Teaser ignorat",
+           "synthesis": "Sinteză.",
+           "dialectic": {
+               "common": [{"text": "Fapt comun."}],
+               "single": [{"text": "Afirmație atribuită."}],
+               "diverg": [{"axis": "Diferență", "pos": [{"text": "Prima poziție."},
+                                                       {"text": "A doua poziție."}]}],
+           }}
+    texte = "Fapt comun. Afirmație atribuită. Diferență Prima poziție. A doua poziție."
+    assert diacritice.corp_generat(art) == f"Sinteză. {texte}"
+    art["synthesis"] = None
+    assert diacritice.corp_generat(art) == texte
+
+
+def test_corp_generat_C_ignora_dialectic_cand_nu_e_dictionar():
+    art = {"model": "C", "synthesis": "  Sinteză.  ", "teaser": "Teaser ignorat"}
+    for valoare in (None, [], "Text neverificat", {}):
+        art["dialectic"] = valoare
+        assert diacritice.corp_generat(art) == "Sinteză."
+
+
 # --- 1. predicatul: cand semnaleaza si cand NU ---------------------------------------------
 
 # Cazul real (Profit.ro): sursa are diacritice, textul publicat le-a pierdut pe toate.
@@ -81,6 +203,43 @@ def test_pierderea_diacriticelor_din_corp_nu_e_ascunsa_de_un_titlu_bun():
     sursa = "Știrea cu diacritice. Descriere fără explicații."
     assert not diacritice.lipsesc_diacriticele(sursa, diacritice.text_generat(art))
     assert diacritice.articolul_a_pierdut_diacriticele(sursa, art)
+
+
+def test_qa_distinge_titlurile_corecte_de_pierderile_dovedibile():
+    """Proxy-ul „fara nicio diacritica" e o limita superioara; a doua masuratoare e cea fina.
+
+    Masurat pe starea din 7 nov 2026 (2135 titluri in 72h): 168 fara diacritice, dar doar
+    9 cu pierderi dovedibile din lexicon. Restul sunt titluri corecte („Cancelarul german
+    Friedrich Merz a vizitat Kievul") — de aceea cifra mare nu are voie sa fie poarta.
+    """
+    corpus = [
+        {"title": "Președintele a anunțat noi măsuri pentru fermieri",
+         "teaser": "Anunțul de execuție silită a fost publicat în monitorul oficial."},
+        {"title": "Brandul românesc de apă termală", "teaser": "Afacerea a crescut."},
+    ]
+    lex = qa_check._lexicon_diacritice(corpus)
+    assert lex["presedintele"] == {"președintele"}
+    # `ă` nu intra in lexicon: „apa"/„apă" e omograf, n-ar dovedi nimic
+    assert "apa" not in lex
+
+    pierderi = qa_check._titluri_cu_pierderi(
+        [{"title": "Presedintele a anuntat noi masuri pentru fermieri"}], corpus)
+    assert pierderi and "presedintele" in pierderi[0]["cuvinte"]
+
+    # Titlu fara diacritice, dar corect: niciun cuvant nu are forma diacritizata in corpus.
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Cancelarul german a vizitat Kievul"}], corpus) == []
+    # Un singur cuvant coincide: sub pragul de 2, nu raportam (poate fi intamplare).
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Presedintele s-a intalnit cu jurnalistii straini"}], corpus) == []
+
+
+def test_qa_numele_proprii_fara_diacritice_nu_sunt_raportate():
+    """„Poligonul Rosu": majuscula din interiorul titlului poate fi nume, deci nu se atinge."""
+    corpus = [{"title": "Tragere pe poligonul Roșu", "teaser": "Președintele a anunțat."},
+              {"title": "Roșu e un nume de familie", "teaser": "Anunțul a fost publicat."}]
+    assert qa_check._titluri_cu_pierderi(
+        [{"title": "Instiintare tragere Poligonul Rosu"}], corpus) == []
 
 
 def test_pierderea_diacriticelor_din_titlu_e_detectata_cand_corpul_e_bun():
