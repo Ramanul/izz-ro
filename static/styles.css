@@ -1584,7 +1584,7 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
 .sub-prag-tabel th { text-align: left; font-weight: 400; color: var(--ink-2); padding: var(--sp-4) var(--sp-8) var(--sp-4) 0; border-bottom: 1px solid var(--line-strong); }
 .sub-prag-tabel td { text-align: right; font-family: var(--font-text); font-weight: 700; padding: var(--sp-4) 0; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
 /* punctul de oprire al listei zilei (E3): lista are un capăt și îl spune, fără îndemn */
-.briefing-azi .azi-end {
+.briefing-azi .azi-end, .home-end {
   margin: var(--sp-20) 0 0; padding-top: var(--sp-12); border-top: 1px solid var(--line-strong);
   color: var(--ink-2); font-size: var(--fs-xs);
 }

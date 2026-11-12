@@ -89,6 +89,14 @@
       <a class="see-all" href="{{ base }}/{{ cat }}/">Toate știrile din {{ cat | cat_label }} &rarr;</a>
       {% endif %}
     {% endfor %}
+    {#- Punctul de oprire al primei pagini (aceeași idee ca pe /azi/): pagina are un capăt și îl
+        spune. Textul numește SELECȚIA, nu „toate știrile". Numărul din ultimele 24 de ore apare
+        doar când e sigur mai mare decât tot ce poate arăta pagina (pe telefon intră mai puține
+        carduri decât pe ecran lat, deci cardurile nu se numără). /azi/ are doar ziua curentă,
+        de aceea e numită „titlurile de azi", nu „restul". #}
+    {% set pe_pagina = namespace(n=hero | length) %}
+    {% for _cat, _items in by_category.items() %}{% set pe_pagina.n = pe_pagina.n + (_items | length) %}{% endfor %}
+    <p class="home-end">Aici se termină selecția de pe prima pagină{% if zi and zi.stiri > pe_pagina.n %}. În ultimele 24 de ore au apărut {{ zi.stiri }} {{ zi.stiri | de_ro }}subiecte{% endif %}. Mai multe sunt în paginile rubricilor; titlurile de azi, în <a href="{{ base }}/azi/">lista zilei</a>.</p>
   {% endif %}
 
   {% if mini_harta %}
