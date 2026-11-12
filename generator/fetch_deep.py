@@ -465,6 +465,10 @@ def _same_origin_derived(entries: list) -> set:
             derived.add(e["url"])
         else:
             seen |= external
+    # Citări reciproce (Digi24 „potrivit HotNews”, HotNews „potrivit Digi24”): ciclul e tot o
+    # singură origine, dar trebuie să rămână un reprezentant, altfel nu există ROOT (IndexError).
+    if len(derived) == len(entries):
+        derived.discard(order[0]["url"])
     return derived
 
 

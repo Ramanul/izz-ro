@@ -344,6 +344,19 @@ def test_toate_preluari_agentii_diferite_raman_origini_diferite():
     assert "DERIVED" not in roles.values()
 
 
+def test_citari_reciproce_pastreaza_un_root():
+    """Codex P1 pe #595: Digi24 „potrivit HotNews”, HotNews „potrivit Digi24” → toți DERIVED,
+    pool gol, IndexError care oprea pipeline-ul. Ciclul e o singură origine: un ROOT rămâne."""
+    a = {"url": "https://www.digi24.ro/1", "original_link": "https://www.digi24.ro/1",
+         "source_name": "Digi24", "published": "2026-11-12T10:00:00+00:00", "title": "Ședință",
+         "description": "Guvernul a aprobat 3 ordonanțe azi la ora 10, potrivit HotNews.ro."}
+    b = {"url": "https://hotnews.ro/1", "original_link": "https://hotnews.ro/1",
+         "source_name": "HotNews.ro", "published": "2026-11-12T10:05:00+00:00", "title": "Ședință",
+         "description": "Guvernul a aprobat 3 ordonanțe azi la ora 10, potrivit Digi24."}
+    roles = fetch_deep.classify_cluster_epistemic_roles([a, b])
+    assert sorted(roles.values()) == ["DERIVED", "ROOT"]
+
+
 def test_detectie_atribuire_derivata_si_excludere_proprie():
     assert fetch_deep.is_derived_attribution(
         "Potrivit Agerpres, ședința a început la ora 10.",
