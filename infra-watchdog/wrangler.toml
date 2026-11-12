@@ -26,3 +26,17 @@ crons = ["*/20 * * * *"]
 [[kv_namespaces]]
 binding = "WATCHDOG_KV"
 id = "cd9eb1d794cd42c0aca9fcd86248f308"
+
+# ── Paznicul de cost R2 (r2-paznic.js) ───────────────────────────────────────────────
+# INERT cât timp R2_PAZNIC_BUCKET e gol: codul se poate publica fără să schimbe nimic.
+# La activare: numele bucket-ului aici, apoi secretele (wrangler secret put):
+#   CF_API_TOKEN_R2  — token cu „Account Analytics: Read” + „Workers R2 Storage: Edit”
+#   CF_ACCOUNT_ID    — id-ul contului
+#   ALERTA_DE / ALERTA_CATRE — opțional, pentru e-mail (expeditor pe izz.ro, destinatar
+#                      verificat în Email Routing); fără ele alerta rămâne în loguri.
+[vars]
+R2_PAZNIC_BUCKET = ""
+
+# Trimitere de e-mail prin Email Routing (gratuit). Fără adresele de mai sus nu trimite nimic.
+[[send_email]]
+name = "ALERTA_EMAIL"

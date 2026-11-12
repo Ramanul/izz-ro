@@ -16,6 +16,7 @@
 **Updated:** 2026-11-09 (Multi-Worker feliile 2–4: 21 cioburi live, `dist/main` 1.527, TTL 11→90).
 
 ## Open
+- **Paznic de cost R2 [IZZ-0459] — PE MAIN, INERT:** `infra-watchdog/r2-paznic.js` taie accesul public la 90% din gratuitate; pornește doar cu `R2_PAZNIC_BUCKET` + secretele `CF_API_TOKEN_R2`/`CF_ACCOUNT_ID` (proprietar). Deploy manual: `npx wrangler deploy -c wrangler.toml` din `infra-watchdog`. Apelurile REST de tăiere sunt neprobate live (R2 neactivat).
 - **Multi-Worker Free [IZZ-0454], feliile 2–4 COMPLETE (#568 merged – #579 merged, ultimul `714abdbdd`):** 21 cioburi live, max/ciob 1.527 (7,6% din 20k), TTL 90 zile. Invocări `izz-ro`: 907→1 după #579 (9 nov); 504-urile din 8–9 nov = Early Hints, nu Worker (spec §23). Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
 - **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
