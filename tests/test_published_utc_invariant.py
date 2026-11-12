@@ -19,6 +19,7 @@ Nu era doar un test rosu: era ordine editoriala gresita.
 from __future__ import annotations
 
 import json
+from pathlib import Path
 import re
 
 import pytest
@@ -49,6 +50,9 @@ def _fara_citate(linie: str) -> str:
     ("2026-09-11T08:30:00Z", "2026-09-11T08:30:00+00:00"),  # sufix Z
     ("2026-09-11T11:30:00+03:00", "2026-09-11T08:30:00+00:00"),  # convertit, nu doar etichetat
     ("  2026-09-11  ", "2026-09-11T00:00:00+00:00"),
+    # HTML `<time datetime>` accepta max. 3 cifre la fractiune; fallback-ul `now()` scria 6.
+    ("2026-11-12T11:15:55.581151+00:00", "2026-11-12T11:15:55+00:00"),
+    ("2026-11-12T11:15:55.5Z", "2026-11-12T11:15:55+00:00"),
 ])
 def test_iso_utc_normalizeaza(brut, asteptat):
     assert iso_utc(brut) == asteptat
@@ -182,3 +186,20 @@ def test_nicio_trunchiere_de_data_in_fetch():
         and not linie.lstrip().startswith("#")
     ]
     assert not suspecte, "data trunchiata la 10 caractere:\n" + "\n".join(suspecte)
+
+
+# --- fallback-urile `now()` din fetch nu mai scriu microsecunde -------------------------
+
+_HTML_DATETIME = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$")
+
+
+def test_fallback_now_e_valid_html_datetime():
+    """Un feed fara data primea `datetime.now().isoformat()` -> `.581151`, invalid in HTML
+    (W3C Nu, izz.ro 2026-11-12, `<time datetime>` din `_card.html`)."""
+    assert _HTML_DATETIME.match(fetch._parse_date({}))
+
+
+def test_nicio_fractiune_de_secunda_in_fetch():
+    """Garda de clasa: orice `now().isoformat()` nou din fetch trebuie sa taie la secunde."""
+    sursa = Path(fetch.__file__).read_text(encoding="utf-8")
+    assert "now(timezone.utc).isoformat()" not in sursa

@@ -33,7 +33,10 @@ def iso_utc(valoare: str) -> str | None:
         return None
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc).isoformat()
+    # `timespec="seconds"`: HTML cere 1-3 cifre la fractiunea de secunda in `<time datetime>`,
+    # iar fallback-ul `datetime.now()` scria 6 (W3C Nu, 2026-11-12). Si sortarea pe sir castiga:
+    # `'.'` (46) > `'+'` (43), deci o valoare cu microsecunde iesea „mai noua" in aceeasi secunda.
+    return dt.astimezone(timezone.utc).isoformat(timespec="seconds")
 
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")

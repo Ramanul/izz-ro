@@ -353,8 +353,8 @@ def text_observation_counts(entry: dict) -> dict | None:
     if comparisons and (not first or not last or first >= last):
         return None
     return {"v": 1, "comparisons": comparisons, "changed": changed,
-            "first_at": first.isoformat() if comparisons else None,
-            "last_at": last.isoformat() if comparisons else None}
+            "first_at": first.isoformat(timespec="seconds") if comparisons else None,
+            "last_at": last.isoformat(timespec="seconds") if comparisons else None}
 
 
 def _advance_text_observations(previous: dict, current: dict) -> dict:
@@ -389,8 +389,8 @@ def _advance_text_observations(previous: dict, current: dict) -> dict:
     )
     counts["comparisons"] += 1
     counts["changed"] += int(changed)
-    counts["first_at"] = counts["first_at"] or old_time.isoformat()
-    counts["last_at"] = new_time.isoformat()
+    counts["first_at"] = counts["first_at"] or old_time.isoformat(timespec="seconds")
+    counts["last_at"] = new_time.isoformat(timespec="seconds")
     return counts
 
 

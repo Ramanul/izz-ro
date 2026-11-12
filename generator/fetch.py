@@ -338,7 +338,7 @@ def _parse_date(entry) -> str:
                 return datetime(*tm[:6], tzinfo=timezone.utc).isoformat()
             except (ValueError, TypeError):
                 pass
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
 def _clamp_future(iso: str, margin_hours: int = 48) -> str:
@@ -352,7 +352,7 @@ def _clamp_future(iso: str, margin_hours: int = 48) -> str:
     except (ValueError, TypeError):
         return iso
     if dt > datetime.now(timezone.utc) + timedelta(hours=margin_hours):
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(timezone.utc).isoformat(timespec="seconds")
     return iso
 
 
@@ -374,7 +374,7 @@ def _parse_w3c_date(raw: str) -> str:
     """news:publication_date (W3C: 'YYYY-MM-DD' sau ISO 8601 datetime) -> ISO 8601 UTC."""
     raw = (raw or "").strip()
     if not raw:
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(timezone.utc).isoformat(timespec="seconds")
     try:
         if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):     # doar data -> miezul noptii UTC
             # Intr-o singura instructiune intentionat: despartita in doua, `ruff` raporteaza
@@ -388,7 +388,7 @@ def _parse_w3c_date(raw: str) -> str:
             dt = dt.replace(tzinfo=timezone.utc)
         return dt.astimezone(timezone.utc).isoformat()
     except ValueError:
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
 def _curata_control(raw: bytes) -> bytes:
@@ -553,7 +553,7 @@ def _wp_published(entry: dict) -> str:
     for camp in ("date_gmt", "date"):
         if (iso := iso_utc(entry.get(camp) or "")):
             return iso
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
 def _parse_ro_date(raw: str) -> str:
@@ -572,11 +572,11 @@ def _parse_ro_date(raw: str) -> str:
             if m and m.group(2) in _RO_MONTHS:
                 d, mo, y = int(m.group(1)), _RO_MONTHS[m.group(2)], int(m.group(3))
             else:
-                return datetime.now(timezone.utc).isoformat()
+                return datetime.now(timezone.utc).isoformat(timespec="seconds")
     try:
         return datetime(y, mo, d, tzinfo=timezone.utc).isoformat()
     except ValueError:
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
 class _GenericListParser(HTMLParser):
@@ -926,7 +926,7 @@ def _fetch_one(key: str, source: dict, cache: dict | None = None) -> tuple[list,
                     cache[key] = {
                         "etag": resp.headers.get("ETag"),
                         "last_modified": resp.headers.get("Last-Modified"),
-                        "fetched_at": datetime.now(timezone.utc).isoformat(),
+                        "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                         # Cheia de grupare pentru `_HostPacer`. Se salveaza si cand
                         # raspunsul a fost un challenge: antetul e tot al furnizorului,
                         # deci sursa intra in grupul corect chiar din runda in care a picat.
