@@ -314,6 +314,49 @@ def test_clona_fara_atribuire_nu_e_confirmare():
     assert "a.ro" in confirmate
 
 
+def test_toate_preluari_aceeasi_agentie_inseamna_o_singura_origine():
+    """Cazul RO Wallet (12.11.2026): ProTV „Sursa: News.ro”, FocusPress „scrie News.ro …
+    potrivit ȘtirileProTv”. Ieșea ROOT + INDEPENDENT_CONTRIBUTOR, adică 2 confirmări."""
+    protv = {"url": "https://stirileprotv.ro/1", "source_name": "Știrile ProTV",
+             "published": "2026-11-12T10:41:19+00:00", "title": "RO Wallet",
+             "description": ("Guvernul a aprobat calendarul RO Wallet din 14 ianuarie 2027, "
+                             "scrie News.ro. Premierul Niculescu a vorbit la ședința Guvernului "
+                             "despre permisul auto și actele de identitate. Sursa: News.ro")}
+    focus = {"url": "https://focuspress.ro/1", "source_name": "FocusPress",
+             "published": "2026-11-12T10:51:29+00:00", "title": "RO Wallet",
+             "description": ("Cetățenii vor accesa actele de pe telefon, scrie News.ro. Vicepremierul "
+                             "Neacșu a propus calendarul, iar Ministerul Digitalizării pregătește "
+                             "aplicația, a declarat premierul Niculescu, potrivit ȘtirileProTv.")}
+    roles = fetch_deep.classify_cluster_epistemic_roles([protv, focus])
+    assert roles == {"https://stirileprotv.ro/1": "ROOT", "https://focuspress.ro/1": "DERIVED"}
+    assert fetch_deep.cluster_cross_confirmations([protv, focus], roles) == 1
+
+
+def test_toate_preluari_agentii_diferite_raman_origini_diferite():
+    """Control: două agenții distincte sunt două origini, chiar dacă nimeni nu scrie original."""
+    a = {"url": "https://a.ro/1", "source_name": "A", "published": "2026-11-12T10:00:00+00:00",
+         "title": "Summit", "description": ("Liderii UE s-au întâlnit la Bruxelles, potrivit Reuters, "
+                                            "iar Comisia a anunțat 12 miliarde pentru apărare.")}
+    b = {"url": "https://b.ro/1", "source_name": "B", "published": "2026-11-12T10:05:00+00:00",
+         "title": "Summit", "description": ("Cancelarul Merz a cerut la Bruxelles un fond comun, "
+                                            "transmite AFP, cu 40 de miliarde pentru Ucraina în 2027.")}
+    roles = fetch_deep.classify_cluster_epistemic_roles([a, b])
+    assert "DERIVED" not in roles.values()
+
+
+def test_citari_reciproce_pastreaza_un_root():
+    """Codex P1 pe #595: Digi24 „potrivit HotNews”, HotNews „potrivit Digi24” → toți DERIVED,
+    pool gol, IndexError care oprea pipeline-ul. Ciclul e o singură origine: un ROOT rămâne."""
+    a = {"url": "https://www.digi24.ro/1", "original_link": "https://www.digi24.ro/1",
+         "source_name": "Digi24", "published": "2026-11-12T10:00:00+00:00", "title": "Ședință",
+         "description": "Guvernul a aprobat 3 ordonanțe azi la ora 10, potrivit HotNews.ro."}
+    b = {"url": "https://hotnews.ro/1", "original_link": "https://hotnews.ro/1",
+         "source_name": "HotNews.ro", "published": "2026-11-12T10:05:00+00:00", "title": "Ședință",
+         "description": "Guvernul a aprobat 3 ordonanțe azi la ora 10, potrivit Digi24."}
+    roles = fetch_deep.classify_cluster_epistemic_roles([a, b])
+    assert sorted(roles.values()) == ["DERIVED", "ROOT"]
+
+
 def test_detectie_atribuire_derivata_si_excludere_proprie():
     assert fetch_deep.is_derived_attribution(
         "Potrivit Agerpres, ședința a început la ora 10.",
