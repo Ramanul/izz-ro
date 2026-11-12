@@ -77,6 +77,27 @@ def test_pagina_2_si_404_nu_se_indexeaza_ca_pagina_de_aterizare():
     assert 'rel="canonical"' not in patru
 
 
+def test_paginile_2_plus_de_categorie_se_indexeaza_cu_titlu_unic():
+    """Decizie proprietar 2026-11-12: paginile 2+ sunt hub-uri de crawl (index, follow),
+    nu fundaturi `noindex`; titlul lor difera de pagina 1 ca sa nu dubleze titluri."""
+    src = open(render.__file__, encoding="utf-8").read()
+    assert "noindex=page_num > 1" not in src
+    env = render._env().get_template("category.html")
+    ctx = render._base_ctx("/sport/2/", category="sport", articles=[], noindex=False,
+                           pagination={"current": 2, "total": 3, "pages": [], "prev": "/sport/", "next": "/sport/3/"})
+    doi = env.render(**ctx)
+    assert "noindex" not in doi
+    assert 'href="https://izz.ro/sport/2/"' in doi
+    unu = env.render(**render._base_ctx("/sport/", category="sport", articles=[], noindex=False,
+                                        pagination={"current": 1, "total": 3, "pages": [], "prev": None, "next": "/sport/2/"}))
+    titlu = lambda h: h.split("<title>")[1].split("</title>")[0]
+    assert "pagina 2" in titlu(doi) and "pagina" not in titlu(unu)
+    # Fara numarul total in descriere: o pagina noua a categoriei nu are voie sa rescrie
+    # descrierea tuturor paginilor 2+ (sute de fisiere schimbate fara castig SEO).
+    descriere = doi.split('name="description" content="')[1].split('"')[0]
+    assert "pagina 2" in descriere and " din 3" not in descriere
+
+
 def test_judetul_are_link_in_html_inainte_de_js():
     stiri = [{
         "category": "local", "slug": "podul", "title": "Podul",
