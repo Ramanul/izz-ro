@@ -90,7 +90,7 @@
       pe articol dintr-un link nu stia pana acum decat categoria, scrisa deasupra titlului;
       subiectele apareau abia la coada paginii. Județul rămâne text (fara link ghicit). -#}
   {% if a.judet or topics %}
-  <div class="context" aria-label="Context">
+  <div class="context" role="group" aria-label="Context">
     <span class="ctx-label">Context</span>
     {% set jl = (a.judet | judet_label) if a.judet else '' %}
     {% if a.judet %}<span class="chip">{{ jl }}</span>{% endif %}
