@@ -5201,6 +5201,11 @@
 "fete": 0,
 "sha256": "c2de6324514261a51bf704555720a13a298c1771b701a92bcedb5b8945db5c4c"
 },
+"portraits/devis-epassy.jpg": {
+"fete": 1,
+"respins": "fata-mica",
+"sha256": "c637282b7a86690bf7d0b80671ee754f31830412427519d99a654fd177395f78"
+},
 "portraits/diana-bulimar.jpg": {
 "fete": 3,
 "poz": "50% 26%",
@@ -8639,6 +8644,16 @@
 "taiere": {
 "pw": 179.52,
 "px": -66.66,
+"py": -0.0
+}
+},
+"portraits/ilham-aliyev.jpg": {
+"fete": 1,
+"poz": "50% 0%",
+"sha256": "b44fb8aac40006e72a92957d3bc4391f0bd657417ddbd7d63dab3131d260e9d1",
+"taiere": {
+"pw": 126.77,
+"px": -11.06,
 "py": -0.0
 }
 },
@@ -13039,6 +13054,16 @@
 "pw": 100.0,
 "px": -0.0,
 "py": -5.69
+}
+},
+"portraits/mario-jardel.jpg": {
+"fete": 1,
+"poz": "50% 0%",
+"sha256": "bfc26fa473dd5ecf01cf7cbd9cc65291cdf6f4e1ee3d23dc5aa5434a3b3eafe5",
+"taiere": {
+"pw": 163.69,
+"px": -7.8,
+"py": -0.0
 }
 },
 "portraits/mario-martone.jpg": {
