@@ -467,7 +467,8 @@ def _same_origin_derived(entries: list) -> set:
             seen |= external
     # Citări reciproce (Digi24 „potrivit HotNews”, HotNews „potrivit Digi24”): ciclul e tot o
     # singură origine, dar trebuie să rămână un reprezentant, altfel nu există ROOT (IndexError).
-    if len(derived) == len(entries):
+    # all(), nu len(): două intrări cu același URL dau un set mai mic decât lista (Argon, 12.11).
+    if entries and all(e["url"] in derived for e in entries):
         derived.discard(order[0]["url"])
     return derived
 
