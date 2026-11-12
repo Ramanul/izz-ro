@@ -413,18 +413,59 @@ def check_if_silent_edit_causes_dirty(role: str, old_sha: str | None, new_sha: s
     return len(old_anchors ^ new_anchors) / union_len >= ANCHOR_DRIFT_THRESHOLD
 
 
-def is_derived_attribution(text: str, own_domain: str = "", own_source_name: str = "") -> bool:
-    """Detectează dacă textul își atribuie explicit informația unei agenții de presă
-    sau altei publicații decât propria redacție (rol epistemic DERIVED în E1/E3)."""
+def _origin_key(value: str) -> str:
+    """Numele unei publicații ca cheie comparabilă: fără diacritice, spații și extensie
+    („Știrile ProTV” și „stirileprotv.ro” dau amândouă „stirileprotv”)."""
+    norm = strip_diacritics((value or "").lower()).strip()
+    norm = re.sub(r"^(?:https?://)?(?:www\.)?", "", norm)
+    return re.sub(r"[^a-z0-9]", "", norm.split("/")[0].split(".")[0])
+
+
+def derived_citations(text: str, own_domain: str = "", own_source_name: str = "") -> set:
+    """Agențiile sau publicațiile cărora textul își atribuie explicit informația, altele
+    decât propria redacție (aceleași chei ca `_origin_key`)."""
     if not text:
-        return False
+        return set()
     norm_text = strip_diacritics(text.lower())
     own_norm = strip_diacritics(f"{own_domain} {own_source_name}".lower())
+    own_norm = f"{own_norm} {re.sub(r'[^a-z0-9]', '', own_norm)}"
+    cited_set = set()
     for m in _DERIVED_ATTRIBUTION_RE.finditer(norm_text):
         cited = re.sub(r"\s+", "", m.group(1).lower().split(".")[0])
         if cited and cited not in own_norm:
-            return True
-    return False
+            cited_set.add(cited)
+    return cited_set
+
+
+def is_derived_attribution(text: str, own_domain: str = "", own_source_name: str = "") -> bool:
+    """Detectează dacă textul își atribuie explicit informația unei agenții de presă
+    sau altei publicații decât propria redacție (rol epistemic DERIVED în E1/E3)."""
+    return bool(derived_citations(text, own_domain, own_source_name))
+
+
+def _same_origin_derived(entries: list) -> set:
+    """Grupul în care TOATE relatările își atribuie informația altcuiva (12.11.2026, RO Wallet:
+    ProTV „Sursa: News.ro”, FocusPress „scrie News.ro … potrivit ȘtirileProTv”). Înainte,
+    nimeni nu era marcat DERIVED și același text de agenție ieșea „2 confirmări”.
+
+    Reprezentantul unei origini e întâi relatarea care nu citează alt membru al grupului, apoi
+    cea mai bogată în ancore. O relatare e DERIVED dacă citează un membru al grupului sau dacă
+    TOATE originile externe citate sunt deja reprezentate (incluziune, nu intersecție: News.ro +
+    Agerpres aduce o a doua agenție, deci rămâne origine). Întoarce URL-urile DERIVED."""
+    member_keys = set()
+    for e in entries:
+        member_keys |= {k for k in (_origin_key(e["domain"]), _origin_key(e["source_name"])) if k}
+    order = sorted(entries, key=lambda e: (bool(e["cited"] & member_keys), -len(e["anchors"]),
+                                           e["published_dt"], e["idx"]))
+    seen: set = set()
+    derived: set = set()
+    for e in order:
+        external = e["cited"] - member_keys
+        if e["cited"] & member_keys or (external and external <= seen):
+            derived.add(e["url"])
+        else:
+            seen |= external
+    return derived
 
 
 def _parse_pub_ts(value: str | None) -> datetime:
@@ -496,23 +537,31 @@ def classify_cluster_epistemic_roles(group: list,
         dom = domain_of(it.get("original_link") or url)
         sname = it.get("source_name") or it.get("source") or ""
         txt, anchors = _item_text_and_anchors(it, results_by_url)
-        derived = is_derived_attribution(txt, own_domain=dom, own_source_name=sname)
+        cited = derived_citations(txt, own_domain=dom, own_source_name=sname)
         entries.append({
             "idx": idx,
             "url": url,
             "domain": dom,
+            "source_name": sname,
             "published_dt": _parse_pub_ts(it.get("published")),
             "anchors": anchors,
-            "derived": derived,
+            "cited": cited,
+            "derived": bool(cited),
             "shingles": _shingles(txt),
         })
 
     roles: dict[str, str] = {}
     non_derived = [e for e in entries if not e["derived"]]
-    pool = non_derived if non_derived else entries
-    for e in entries:
-        if e["derived"] and non_derived:
-            roles[e["url"]] = "DERIVED"
+    if non_derived:
+        pool = non_derived
+        for e in entries:
+            if e["derived"]:
+                roles[e["url"]] = "DERIVED"
+    else:
+        same_origin = _same_origin_derived(entries)
+        pool = [e for e in entries if e["url"] not in same_origin]
+        for url in same_origin:
+            roles[url] = "DERIVED"
 
     # Sortare cronologică stabilă pentru alegerea ROOT în fereastra de 15 minute
     pool_chrono = sorted(pool, key=lambda e: (e["published_dt"], e["idx"]))
