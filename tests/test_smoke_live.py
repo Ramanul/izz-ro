@@ -191,7 +191,7 @@ def test_o_eroare_reala_nu_e_mascata_de_fallback(monkeypatch):
 
 
 @pytest.mark.parametrize("html", [
-    '<aside id="editorial-copy-status" class="notice" role="status" hidden></aside>',
+    '<div id="editorial-copy-status" class="notice" role="status" hidden></div>',
     '<aside class="notice" aria-label="Corecție editorială">Corecție</aside>',
     '<aside class="notice dialectic-update">Actualizare sinteză</aside>',
     '<p class="verification-note">Notă pentru cititor</p>',
