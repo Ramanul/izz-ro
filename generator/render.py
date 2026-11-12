@@ -1701,7 +1701,11 @@ def build(articles: list, mod: dict | None = None) -> None:
                        _cat_page_path(cat, page_num),
                        category=cat, articles=page_items, active_cat=cat,
                        pagination=_pagination(cat, page_num, total_pages),
-                       noindex=page_num > 1)))
+                       # Paginile 2+ se indexeaza (index, follow, canonical catre sine): sunt
+                       # hub-urile prin care articolele iesite de pe pagina 1 raman descoperibile.
+                       # Cu `noindex, follow` Google ajunge sa le trateze ca nofollow (decizie
+                       # proprietar 2026-11-12).
+                       noindex=False)))
         if items:
             eticheta = config.CATEGORY_LABELS.get(cat, cat)
             _write(os.path.join(OUT_DIR, cat, "feed.xml"),

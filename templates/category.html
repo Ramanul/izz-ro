@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "_card.html" import card with context %}
-{% block title %}{{ category | cat_label }} — {{ site.name }}{% endblock %}
-{% block description %}Știri din categoria {{ category }} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
+{% block title %}{{ category | cat_label }}{% if pagination and pagination.current > 1 %} — pagina {{ pagination.current }}{% endif %} — {{ site.name }}{% endblock %}
+{% block description %}Știri din categoria {{ category }}{% if pagination and pagination.current > 1 %}, pagina {{ pagination.current }}{% endif %} pe {{ site.name }} — {{ site.tagline }}.{% endblock %}
 {% block content %}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <a href="{{ base }}/">{{ site.name }}</a>
