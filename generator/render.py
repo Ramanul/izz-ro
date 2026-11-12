@@ -295,6 +295,9 @@ def _env() -> Environment:
         autoescape=select_autoescape(["html", "xml"]),
         trim_blocks=True, lstrip_blocks=True,
     )
+    # „20 de subiecte”, dar „19 subiecte” și „101 subiecte”: de la 20 în sus româna cere „de”, mai puțin
+    # când ultimele două cifre sunt 01–19. Fără filtru, antetul scria „969 subiecte · 169 surse”.
+    env.filters["de_ro"] = _de_ro
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
     # Codul de judet din date e „CONSTANTA”, „TIMIS”; banda de context din articol are nevoie
@@ -1122,6 +1125,15 @@ def _source_catalog(by_date: list, deep_meta: dict | None = None,
                     county["anchor"] = f"{county['anchor']}-{group['key']}"
                 vazute.add(county["anchor"])
     return catalog, len(config.SOURCES), len(src_stats)
+
+
+def _de_ro(n) -> str:
+    """Prepoziția dintre număr și substantiv: „de ” sau nimic. Valorile nenumerice nu primesc nimic."""
+    try:
+        n = abs(int(n))
+    except (TypeError, ValueError):
+        return ""
+    return "" if n < 20 or 1 <= n % 100 <= 19 else "de "
 
 
 def _numerele_zilei(articles: list) -> dict | None:
