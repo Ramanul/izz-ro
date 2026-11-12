@@ -16,7 +16,7 @@
 **Updated:** 2026-11-09 (Multi-Worker feliile 2–4: 21 cioburi live, `dist/main` 1.527, TTL 11→90).
 
 ## Open
-- **Multi-Worker Free [IZZ-0454], feliile 2–4 COMPLETE (#568 merged – #579 merged, ultimul `714abdbdd`):** 21 cioburi live, max/ciob 1.527 (7,6% din 20k), TTL 90 zile. Invocări `izz-ro`: 907→1 după #579 (9 nov); 504-urile din 8–9 nov = Early Hints, nu Worker (spec §23). Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
+- **Multi-Worker Free [IZZ-0454], feliile 2–4 COMPLETE (#568 merged – #579 merged, ultimul `714abdbdd`):** 21 cioburi live, max/ciob 1.527 (7,6% din 20k), TTL 90 zile. Invocări `izz-ro` măsurate (nu 907→1): 1.086–3.620/zi, sub 4% din 100.000; 504-urile din 8–9 nov = Early Hints (spec §23), oprit 12 nov, verificare 13 nov. >95% din `/sw.js`, `/offline/` și 404-urile `site.css`/`faza2.css` vin din China (4 din RO), probabil automat [INTERPRETARE]; fără PR în `sw.js`. Note: `handoff/to-claude/2026-11-08-multi-worker-felia2.md`.
 - **Fallback 404→oglindă LIVE (#566 merged, 8 nov):** ratarea invocă Workerul; expirate 200 din oglindă.
 - **Ținut deoparte (7 nov):** 3 commit-uri de artă (78f36f734, 4e59cc2c4, 2ec6ce903) nu sunt pe main; copie în backup-5-commits. Lotul local de 989 fișiere stagiate rămâne neatins.
 - **Garda contradicțiilor penalty (eroare Mbappé, CM 2026):** sinteză spunea „transformat penalty-ul”, sursele spuneau „ratat/apărat de Bono”. Fix în `generator/verifica_sinteza.py` (`contradicție_cheie_penalty`, advisory) + teste regresie + `specs/studiu-caz-penalty-mbappe.md`; PR deschisa din `arena/e234d218-izz-ro`.
