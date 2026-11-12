@@ -52,6 +52,15 @@ ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent"
 THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
 REQUEST_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT") or "30")
+# Circuit-breaker pe rulare: fara el, fiecare apel reporneste de la primul model din
+# GEMINI_MODELS, deci un model fara cota (429 pe toate cheile) sau inexistent (404)
+# costa pana la chei x RETRIES_PER_KEY cereri + backoff la FIECARE lot, nu o data.
+# 404 = modelul nu exista pentru cheie -> oprit imediat. 400 poate tine de payload,
+# deci cere repetitie. Contoarele sunt consecutive: un succes le reseteaza.
+MODEL_400_LIMIT = 3
+MODEL_EXHAUSTED_LIMIT = 2
+# Modelele oprite in rularea curenta, cu motivul (main.py / jurnalul de triaj le pot citi).
+MODELE_OPRITE: dict = {}
 
 
 def _keys() -> list:
@@ -71,6 +80,43 @@ class GeminiProvider(Provider):
     def __init__(self):
         self._keys = _keys()
         self._idx = 0  # cheia curenta (persista intre apeluri -> evita cheile moarte)
+        self._disabled: set = set()
+        self._strikes_400: dict = {}
+        self._strikes_exhausted: dict = {}
+
+    def _active_models(self) -> list:
+        active = [m for m in MODELS if m not in self._disabled]
+        if not active:
+            # Breaker-ul a oprit tot: nu lasam rularea fara AI. Repornim modelele oprite
+            # pentru cota/400 (pot reveni), nu si pe cele cu 404 (nu exista pentru cheie),
+            # si resetam contoarele, ca breaker-ul sa poata lucra din nou.
+            self._disabled = {m for m in self._disabled if MODELE_OPRITE.get(m) == "404"}
+            for model in MODELS:
+                if model not in self._disabled:
+                    MODELE_OPRITE.pop(model, None)
+            self._strikes_400.clear()
+            self._strikes_exhausted.clear()
+            active = [m for m in MODELS if m not in self._disabled]
+        return active or list(MODELS)
+
+    def _disable(self, model: str, reason: str) -> None:
+        if model in self._disabled:
+            return
+        self._disabled.add(model)
+        MODELE_OPRITE[model] = reason
+        print(f"   Gemini: modelul {model} oprit pentru restul rularii ({reason})")
+
+    def _record_failure(self, model: str, code) -> None:
+        if code == 404:
+            self._disable(model, "404")
+        elif code == 400:
+            self._strikes_400[model] = self._strikes_400.get(model, 0) + 1
+            if self._strikes_400[model] >= MODEL_400_LIMIT:
+                self._disable(model, f"400 x{MODEL_400_LIMIT}")
+        else:
+            self._strikes_exhausted[model] = self._strikes_exhausted.get(model, 0) + 1
+            if self._strikes_exhausted[model] >= MODEL_EXHAUSTED_LIMIT:
+                self._disable(model, f"toate cheile epuizate x{MODEL_EXHAUSTED_LIMIT}")
 
     def available(self) -> bool:
         return bool(self._keys)
@@ -107,8 +153,9 @@ class GeminiProvider(Provider):
         body = self._payload(system, user)
         last_exc = None
         # Încearcă modelele pe rând; fiecare cerere se încheie înaintea următoarei.
-        for model in MODELS:
+        for model in self._active_models():
             model_rejected = False
+            rejected_code = None
             for _ in range(len(self._keys)):
                 key = self._keys[self._idx]
                 url = ENDPOINT.format(model=model)
@@ -124,6 +171,8 @@ class GeminiProvider(Provider):
                         motiv = ((data.get("candidates") or [{}])[0].get("finishReason")
                                  or "NECUNOSCUT")
                         MOTIVE_OPRIRE[motiv] = MOTIVE_OPRIRE.get(motiv, 0) + 1
+                        self._strikes_400.pop(model, None)
+                        self._strikes_exhausted.pop(model, None)
                         return data["candidates"][0]["content"]["parts"][0]["text"].strip()
                     except urllib.error.HTTPError as exc:
                         try:
@@ -140,6 +189,7 @@ class GeminiProvider(Provider):
                             break  # limită/eroare temporară: încearcă următoarea cheie/model
                         if exc.code in (400, 404):
                             model_rejected = True
+                            rejected_code = exc.code
                             break  # model indisponibil sau incompatibil: încearcă următorul
                         raise
                     except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
@@ -148,4 +198,5 @@ class GeminiProvider(Provider):
                 self._idx = (self._idx + 1) % len(self._keys)
                 if model_rejected:
                     break
+            self._record_failure(model, rejected_code)
         raise last_exc

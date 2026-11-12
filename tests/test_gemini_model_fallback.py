@@ -186,3 +186,96 @@ def test_workflow_gates_extra_secrets():
     assert workflow.count("GEMINI_EXTRA_KEYS_ENABLED: ${{ vars.GEMINI_EXTRA_KEYS_ENABLED || 'true' }}") == 4
     for n in (2, 3, 4):
         assert workflow.count(f"vars.GEMINI_EXTRA_KEYS_ENABLED != 'false' && secrets.GEMINI_API_KEY_{n}") == 4
+
+
+def _breaker_setup(monkeypatch, models, keys="k1,k2"):
+    monkeypatch.setenv("GEMINI_API_KEY", keys)
+    monkeypatch.delenv("GEMINI_EXTRA_KEYS_ENABLED", raising=False)
+    monkeypatch.setattr(gemini, "MODELS", models)
+    monkeypatch.setattr(gemini, "THROTTLE", 0)
+    monkeypatch.setattr(gemini, "RETRIES_PER_KEY", 1)
+    monkeypatch.setattr(gemini, "MODELE_OPRITE", {})
+
+
+def test_breaker_skips_404_model_after_first_call(monkeypatch):
+    models = ["gemini-4-new", "gemini-3.8-flash"]
+    _breaker_setup(monkeypatch, models)
+    calls = []
+
+    def fake_urlopen(request, timeout):
+        model = _model_from_url(request.full_url, models)
+        calls.append(model)
+        if model == "gemini-4-new":
+            raise _http_error(request, 404)
+        return _Response("ok")
+
+    monkeypatch.setattr(gemini.urllib.request, "urlopen", fake_urlopen)
+    provider = gemini.GeminiProvider()
+    for _ in range(3):
+        assert provider._complete("s", "u") == "ok"
+    assert calls.count("gemini-4-new") == 1
+    assert gemini.MODELE_OPRITE == {"gemini-4-new": "404"}
+
+
+def test_breaker_disables_model_exhausted_on_all_keys_twice(monkeypatch):
+    models = ["gemini-4-new", "gemini-3.8-flash"]
+    _breaker_setup(monkeypatch, models)
+    calls = []
+
+    def fake_urlopen(request, timeout):
+        model = _model_from_url(request.full_url, models)
+        calls.append(model)
+        if model == "gemini-4-new":
+            raise _http_error(request, 429)
+        return _Response("ok")
+
+    monkeypatch.setattr(gemini.urllib.request, "urlopen", fake_urlopen)
+    provider = gemini.GeminiProvider()
+    for _ in range(4):
+        assert provider._complete("s", "u") == "ok"
+    # 2 apeluri x 2 chei, apoi modelul e sărit
+    assert calls.count("gemini-4-new") == 4
+    assert "gemini-4-new" in gemini.MODELE_OPRITE
+
+
+def test_breaker_400_needs_consecutive_strikes_and_success_resets(monkeypatch):
+    models = ["gemini-4-new", "gemini-3.8-flash"]
+    _breaker_setup(monkeypatch, models, keys="k1")
+    script = iter([400, 400, None, 400, 400, 400])
+
+    def fake_urlopen(request, timeout):
+        model = _model_from_url(request.full_url, models)
+        if model == "gemini-4-new":
+            code = next(script)
+            if code:
+                raise _http_error(request, code)
+            return _Response("new")
+        return _Response("old")
+
+    monkeypatch.setattr(gemini.urllib.request, "urlopen", fake_urlopen)
+    provider = gemini.GeminiProvider()
+    results = [provider._complete("s", "u") for _ in range(6)]
+    assert results == ["old", "old", "new", "old", "old", "old"]
+    assert gemini.MODELE_OPRITE == {"gemini-4-new": "400 x3"}
+    assert provider._complete("s", "u") == "old"  # sărit, fără să mai consume scriptul
+
+
+def test_breaker_never_leaves_run_without_models(monkeypatch):
+    models = ["gemini-3.8-flash"]
+    _breaker_setup(monkeypatch, models, keys="k1")
+    provider = gemini.GeminiProvider()
+    provider._disable("gemini-3.8-flash", "test")
+    assert provider._active_models() == ["gemini-3.8-flash"]
+
+
+def test_breaker_reset_keeps_404_models_off(monkeypatch):
+    models = ["gemini-4-new", "gemini-3.8-flash"]
+    _breaker_setup(monkeypatch, models, keys="k1")
+    provider = gemini.GeminiProvider()
+    provider._disable("gemini-4-new", "404")
+    provider._disable("gemini-3.8-flash", "toate cheile epuizate x2")
+    assert provider._active_models() == ["gemini-3.8-flash"]
+    assert gemini.MODELE_OPRITE == {"gemini-4-new": "404"}
+    provider._record_failure("gemini-3.8-flash", None)
+    provider._record_failure("gemini-3.8-flash", None)
+    assert "gemini-3.8-flash" in gemini.MODELE_OPRITE  # breaker-ul lucrează din nou
