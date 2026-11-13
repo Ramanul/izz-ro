@@ -73,7 +73,7 @@ CI rulează testele și lint-ul. Numărul de teste este doar reper, nu contract.
 10. **Trei stări distincte — nu le confunda, folosește cuvintele exacte:** reparat în cod / verificat local / confirmat pe live.
 11. **Când nu poți testa ceva, spune explicit** ce rol nu a putut fi verificat și de ce.
 12. **Un task, o sesiune.**
-13. **Nu trage niciodată un payload mare în context.** Mare înseamnă **peste 8 KB într-un singur apel**. Peste prag: îngustează (filtru, `head`, câmpuri cerute) sau scrie în fișier și citește țintit. Inventarierea — liste de sesiuni, de PR-uri, de trigger-e, dump de registru — nu e deschidere validă de sesiune; se face doar dacă task-ul o cere pe nume.
+13. **Nu trage niciodată un payload mare în context.** Mare înseamnă **peste 8 KB într-un singur apel**. Peste prag: îngustează (filtru, `head`, câmpuri cerute) sau scrie în fișier și citește țintit. Inventarierea — liste de sesiuni, de PR-uri, de trigger-e, dump de registru — nu e deschidere validă de sesiune; se face doar dacă task-ul o cere pe nume. **Pentru rulări CI, PR-uri și issue-uri folosește `gh ... --json <câmpuri>`, nu uneltele MCP de listare:** `gh run list --branch=main --limit=5 --json conclusion,createdAt,headSha` dă 5 linii, iar `mcp__github__actions_list` a întors toate cele 27 de rulări cerute cu `per_page: 3` (măsurat 2026-08-23, de trei ori în aceeași sesiune) fiindcă nu are selecție de câmpuri.
 14. **Model pe măsura muncii.** Folosește capacitatea necesară, nu mai multă.
 15. **Sub-agenții costă ~5.6× per linie livrată** — metric istoric, nu promisiune curentă.
 16. **Agenții împart working tree-ul.** Pentru paralelism real se cere izolare de worktree.
