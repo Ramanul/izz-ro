@@ -2303,6 +2303,11 @@
 "py": -11.27
 }
 },
+"portraits/arthur-fils.jpg": {
+"fete": 2,
+"respins": "grup",
+"sha256": "db7fbd4facd35a072f9b055ff387f52e9e54ab292efba282cd237035bea1b116"
+},
 "portraits/arthur-miller.jpg": {
 "fete": 1,
 "poz": "50% 51%",
@@ -3355,6 +3360,16 @@
 "pw": 106.53,
 "px": -2.08,
 "py": -1.04
+}
+},
+"portraits/carla-bruni.jpg": {
+"fete": 1,
+"poz": "50% 43%",
+"sha256": "c6b73215ce05753093880c40356ca4950e76fc7b2257adbe3cfabf7f98c5bd8c",
+"taiere": {
+"pw": 100.0,
+"px": 0.0,
+"py": -21.48
 }
 },
 "portraits/carlo-ancelotti.jpg": {
@@ -10652,6 +10667,11 @@
 "fete": 0,
 "sha256": "691cba1b1770b3138de9e13b5437ca898ba472c2d844abfa7dcc79b2f3d428de"
 },
+"portraits/juan-carlos-ferrero.jpg": {
+"fete": 7,
+"respins": "grup",
+"sha256": "0c9cb9b2bb0105f98a14b137332549755f38d4e674002570dd54eabd34b82100"
+},
 "portraits/judd-trump.jpg": {
 "fete": 1,
 "poz": "50% 0%",
@@ -15206,6 +15226,16 @@
 "pw": 100.0,
 "px": 0.0,
 "py": -11.77
+}
+},
+"portraits/nicolas-sarkozy.jpg": {
+"fete": 1,
+"poz": "50% 35%",
+"sha256": "198a0f2adeac5b327de4a4512327a6892f0e29ef35b72375944a360dfa750c4e",
+"taiere": {
+"pw": 100.0,
+"px": 0.0,
+"py": -18.74
 }
 },
 "portraits/nicolas-warnery.jpg": {
