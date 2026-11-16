@@ -193,3 +193,14 @@ Textul complet este în `.claude/reguli/18-imagini.md`; hook-ul îl injectează 
 - `CODE_OF_CONDUCT.md` — Contributor Covenant standard (community profile); nu se editează local.
 
 Normativele din `.claude/commands/`, `.claude/agents/` și `.claude/reguli/` sunt condiționale și se activează prin hook/command, nu se copiază în L0.
+
+## Consultare Carbon din sesiunile cloud (pod)
+Sesiunile cloud NU au `argon.cmd`; consultă Carbon prin pod (Worker Cloudflare → PC-ul lui Alexandru). Variabilele `POD_URL` și `POD_KEY` sunt setate în mediul cloud. Nu raporta „nu am unelte”.
+```bash
+ID=$(curl -s -X POST -H "X-Key: $POD_KEY" --data-binary @intrebare.md "$POD_URL/ask?flags=--scurt" | python3 -c 'import json,sys;print(json.load(sys.stdin)["id"])')
+for i in $(seq 1 60); do c=$(curl -s -o raspuns.txt -w '%{http_code}' -H "X-Key: $POD_KEY" "$POD_URL/result/$ID"); [ "$c" = 200 ] && break; sleep 5; done; cat raspuns.txt
+```
+- 202 = încă lucrează; 200 = răspuns. Durează 1-4 min. `flags` acceptă `--scurt`, `--arhitect`, `--fara-modul-ai` (Argon Maximum).
+- Consultantul nu vede repo-ul: pune în întrebare GOAL, fișierele/codul relevant și eroarea exactă.
+- În raport treci eticheta din prima linie a răspunsului. Dacă podul dă 401/5xx sau timeout, scrie „Consultat: indisponibil — <eroarea>”.
+- Nu afișa niciodată `POD_KEY`.
