@@ -178232,7 +178232,7 @@
   }
  },
  "https://cursdeguvernare.ro/aur-scade-5-pp-psd-avanseaza-6-pp-pana-la-24.html": {
-  "sha256": "530b7367c6a474819c8bafc33f2751dcf18be6a5066b13a80dd13e53dc8db1f0",
+  "sha256": "bcd8d99a7a9ed74f48eabe259aec113f525359bf6501d2746f09a498c282c06f",
   "anchors": [
    "ACR:pib",
    "ACR:pot",
@@ -178318,13 +178318,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T09:13:52+00:00",
-  "fetched_at": "2026-11-16T11:26:32.229405+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840697+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T11:26:32+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://adevarul.ro/stiri-locale/bucuresti/tigari-de-contrabanda-aduse-cu-trenul-in-2571825.html": {
@@ -178842,7 +178842,7 @@
   }
  },
  "https://pressalert.ro/2026/11/scandal-si-focuri-de-arma-politisti-atacati-cu-pietre-in-timp-ce-urmareau-un-sofer-fara-permis": {
-  "sha256": "5f31f7ed99f29b5253140e2f5e2fbaa2c64cdf1f024c2c02647e82c7257eb6bf",
+  "sha256": "556aec8dccbef1798955bf6f0dbbb4309e2222324543449af8bbc62dd830499d",
   "anchors": [
    "ACR:captcha",
    "ACR:sas",
@@ -178856,6 +178856,7 @@
    "ENT:servici",
    "ENT:specia",
    "ENT:time",
+   "NUM:12",
    "NUM:15",
    "NUM:2",
    "NUM:20",
@@ -178865,13 +178866,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T10:49:55+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773567+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840781+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 1,
+   "comparisons": 2,
    "changed": 0,
    "first_at": "2026-11-16T11:26:32+00:00",
-   "last_at": "2026-11-16T22:11:01+00:00"
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://hotnews.ro/calin-georgescu-din-nou-in-fata-instantei-decizia-magistratilor-care-il-poate-transfera-in-penitenciar-2405230": {
@@ -180191,12 +180192,11 @@
   }
  },
  "https://caon.ro/video-focuri-de-arma-la-calnic-atacati-cu-pietre-politistii-resiteni-au-facut-uz-de-arma/2448969": {
-  "sha256": "2a038b8f3424c43c1b7156aa1cbe4d806a8fb08489a9ab914baa22fd76691685",
+  "sha256": "3a2de94f61766ad00633a280fad9235a76c9e41564a2cd843bb12ecba72a1262",
   "anchors": [
    "ACR:resita",
    "ACR:sas",
    "ENT:bistra",
-   "ENT:calnic",
    "ENT:caras",
    "ENT:conducat",
    "ENT:europol",
@@ -180208,13 +180208,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T07:28:37+00:00",
-  "fetched_at": "2026-11-16T22:11:01.774095+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840985+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 1,
+   "comparisons": 2,
    "changed": 0,
    "first_at": "2026-11-16T11:26:32+00:00",
-   "last_at": "2026-11-16T22:11:01+00:00"
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://stirileprotv.ro/stiri/financiar/mugur-isarescu-despre-riscul-unui-imprumut-de-la-fondul-monetar-ara-are-nevoie-de-bani-dar-nu-de-la-fmi.html": {
@@ -182035,7 +182035,7 @@
   }
  },
  "https://economedia.ro/foto-drumul-montan-panaci-bilbor-din-suceava-a-fost-modernizat-integral-traseul-dintre-vatra-dornei-si-toplita-se-scurteaza-cu-aproximativ-92-de-kilometri.html": {
-  "sha256": "b54702058dc9ddbf94172aad019062dcd9d9e1067889e67e3ac7611deb0b54ce",
+  "sha256": "526a92c2089bca9ce34a1fad5d76e2dd105cbf84958fabb9da5071a4ed3711b2",
   "anchors": [
    "ACR:share",
    "ENT:adauga",
@@ -182044,7 +182044,6 @@
    "ENT:consili",
    "ENT:discover",
    "ENT:dornei",
-   "ENT:drum",
    "ENT:facebook",
    "ENT:foto",
    "ENT:galerie",
@@ -182069,27 +182068,27 @@
    "NUM:20",
    "NUM:2024",
    "NUM:2026",
+   "NUM:2070",
    "NUM:30",
    "NUM:4",
    "NUM:70",
-   "NUM:744",
    "NUM:92",
    "Q:c7a230f8e37e"
   ],
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T18:00:29+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771227+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839117+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://expressdebanat.ro/aquatim-lanseaza-programul-educational-stan-vidrighin": {
-  "sha256": "21a74437bef3f9d664b20a653278c000db62746d0b7ea1eb63193ea3ff2723d7",
+  "sha256": "3cb93189dec01dc3c015520214990de44cfec690ca68ae33dcdc704aedfef656",
   "anchors": [
    "ACR:issn",
    "ENT:aquatim",
@@ -182123,13 +182122,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T14:11:03+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771249+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839334+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://opiniatimisoarei.ro/aquatim-din-in-si-pentru-comunitate-la-timisoara-compania-lanseaza-programul-educational-stan-vidrighin-o-investitie-in-viitorul-apei/16/11/2026": {
@@ -182191,13 +182190,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T17:24:52+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771282+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839401+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://observatornews.ro/politic/pnl-si-usr-anunta-o-motiune-impotriva-ministrului-sanatatii-critici-la-adresa-lui-rogobete-672531.html": {
@@ -182241,13 +182240,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T19:58:00+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771308+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839754+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://ziuadevest.ro/aquatim-lanseaza-bursa-stan-vidrighin-program-dedicat-studentilor-de-la-politehnica-timisoara-cu-accent-pe-digitalizarea-industriei-apei": {
@@ -182270,13 +182269,13 @@
   "mode": "FULL_TEXT",
   "role": "ECHO",
   "published": "2026-11-16T16:04:21+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771320+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839577+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://gsp.ro/fotbal/liga-1/nicolae-stanciu-decizie-finala-revenire-superliga-u-cluj-999924.html": {
@@ -182376,93 +182375,18 @@
   }
  },
  "https://presasm.ro/usr-si-pnl-depun-motiune-simpla-impotriva-ministrului-psd-alexandru-rogobete/54319": {
-  "sha256": "279ba5100529c1f18df7939218ea6aaf79ca904c621fadb83b9c6194f88afc3b",
+  "sha256": "d2d620a57f61272f26f3d4a6307c10caed53c1562b8df50d3b3509ea158ce6d7",
   "anchors": [
-   "ACR:aep",
-   "ACR:lista",
-   "ACR:mare",
-   "ACR:pnrr",
-   "ACR:psd",
-   "ACR:satu",
-   "ACR:sumal",
-   "ACR:udmr",
+   "ACR:pnl",
    "ACR:usr",
-   "ENT:adrian",
-   "ENT:agentiei",
    "ENT:alexandr",
-   "ENT:andronac",
-   "ENT:camera",
-   "ENT:camerei",
-   "ENT:citeste",
-   "ENT:colectiv",
-   "ENT:colegi",
-   "ENT:comisia",
-   "ENT:consilii",
-   "ENT:copiii",
-   "ENT:cozma",
-   "ENT:diana",
-   "ENT:domn",
-   "ENT:emanuel",
-   "ENT:eminescu",
-   "ENT:gabriel",
-   "ENT:govor",
-   "ENT:judetean",
-   "ENT:judetene",
-   "ENT:lorand",
-   "ENT:lyrica",
-   "ENT:magyar",
-   "ENT:mare",
-   "ENT:medi",
-   "ENT:medicame",
-   "ENT:mihai",
-   "ENT:minciuni",
-   "ENT:minister",
-   "ENT:mircea",
-   "ENT:nationa",
-   "ENT:national",
-   "ENT:politica",
-   "ENT:politiei",
-   "ENT:primar",
-   "ENT:prime",
-   "ENT:promovea",
-   "ENT:publicit",
-   "ENT:rafila",
-   "ENT:romania",
-   "ENT:sanatati",
-   "ENT:satu",
-   "ENT:spital",
-   "ENT:stoica",
-   "ENT:szabolcs",
-   "ENT:tragedie",
-   "ENT:turos",
-   "ENT:ultime",
-   "ENT:vlad",
-   "ENT:voicules",
-   "ENT:vreau",
-   "NUM:1",
-   "NUM:1.5",
-   "NUM:11",
-   "NUM:12",
-   "NUM:13",
-   "NUM:18",
-   "NUM:19",
-   "NUM:2.0",
-   "NUM:2016",
-   "NUM:2024",
-   "NUM:21",
-   "NUM:23",
-   "NUM:4",
-   "NUM:7",
-   "Q:12668f631d26",
-   "Q:35498d5109ae",
-   "Q:cc3e485014e8",
-   "Q:f05e1074bfdb",
-   "Q:f61155507464"
+   "ENT:rogobete",
+   "ENT:sanatati"
   ],
-  "mode": "FULL_TEXT",
+  "mode": "RSS_FALLBACK",
   "role": "ROOT",
   "published": "2026-11-16T16:03:00+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771432+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839482+00:00",
   "text_observations": {
    "v": 1,
    "comparisons": 0,
@@ -182558,13 +182482,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T21:23:00+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771496+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839468+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://emaramures.ro/handbal-feminin-toxiinfectie-alimentara-la-baia-mare-doua-jucatoare-de-la-csm-iasi-au-ajuns-cu-tensiunea-la-85-50": {
@@ -182654,13 +182578,13 @@
   "mode": "FULL_TEXT",
   "role": "DERIVED",
   "published": "2026-11-16T16:04:12+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771540+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840023+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://observatornews.ro/politic/basescu-despre-reforma-administrativa-daca-o-fac-asa-cum-au-inceputo-mai-bine-se-opresc-672528.html": {
@@ -183318,13 +183242,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T20:09:24+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771909+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839898+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://opiniatimisoarei.ro/facultatea-de-arhitectura-si-urbanism-din-cadrul-upt-a-dat-startul-sesiunilor-gratuite-de-pregatire-pentru-admiterea-2027/16/11/2026": {
@@ -183386,13 +183310,13 @@
   "mode": "FULL_TEXT",
   "role": "CLONE",
   "published": "2026-11-16T19:46:05+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771941+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839514+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://observatornews.ro/extern/zelenski-cere-rachete-europene-pentru-a-lovi-rusia-in-mijlocul-negocierilor-pentru-oprirea-razboiului-672530.html": {
@@ -183483,105 +183407,28 @@
    "NUM:24"
   ],
   "mode": "FULL_TEXT",
-  "role": "ECHO",
+  "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T16:29:58+00:00",
-  "fetched_at": "2026-11-16T22:11:01.771994+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840405+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://zonait.ro/openai-chatgpt-ads-aleph": {
-  "sha256": "0db5a8da372552053c77c8fb3c545c7df894ceb0265b862c38ed96cc3e3d12dd",
+  "sha256": "e6c743e7e29303914a2aa05c66e3bd2eb53b2f46aa6b395d5cd07ef5354c243f",
   "anchors": [
-   "ACR:ceo",
-   "ACR:css",
-   "ACR:cva",
-   "ACR:html",
-   "ACR:nvda",
-   "ACR:ocr",
-   "ENT:accesibi",
-   "ENT:africa",
    "ENT:aleph",
-   "ENT:aligned",
-   "ENT:allows",
-   "ENT:america",
-   "ENT:animatio",
-   "ENT:applicat",
-   "ENT:aurelian",
-   "ENT:autism",
-   "ENT:backgrou",
-   "ENT:centrala",
-   "ENT:close",
-   "ENT:consorti",
-   "ENT:content",
-   "ENT:continut",
-   "ENT:dampens",
-   "ENT:dancadar",
-   "ENT:dictiona",
-   "ENT:dyslexia",
-   "ENT:facebook",
-   "ENT:firefox",
-   "ENT:forever",
-   "ENT:friendly",
-   "ENT:ghiduri",
-   "ENT:guide",
-   "ENT:height",
-   "ENT:helps",
-   "ENT:hide",
-   "ENT:internet",
-   "ENT:keyboard",
-   "ENT:keys",
-   "ENT:left",
-   "ENT:line",
-   "ENT:magnifie",
-   "ENT:mask",
-   "ENT:microsof",
-   "ENT:mode",
-   "ENT:monochro",
-   "ENT:mute",
-   "ENT:openai",
-   "ENT:orient",
-   "ENT:pleasing",
-   "ENT:potrivit",
-   "ENT:profil",
-   "ENT:readab",
-   "ENT:reduces",
-   "ENT:rich",
-   "ENT:right",
-   "ENT:romania",
-   "ENT:safari",
-   "ENT:safe",
-   "ENT:scaling",
-   "ENT:select",
-   "ENT:shift",
-   "ENT:sounds",
-   "ENT:start",
-   "ENT:tastatur",
-   "ENT:text",
-   "ENT:this",
-   "ENT:titles",
-   "ENT:tunnel",
-   "ENT:virtual",
-   "ENT:visually",
-   "ENT:voiceove",
-   "ENT:wide",
-   "ENT:wikipedi",
-   "ENT:world",
-   "ENT:zona",
-   "NUM:1",
-   "NUM:10",
-   "NUM:14",
-   "NUM:4",
+   "ENT:chatgpt",
    "NUM:44"
   ],
-  "mode": "FULL_TEXT",
+  "mode": "RSS_FALLBACK",
   "role": "ROOT",
   "published": "2026-11-16T14:50:19+00:00",
-  "fetched_at": "2026-11-16T22:11:01.772084+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839561+00:00",
   "text_observations": {
    "v": 1,
    "comparisons": 0,
@@ -183591,7 +183438,7 @@
   }
  },
  "https://ziuadevest.ro/facultatea-de-arhitectura-si-urbanism-din-cadrul-upt-a-dat-startul-sesiunilor-gratuite-de-pregatire-pentru-admiterea-2027": {
-  "sha256": "ac6ce7bc657bdc76ec3761a6d0fa122fbeab3276d5d3eb3e57bb5a34bcc8a430",
+  "sha256": "56cb545b4059ebae22138e25d714b8177440fb74b82b7ef522802fc6d7bfa444",
   "anchors": [
    "ACR:days",
    "ACR:faut",
@@ -183621,13 +183468,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T13:04:19+00:00",
-  "fetched_at": "2026-11-16T22:11:01.772101+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839599+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://g4media.ro/cristian-chivu-a-fost-desemnat-cel-mai-bun-antrenor-din-serie-a-in-sezonul-trecut-a-primit-panchina-doro-de-la-federatia-italiana-de-fotbal-e-al-treilea-strain-care-castiga-tro.html": {
@@ -183721,7 +183568,7 @@
   }
  },
  "https://expressdebanat.ro/colectii-noi-produse-de-calitate-si-oferte-atractive-pentru-sezonul-rece-la-salonul-industriei-usoare-de-la-timisoara": {
-  "sha256": "1a3d48ecf03dc3722bbda580f9efc81ffe36a4d2305ba6e728c8a2bb5e0cb8bc",
+  "sha256": "215076c7eb9c088a915e5eda52f7c6aaca3e5c4bdaf5fa4696936ce6198e1843",
   "anchors": [
    "ACR:ccia",
    "ACR:cciat",
@@ -183762,13 +183609,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T09:33:07+00:00",
-  "fetched_at": "2026-11-16T22:11:01.772166+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839648+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://g4media.ro/un-prahovean-ofera-gratuit-o-padure-orasului-comarnic-dar-e-refuzat-primaria-spune-ca-nu-are-bani-pentru-documentatiile-cadastrale-si-notariale-sa-mi-spuna-si-mie-cat-costa.html": {
@@ -183960,13 +183807,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T18:43:46+00:00",
-  "fetched_at": "2026-11-16T22:11:01.772265+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839549+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://bbc.co.uk/news/articles/cw987343352go?at_medium=RSS&at_campaign=rss": {
@@ -184904,7 +184751,7 @@
   }
  },
  "https://automarket.ro/stiri/land-rover-confirma-o-versiune-electrica-pentru-defender-lansare-in-2027-129483.html": {
-  "sha256": "d0de03bf1eb84deb040fc3edeaca0cfbd54a31cae4dbc2415a0f745e825b3fb5",
+  "sha256": "f536650693753e6de933da3835e6480b945c5717f10ebb96eb47ad9c4dfd8a83",
   "anchors": [
    "ACR:ceo",
    "ACR:ema",
@@ -184920,54 +184767,33 @@
    "ENT:range",
    "ENT:rover",
    "ENT:sport",
-   "NUM:2027",
    "NUM:80"
   ],
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T08:22:00+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773110+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840271+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://monitoruldegalati.ro/national/microbuz-de-150-000-de-lei-furat-din-italia-prins-la-albita.html": {
-  "sha256": "74645db59ba6a23fd483b51924324da7d3a60d1609a641abaf0d9ffdb964caca",
+  "sha256": "8d9826f98e97e24b96c1323eb82ed5d83f36a4c320359249e160ae408d6fc940",
   "anchors": [
-   "ACR:itpf",
-   "ENT:downvote",
-   "ENT:dunarii",
-   "ENT:faleza",
+   "ENT:albita",
    "ENT:frontier",
-   "ENT:goog",
    "ENT:italia",
-   "ENT:news",
-   "ENT:points",
    "ENT:punct",
-   "ENT:salveaza",
-   "ENT:trecere",
-   "ENT:upvote",
-   "ENT:upvotes",
-   "ENT:urmarest",
-   "ENT:votes",
-   "ENT:whatsapp",
-   "NUM:0",
-   "NUM:14",
-   "NUM:150.000",
-   "NUM:2022",
-   "NUM:2026",
-   "NUM:21",
-   "NUM:37",
-   "NUM:40"
+   "ENT:trecere"
   ],
-  "mode": "FULL_TEXT",
+  "mode": "RSS_FALLBACK",
   "role": "ROOT",
   "published": "2026-11-16T12:44:39+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773130+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839834+00:00",
   "text_observations": {
    "v": 1,
    "comparisons": 0,
@@ -185065,13 +184891,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T15:18:21+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773173+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840131+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://gorjeanul.ro/ultima-ora/luca-niculescu-comasarea-voluntara-va-fi-facuta-pana-in-martie": {
@@ -185165,7 +184991,7 @@
   }
  },
  "https://zch.ro/26-de-perchezitii-in-suceava-si-caras-severin-pentru-trafic-de-droguri-inclusiv-cocaina-plasarea-se-facea-fara-contact-direct": {
-  "sha256": "9ce94ca3022efd336b9e6356c12463bbf11ec567edefdf21bf1e14734059026a",
+  "sha256": "b780b996163fb13fd0d0c917f7f2c847801a69243bda0d5757777a28cd715cab",
   "anchors": [
    "ACR:acasa",
    "ACR:cultura",
@@ -185203,13 +185029,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T08:22:33+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773228+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839702+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://zdp.ro/primaria-ploiesti-a-semnat-contractul-de-achizitionare-a-celor-20-de-tramvaie-de-la-astra-arad.html": {
@@ -185340,17 +185166,17 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T12:32:07+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773292+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839822+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://expressdebanat.ro/ziua-nationala-sarbatorita-la-timisoara-cu-muzica-si-retragere-cu-torte": {
-  "sha256": "e6b96907b9ea5c44c15a38b1483c6fb0f2e39e80dd40c8ae2e0f3ebb99f97a41",
+  "sha256": "ab2e4746290876ef471d1eeee0947a655479f8c9bbde643b271817d563e84970",
   "anchors": [
    "ACR:issn",
    "ENT:andreea",
@@ -185403,13 +185229,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T11:28:45+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773319+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840056+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://gazetadecluj.ro/comisia-europeana-aproba-partial-cererea-romaniei-pentru-miliardele-de-euro-din-pnrr": {
@@ -185444,13 +185270,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T12:22:40+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773336+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839852+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://opiniatimisoarei.ro/ziua-nationala-a-romaniei-program-special-la-timisoara-concerte-de-1-decembrie-in-piata-victoriei/16/11/2026": {
@@ -185528,13 +185354,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T11:55:48+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773374+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840464+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://newsbv.ro/flaut-pian-recital": {
@@ -185813,7 +185639,7 @@
   }
  },
  "https://pressalert.ro/2026/11/consiliul-judetean-timis-a-lansat-in-transparenta-decizionala-actualizarea-statutului-judetului-timisenii-pot-transmite-propuneri-pana-la-26-noiembrie": {
-  "sha256": "2e677a6d90dec86db998676c1308e2b98eaf78b36424db795739ee20ad98b268",
+  "sha256": "42168b6b869b7aa93a32fe2611940a7fcff4a124fb93c1a8863bcf98fdcdda16",
   "anchors": [
    "ACR:captcha",
    "ENT:administ",
@@ -185845,7 +185671,6 @@
    "ENT:timis",
    "ENT:timiseni",
    "ENT:timisoar",
-   "NUM:1",
    "NUM:10.11",
    "NUM:11",
    "NUM:17",
@@ -185857,22 +185682,23 @@
    "NUM:26",
    "NUM:262",
    "NUM:341",
-   "NUM:52"
+   "NUM:52",
+   "NUM:7"
   ],
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T12:16:58+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773528+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840350+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://expressdebanat.ro/rezidentiat-2026-timisoara-primul-loc-la-medicina-dentara-si-locul-al-doilea-la-medicina-si-farmacie": {
-  "sha256": "45222c99f9924a476bfb364a09c4a693919005f2bb9f30ba099dcf77d5e66a57",
+  "sha256": "a7a623057183aa4d463c2b0d3625f3e2a8036a5a1508716c6820aa2a6e6a9f23",
   "anchors": [
    "ACR:issn",
    "ENT:babes",
@@ -185918,13 +185744,13 @@
   "mode": "FULL_TEXT",
   "role": "ECHO",
   "published": "2026-11-16T11:22:04+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773551+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840219+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://gsp.ro/fotbal/liga-1/fcsb-lukasz-szukala-raul-rusescu-gigi-becali-reactie-andrei-prepelita-999734.html": {
@@ -186024,7 +185850,7 @@
   }
  },
  "https://cvlpress.ro/16.11.2026/u-craiova-remiza-in-amicalul-cu-slatina": {
-  "sha256": "42ef4b5f8470a1fe0bcc0b9caf56a84243563bf635aeb50c08e02e573e2bb62a",
+  "sha256": "5d1916dcd094ba59762aa46e1a478995fa31baa2a9adec80c951b474b397e2ef",
   "anchors": [
    "ACR:csm",
    "ENT:abel",
@@ -186085,26 +185911,26 @@
    "NUM:1",
    "NUM:2",
    "NUM:25",
+   "NUM:3",
    "NUM:31",
+   "NUM:7",
    "NUM:75",
-   "NUM:8",
-   "NUM:80",
-   "NUM:9"
+   "NUM:80"
   ],
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T11:42:10+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773684+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840840+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://opiniatimisoarei.ro/timisoara-pe-podium-la-toate-cele-trei-domenii-ale-concursului-national-de-rezidentiat-2026/16/11/2026": {
-  "sha256": "4390856ab9175e1e20e6731167a108a5f102c711f4533a2e62e1bef71980ad84",
+  "sha256": "4d374921eff414e1f2bbf0b14b3b6ce2125a6ce651efc218d5c8b7861c406331",
   "anchors": [
    "ACR:citeste",
    "ACR:educatie",
@@ -186183,13 +186009,13 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T11:23:15+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773914+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839943+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://prosport.ro/fotbal-intern/superliga/raul-rusescu-lukas-szukala-fcsb-semnat-gigi-becali-angajat-20570633": {
@@ -186329,15 +186155,15 @@
    "NUM:40"
   ],
   "mode": "FULL_TEXT",
-  "role": "ECHO",
+  "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T16:31:46+00:00",
-  "fetched_at": "2026-11-16T22:11:01.773989+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840971+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://mytex.ro/sport/corona-brasov-in-urna-a-patra-la-tragerea-la-sorti": {
@@ -186489,13 +186315,13 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T12:23:56+00:00",
-  "fetched_at": "2026-11-16T22:11:01.774072+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840956+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://mytex.ro/expres/parcarea-dupa-ziduri-inchisa-partial": {
@@ -186597,7 +186423,7 @@
   }
  },
  "https://monitorulbt.ro/national/2026/11/16/romania-risca-sa-piarda-o-parte-din-cele-267-miliarde-de-euro-din-pnrr-comisia-europeana-a-aprobat-doar-partial-cererea-de-plata": {
-  "sha256": "81e17121a1b0dc55bcf99a40703c8ba1b93fcaf9153ba478225d73f9a29c89c2",
+  "sha256": "e664328c70601bc11e5f8d2f741a45a93648c2ddde798ac87aa4f0c95be846c3",
   "anchors": [
    "ACR:acestora",
    "ACR:acordul",
@@ -186636,11 +186462,11 @@
    "ENT:europene",
    "ENT:executiv",
    "ENT:financia",
+   "ENT:george",
    "ENT:initiati",
    "ENT:jocul",
    "ENT:journali",
    "ENT:local",
-   "ENT:nicusor",
    "ENT:pagina",
    "ENT:plan",
    "ENT:prima",
@@ -186650,12 +186476,12 @@
    "ENT:rezilien",
    "ENT:romania",
    "ENT:romaniei",
+   "ENT:simion",
    "ENT:spaceman",
    "ENT:sport",
    "ENT:transpar",
    "ENT:trust",
    "ENT:zilei",
-   "NUM:10",
    "NUM:12",
    "NUM:13.1",
    "NUM:13120",
@@ -186683,17 +186509,17 @@
   "mode": "FULL_TEXT",
   "role": "INDEPENDENT_CONTRIBUTOR",
   "published": "2026-11-16T13:46:11+00:00",
-  "fetched_at": "2026-11-16T22:11:01.774181+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840518+00:00",
   "text_observations": {
    "v": 1,
-   "comparisons": 0,
+   "comparisons": 1,
    "changed": 0,
-   "first_at": null,
-   "last_at": null
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
   }
  },
  "https://cjtimis.ro/comunicate-de-presa/transparenta-decizionala-timisenii-sunt-invitati-sa-transmita-propuneri-privind-aprobarea-statutului-judetului-timis": {
-  "sha256": "df76a13f9d68f69fca96a1505b2bc89c62652a98e8dac14c739044ce0ce6b658",
+  "sha256": "cd5ddf6bf9b02d939802873bd18cf3e357767bbc83516fbf2b8bec03e4d5c515",
   "anchors": [
    "ENT:bulevard",
    "ENT:consili",
@@ -186735,7 +186561,432 @@
   "mode": "FULL_TEXT",
   "role": "ROOT",
   "published": "2026-11-16T11:20:23+00:00",
-  "fetched_at": "2026-11-16T22:11:01.774204+00:00",
+  "fetched_at": "2026-11-17T04:37:58.841023+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 1,
+   "changed": 0,
+   "first_at": "2026-11-16T22:11:01+00:00",
+   "last_at": "2026-11-17T04:37:58+00:00"
+  }
+ },
+ "https://gsp.ro/international/campionate/declan-rice-semneaza-contract-2031-arsenal-999932.html": {
+  "sha256": "a6a10cdacef0add3d944065b6c71ae472b7f8d0b424669ec222839e7c4e01d2f",
+  "anchors": [
+   "ACR:atp",
+   "ACR:brazilia",
+   "ACR:finals",
+   "ACR:gsp",
+   "ACR:ucl",
+   "ENT:actualiz",
+   "ENT:adrian",
+   "ENT:andreeva",
+   "ENT:anglia",
+   "ENT:angliei",
+   "ENT:arsenal",
+   "ENT:arteta",
+   "ENT:articol",
+   "ENT:athletic",
+   "ENT:baaa",
+   "ENT:campioan",
+   "ENT:campiona",
+   "ENT:champion",
+   "ENT:comentar",
+   "ENT:declan",
+   "ENT:discover",
+   "ENT:dorinel",
+   "ENT:goog",
+   "ENT:ilie",
+   "ENT:images",
+   "ENT:imago",
+   "ENT:jurrien",
+   "ENT:league",
+   "ENT:livescor",
+   "ENT:londra",
+   "ENT:mikel",
+   "ENT:munteanu",
+   "ENT:nastase",
+   "ENT:news",
+   "ENT:neymar",
+   "ENT:premier",
+   "ENT:publicat",
+   "ENT:rice",
+   "ENT:share",
+   "ENT:supercup",
+   "ENT:tenis",
+   "ENT:timber",
+   "ENT:torino",
+   "ENT:tunarii",
+   "ENT:turne",
+   "ENT:ultima",
+   "ENT:urmarest",
+   "ENT:vinicius",
+   "ENT:vuiesc",
+   "ENT:west",
+   "ENT:whatsapp",
+   "NUM:0",
+   "NUM:10",
+   "NUM:100",
+   "NUM:119",
+   "NUM:16",
+   "NUM:173",
+   "NUM:2023",
+   "NUM:2026",
+   "NUM:2028",
+   "NUM:2031",
+   "NUM:22",
+   "NUM:23",
+   "NUM:27",
+   "NUM:3",
+   "NUM:31",
+   "NUM:36",
+   "NUM:4",
+   "NUM:40",
+   "NUM:5",
+   "NUM:6",
+   "Q:82512c472b63"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "ROOT",
+  "published": "2026-11-16T21:31:40+00:00",
+  "fetched_at": "2026-11-17T04:37:58.839799+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://dobrogeaonline.ro/declan-rice-isi-prelungeste-contractul-pana-in-2031": {
+  "sha256": "16aedaf1987f596404a4376cfa678f053ebf1032c2aaf559f12cda7a9630f2c4",
+  "anchors": [
+   "ACR:accept",
+   "ACR:dsp",
+   "ENT:analytic",
+   "ENT:apel",
+   "ENT:aplicati",
+   "ENT:arsenal",
+   "ENT:athletic",
+   "ENT:cartier",
+   "ENT:cautare",
+   "ENT:cladire",
+   "ENT:constant",
+   "ENT:contact",
+   "ENT:copyrigh",
+   "ENT:curtea",
+   "ENT:declan",
+   "ENT:directoa",
+   "ENT:dobrogea",
+   "ENT:follow",
+   "ENT:font",
+   "ENT:foto",
+   "ENT:goog",
+   "ENT:instalea",
+   "ENT:judetean",
+   "ENT:like",
+   "ENT:online",
+   "ENT:politica",
+   "ENT:primaria",
+   "ENT:prin",
+   "ENT:rice",
+   "ENT:safari",
+   "ENT:setari",
+   "ENT:spital",
+   "ENT:stai",
+   "ENT:tulcea",
+   "ENT:ultime",
+   "ENT:urmarito",
+   "ENT:veterani",
+   "NUM:11",
+   "NUM:17",
+   "NUM:2026",
+   "NUM:2031",
+   "NUM:27",
+   "NUM:278",
+   "NUM:30.000",
+   "NUM:4",
+   "NUM:5",
+   "Q:63dbeb30fd55"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "INDEPENDENT_CONTRIBUTOR",
+  "published": "2026-11-16T22:13:52+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840165+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://zch.ro/scandal-in-sanatate-usr-si-pnl-cer-demiterea-ministrului-alexandru-rogobete-printr-o-motiune-simpla-principalele-acuzatii-vizeaza-criza-medicamentelor-si-fondurile-pnrr": {
+  "sha256": "085937227f36376cbb09b2894a5fd615eaaecfd8a4df6f12c5961595246f4101",
+  "anchors": [
+   "ACR:acasa",
+   "ACR:cultura",
+   "ACR:economie",
+   "ACR:educatie",
+   "ACR:eveniment",
+   "ACR:pnl",
+   "ACR:pnrr",
+   "ACR:politica",
+   "ACR:psd",
+   "ACR:rss",
+   "ACR:sanatate",
+   "ACR:sport",
+   "ACR:usr",
+   "ENT:agentia",
+   "ENT:alexandr",
+   "ENT:andronac",
+   "ENT:balanesc",
+   "ENT:camera",
+   "ENT:camerei",
+   "ENT:colectiv",
+   "ENT:comisia",
+   "ENT:deputat",
+   "ENT:diana",
+   "ENT:domn",
+   "ENT:emanuel",
+   "ENT:facebook",
+   "ENT:gabriel",
+   "ENT:imprimar",
+   "ENT:linkedin",
+   "ENT:lyrica",
+   "ENT:medicame",
+   "ENT:minister",
+   "ENT:ministr",
+   "ENT:national",
+   "ENT:ordin",
+   "ENT:pinteres",
+   "ENT:rafila",
+   "ENT:rogobete",
+   "ENT:sanatate",
+   "ENT:sanatati",
+   "ENT:scandal",
+   "ENT:stoica",
+   "ENT:telegram",
+   "ENT:ungurean",
+   "ENT:valentin",
+   "ENT:vlad",
+   "ENT:voicules",
+   "ENT:whatsapp",
+   "ENT:youtube",
+   "NUM:1.345",
+   "NUM:1.5",
+   "NUM:16",
+   "NUM:2016",
+   "NUM:2024",
+   "NUM:2026"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "ROOT",
+  "published": "2026-11-16T16:46:51+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840196+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://hotnews.ro/ministrul-rogobete-raspunde-acuzatiilor-pnl-usr-simt-nevoia-sa-se-urce-pe-suferinta-pacientilor-au-prea-mult-timp-liber-2406034": {
+  "sha256": "5bb636967b34d8bfddc74e8c83d5b634f4b3fe4ee9d1f80c51c50700fafbaa8c",
+  "anchors": [
+   "ACR:adrfr",
+   "ACR:pnl",
+   "ACR:usr",
+   "ENT:acest",
+   "ENT:actualit",
+   "ENT:actualiz",
+   "ENT:adauga",
+   "ENT:adrian",
+   "ENT:alexandr",
+   "ENT:andronac",
+   "ENT:atat",
+   "ENT:avand",
+   "ENT:bucurest",
+   "ENT:calin",
+   "ENT:camera",
+   "ENT:cozma",
+   "ENT:deputat",
+   "ENT:discover",
+   "ENT:distribu",
+   "ENT:domn",
+   "ENT:emanuel",
+   "ENT:facebook",
+   "ENT:farmaceu",
+   "ENT:gabriel",
+   "ENT:george",
+   "ENT:goog",
+   "ENT:ilie",
+   "ENT:liliana",
+   "ENT:luca",
+   "ENT:lyrica",
+   "ENT:minister",
+   "ENT:ministr",
+   "ENT:niculesc",
+   "ENT:palat",
+   "ENT:parlamen",
+   "ENT:photos",
+   "ENT:publicat",
+   "ENT:retailer",
+   "ENT:rogobete",
+   "ENT:romania",
+   "ENT:ruse",
+   "ENT:sanatati",
+   "ENT:simt",
+   "ENT:spuneti",
+   "ENT:ungurean",
+   "ENT:urmarest",
+   "ENT:vlad",
+   "ENT:voicules",
+   "NUM:13",
+   "NUM:16.11",
+   "NUM:1990",
+   "NUM:20",
+   "NUM:2026",
+   "NUM:22",
+   "NUM:24",
+   "NUM:40",
+   "Q:2152738a2506",
+   "Q:47641b03d19c",
+   "Q:7a808134894e",
+   "Q:7d98c5b52391",
+   "Q:7e9c2029b9fa",
+   "Q:aa8f9a46d80b",
+   "Q:d06607870d45",
+   "Q:d614668ffdfe"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "INDEPENDENT_CONTRIBUTOR",
+  "published": "2026-11-16T20:40:26+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840325+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://as.ro/fotbal/liga-natiunilor/gica-hagi-si-a-decis-viitorul-ce-obiectiv-si-a-impus-la-echipa-nationala-voi-ramane-daca-voi-schimba-ceva-709204.html": {
+  "sha256": "bdc3a2d96dff439a48617f80cf1c29bee5e146985a4a618bb88681344d546174",
+  "anchors": [
+   "ENT:antena",
+   "ENT:antenapl",
+   "ENT:bancu",
+   "ENT:birligea",
+   "ENT:bosnia",
+   "ENT:bucurest",
+   "ENT:coman",
+   "ENT:daniel",
+   "ENT:dennis",
+   "ENT:gica",
+   "ENT:hagi",
+   "ENT:james",
+   "ENT:league",
+   "ENT:liga",
+   "ENT:nations",
+   "ENT:nicusor",
+   "ENT:pictures",
+   "ENT:polonia",
+   "ENT:rege",
+   "ENT:romania",
+   "ENT:romaniei",
+   "ENT:sport",
+   "NUM:1",
+   "NUM:11",
+   "NUM:12",
+   "NUM:2",
+   "NUM:4"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "INDEPENDENT_CONTRIBUTOR",
+  "published": "2026-11-16T21:11:10+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840427+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://prosport.ro/fotbal-intern/nationala/hagi-reactie-plecare-romania-20571135": {
+  "sha256": "aa2b92eece6a92754be4cc8ae28816dad04f5a2cb79c1c04198c7d1b70e90517",
+  "anchors": [
+   "ACR:galeria",
+   "ACR:pictures",
+   "ACR:poze",
+   "ACR:sport",
+   "ACR:vezi",
+   "ENT:adauga",
+   "ENT:bilino",
+   "ENT:bosnia",
+   "ENT:bosniei",
+   "ENT:campiona",
+   "ENT:daca",
+   "ENT:discover",
+   "ENT:european",
+   "ENT:generati",
+   "ENT:gheorghe",
+   "ENT:gica",
+   "ENT:hagi",
+   "ENT:hertegov",
+   "ENT:liga",
+   "ENT:ligii",
+   "ENT:mondial",
+   "ENT:natiun",
+   "ENT:obiectiv",
+   "ENT:pasarica",
+   "ENT:polje",
+   "ENT:razvan",
+   "ENT:romania",
+   "ENT:romaniei",
+   "ENT:sper",
+   "ENT:stadion",
+   "ENT:urmarest",
+   "ENT:zilina",
+   "NUM:16",
+   "NUM:1994",
+   "NUM:2026",
+   "NUM:21",
+   "NUM:4",
+   "NUM:45",
+   "NUM:6",
+   "NUM:61",
+   "Q:1183ba1ba973",
+   "Q:50b5822d1596",
+   "Q:6702ca0e830b"
+  ],
+  "mode": "FULL_TEXT",
+  "role": "ROOT",
+  "published": "2026-11-16T21:14:23+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840617+00:00",
+  "text_observations": {
+   "v": 1,
+   "comparisons": 0,
+   "changed": 0,
+   "first_at": null,
+   "last_at": null
+  }
+ },
+ "https://newsbv.ro/sondaj-inscop-noiembrie-2026-aur-psd-pnl-usr": {
+  "sha256": "1486db3052d065431dfcffe2545a54ec9911caaf081993149d32c61b109e31f1",
+  "anchors": [
+   "ACR:aur",
+   "ACR:inscop",
+   "ACR:psd",
+   "NUM:24.6",
+   "NUM:34.6"
+  ],
+  "mode": "RSS_FALLBACK",
+  "role": "ECHO",
+  "published": "2026-11-16T17:21:17+00:00",
+  "fetched_at": "2026-11-17T04:37:58.840907+00:00",
   "text_observations": {
    "v": 1,
    "comparisons": 0,
