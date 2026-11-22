@@ -45133,12 +45133,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_nenotabila"
  },
- "d3d4049efba14dcc": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
  "5be3ed27ad24133a": {
   "miss": true,
   "v": 3,
@@ -45260,6 +45254,141 @@
   "motiv_ent": "ent_fara_entitati"
  },
  "e5938a62d4a6b749": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5ece6ff4573ad5fc": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "5568e75c1214aee8": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "df7b6452dcdb299b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "dce0eb3421131693": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "f083c6e8a13610a3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e0dd49ab19809da3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "0a630322f59aec31": {
+  "cover": "leads/petrisor-peiu.c.jpg",
+  "art": "leads/petrisor-peiu.jpg",
+  "webp": "leads/petrisor-peiu.webp",
+  "artist": "AUR Alianța pentru Unirea Românilor",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:PEIU_Petri%C8%99or-Gabriel_senator_AUR_Bucure%C8%99ti_2.jpg",
+  "name": "Petrișor Peiu",
+  "kind": "entity"
+ },
+ "b9cc2779e9420da4": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "070afed3d9a30d0d": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "71fe2d62ef36bb8a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "07b6accf9e1b7805": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "e44fc20a8a18f262": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "2fa38d57611a0675": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "6654de10b447a0ce": {
+  "cover": "leads/loc-Q586387.c.jpg",
+  "art": "leads/loc-Q586387.jpg",
+  "webp": "leads/loc-Q586387.webp",
+  "artist": "Razvan Socol",
+  "license": "CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Eforie_Nord_-_aug_2014_(1).JPG",
+  "name": "Eforie",
+  "kind": "locality",
+  "qid": "Q586387"
+ },
+ "8adf515086f6ec0b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5355f8c9d671a387": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "aa576a64eef9151a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "aae9dbb4a1015072": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "34f68f409774b3f0": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "4f2636e27641783e": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "49f573c84c0f0d10": {
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
