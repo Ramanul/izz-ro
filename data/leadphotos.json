@@ -45108,5 +45108,161 @@
   "v": 3,
   "motiv_loc": "loc_dimensiune_sau_format",
   "motiv_ent": "ent_fara_entitati"
+ },
+ "0387e9fc100e9fc2": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "184bb35c7e83cd4b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "ea18612cfd12bf44": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_respinsa_de_judecator"
+ },
+ "42fb8661e0a00075": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "d3d4049efba14dcc": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "5be3ed27ad24133a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_nenotabila"
+ },
+ "f16b29d5edb2c401": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "404e98c08bd11afe": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "90eaa48eb4df1089": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "7d95864d2fd17bbd": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b78fa3616b365367": {
+  "cover": "leads/george-washington.c.jpg",
+  "art": "leads/george-washington.jpg",
+  "webp": "leads/george-washington.webp",
+  "artist": "Gilbert Stuart",
+  "license": "Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg",
+  "name": "George Washington",
+  "kind": "entity"
+ },
+ "6c07d2ad80888170": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "35decd16bd7f57ed": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "da2f94fb622a625f": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "70ff862930668b18": {
+  "cover": "leads/loc-Q837960.c.jpg",
+  "art": "leads/loc-Q837960.jpg",
+  "webp": "leads/loc-Q837960.webp",
+  "artist": "Aisano",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:N%C4%83vodari,_Buna_Vestire,_1.jpeg",
+  "name": "Năvodari",
+  "kind": "locality"
+ },
+ "30b6b3ce4ddc5157": {
+  "cover": "leads/loc-Q850982.c.jpg",
+  "art": "leads/loc-Q850982.jpg",
+  "webp": "leads/loc-Q850982.webp",
+  "artist": "",
+  "license": "CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:RO_AR_Panoramic_view_of_Curtici.jpg",
+  "name": "Curtici",
+  "kind": "locality",
+  "qid": "Q850982"
+ },
+ "18b47dfef401f742": {
+  "cover": "leads/loc-Q12724776.c.jpg",
+  "art": "leads/loc-Q12724776.jpg",
+  "webp": "leads/loc-Q12724776.webp",
+  "artist": "Mieresch",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Viev_of_Flore%C8%99ti,_Cluj_County.jpg",
+  "name": "Florești",
+  "kind": "locality",
+  "qid": "Q12724776"
+ },
+ "56dc7ed2aeceb816": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "5fbdaf2f057f0496": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "ffd685b948f08a2b": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "222d047d8831c689": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "caf14c8a0b8e0a4a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e5938a62d4a6b749": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
  }
 }
