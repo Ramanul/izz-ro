@@ -44881,12 +44881,6 @@
   "motiv_loc": "loc_neeligibil",
   "motiv_ent": "ent_fara_entitati"
  },
- "3bd9a0bf6501a5a5": {
-  "miss": true,
-  "v": 3,
-  "motiv_loc": "loc_neeligibil",
-  "motiv_ent": "ent_nenotabila"
- },
  "ca967ff9562274df": {
   "miss": true,
   "v": 3,
@@ -44989,6 +44983,130 @@
   "miss": true,
   "v": 3,
   "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "31e945b41bfe51e5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_p18"
+ },
+ "0d96f2ea59390a40": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_licenta_sau_format"
+ },
+ "6ed30ecb2943a508": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_exclus_tematic",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "2812101873f57476": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "e861531b53a2e03c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "701d36c3502909f3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_respinsa_de_judecator"
+ },
+ "005a864215e24607": {
+  "cover": "leads/miley-cyrus.c.jpg",
+  "art": "leads/miley-cyrus.jpg",
+  "webp": "leads/miley-cyrus.webp",
+  "artist": "Raphael Pour-Hashemi",
+  "license": "CC BY 2.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Miley_Cyrus_Primavera19_-226_(48986293772)_(cropped).jpg",
+  "name": "Miley Cyrus",
+  "kind": "entity"
+ },
+ "7e10d9d32cdb5459": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f9e19014b71d4e35": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_qid"
+ },
+ "abadd7ba9d531c0a": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "b7afa62dd0898676": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "302eb3cc181578da": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "9111d8c107d797ee": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_neeligibil",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "fbb3fc2aa2d48796": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "eb851f89f004022c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "f613637c4781d83c": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "bdf58fe8e4f9f386": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "16f0736832e5a8c3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_negasit_sau_fara_imagine",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "104992e237a6c3e3": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
+  "motiv_ent": "ent_fara_entitati"
+ },
+ "e4fefb58778b6ab5": {
+  "miss": true,
+  "v": 3,
+  "motiv_loc": "loc_dimensiune_sau_format",
   "motiv_ent": "ent_fara_entitati"
  }
 }
