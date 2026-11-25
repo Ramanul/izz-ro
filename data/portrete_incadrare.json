@@ -3320,6 +3320,10 @@
 "fete": 0,
 "sha256": "b64ced40d421f3300e3ffb3827674c1dfb45e9f112a7546327b9def67ad760d7"
 },
+"portraits/burning-man.jpg": {
+"fete": 0,
+"sha256": "1988ef66d137892d1327a688977877343e54cbb60469a2b034ae8decd676defc"
+},
 "portraits/calin-georgescu.jpg": {
 "fete": 1,
 "poz": "50% 22%",
@@ -11172,6 +11176,16 @@
 "py": -22.27
 }
 },
+"portraits/jurgen-klinsmann.jpg": {
+"fete": 1,
+"poz": "50% 48%",
+"sha256": "a16ec728f158af6ca93b7f1a65d91fed6c6c71899fdb09ef784816db66a0cf04",
+"taiere": {
+"pw": 100.0,
+"px": -0.0,
+"py": -18.08
+}
+},
 "portraits/jurgen-klopp.jpg": {
 "fete": 1,
 "poz": "50% 33%",
@@ -13785,6 +13799,10 @@
 "px": -0.0,
 "py": -0.0
 }
+},
+"portraits/marks-spencer.jpg": {
+"fete": 0,
+"sha256": "444f7ea8dc63d4391a90efb5f5e8b56ac5f17d9e82c9cbdfee5168a1d208d73b"
 },
 "portraits/markus-soder.jpg": {
 "fete": 1,
