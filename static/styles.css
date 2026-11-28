@@ -453,6 +453,7 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
   font-style: italic;
 }
 .subiect-greu { font-weight: 600; }
+.subiect-greu-nota a { text-decoration: underline; text-underline-offset: 2px; }
 .subiect-greu-nota {
   font-family: var(--font-text);
   font-size: var(--fs-eyebrow);
