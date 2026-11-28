@@ -86,6 +86,14 @@ Pagina [Principii](/principii/) explică de ce există IZZ.ro. Aceasta arată **
 
 **Limită:** cifra articolelor numără doar sursele din fluxurile urmărite și doar relatările unite într-o sinteză; duplicatele eliminate înainte de publicare nu sunt încă numărate public.
 
+## Ce este izz.ro
+
+izz.ro este un program. Adună titluri din publicații, le grupează pe același eveniment și scrie rezumate automat, cu modele de limbaj. Nu simte nimic din ce scrie: nu îi pasă de o veste bună sau de una grea, nu înțelege durerea unei familii și nu poate ști ce ai nevoie să citești azi.
+
+Are limite pe care le spunem direct: poate greși un nume, o cifră sau un context; vede doar sursele pe care le urmărește; nu are aprobare umană înainte de publicare. De aceea fiecare rezumat trimite la sursele lui, iar greșelile găsite se corectează la vedere.
+
+Când un titlu vorbește despre moarte sau violență asupra oamenilor, programul îl scrie sobru, cu faptul literal, fără cuvinte menite să șocheze. Titlurile cu violență folosită ca imagine („a spulberat", „devastator") se numără intern, ca să le putem reduce.
+
 ## Transparență scurtă: drepturi și conținut
 
 - Modele utilizate: Google Gemini și Anthropic Claude. Răspunderea editorială pentru ce rămâne publicat aparține IZZ.ro.

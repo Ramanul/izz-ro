@@ -29,7 +29,7 @@ Returneaza JSON:
   "category": "<una din: {cats}>",
   "entities": ["<1-4 nume proprii cheie din stire (persoane, organizatii, locuri), forma scurta canonica, ex. 'Nicusor Dan', 'PSD', 'Timisoara'>"],
   "icon": "<pictograma care surprinde cel mai bine subiectul, UN slug din: {icons}; null daca niciuna nu se potriveste>"}}
-Reguli: SCRIE IN ROMANA — daca stirea primita e in alta limba, tradu-o, nu o reda in original; titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; foloseste DOAR fapte prezente in textul primit — daca un fapt (cine, unde, cand) nu apare acolo, nu-l inventa si nu-l inlocui cu o formulare vaga."""
+Reguli: SCRIE IN ROMANA — daca stirea primita e in alta limba, tradu-o, nu o reda in original; titlul trebuie sa se inteleaga singur si sa contina faptul real, nu o intrebare/teaser; NU copia nicio propozitie din original; zero opinii; foloseste DOAR fapte prezente in textul primit — daca un fapt (cine, unde, cand) nu apare acolo, nu-l inventa si nu-l inlocui cu o formulare vaga; fara violenta ca metafora sau intensificator in titlu (nu 'a spulberat', 'a zdrobit', 'devastator', 'socant'): foloseste verbul neutru ('a invins', 'a castigat'); cand e vorba de oameni raniti sau morti, spune faptul literal si sobru."""
 
 # E2 — sinteza dialectică (specs/plan-paradigma-izz.md §3 E2, §5). Modelul PROPUNE structura;
 # `generator/dialectic.py` verifică fiecare citare și decide ce rămâne. De aceea regulile de mai
@@ -185,7 +185,7 @@ Stiri:
 Returneaza EXCLUSIV un array JSON, cate UN obiect per stire, cu acelasi id primit:
 [{{"id": <id>, "title": "<esenta faptului: CINE face/pateste CE; concret; 6-16 cuvinte; fara titluri senzaționaliste, fara vag>", "teaser": "<rezumat comprimat 25-40 cuvinte: cine/ce/cand/unde/cat; reformulat 100%, ZERO propozitii copiate>", "category": "<{cats}>", "entities": ["<1-4 nume proprii cheie: persoane, organizatii, locuri>"], "icon": "<UN slug din lista de la final sau null>"}}]
 Pictograme permise: {icons}
-Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii."""
+Reguli: pastreaza id-ul EXACT (numar); un obiect per id; daca stirea e in alta limba, scrie in romana; titlul = faptul real, nu intrebare; zero opinii; fara violenta ca metafora sau intensificator in titlu (nu 'a spulberat', 'devastator', 'socant'); la oameni raniti sau morti, faptul literal si sobru."""
 
 
 def get_provider():
