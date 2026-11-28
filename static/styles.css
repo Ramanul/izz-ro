@@ -452,6 +452,13 @@ a.chip:hover { border-color: var(--ink-3); color: var(--ink); }
   border-left: 2px solid var(--brass);
   font-style: italic;
 }
+.subiect-greu { font-weight: 600; }
+.subiect-greu-nota {
+  font-family: var(--font-text);
+  font-size: var(--fs-eyebrow);
+  color: var(--ink-2);
+  margin: var(--sp-12) 0;
+}
 .moderation-note {
   font-family: var(--font-text);
   font-size: var(--fs-eyebrow);

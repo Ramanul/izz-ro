@@ -21,7 +21,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from slugify import slugify
 
 from . import (config, covers, dossiers, editorial, fetch_deep, geo, guard,
-               htmlart, memorie, pagefind_index, publication, source_publishers)
+               htmlart, memorie, pagefind_index, publication, source_publishers, ton)
 from .select import (_dedup, _dedup_sources, _diversify, _entity_index,
                      _pick_hero, _quality_gate, anunt_oficial_fara_corp, filtru_cautare_rapida,
                      publicitar_la_sursa, titlu_afisare, editorial_selection_comparison)
@@ -300,6 +300,9 @@ def _env() -> Environment:
     env.filters["de_ro"] = _de_ro
     # eticheta afisata a unei categorii (slug URL neschimbat); fallback = capitalizat
     env.filters["cat_label"] = lambda slug: config.CATEGORY_LABELS.get(slug, (slug or "").capitalize())
+    # Semnul „Subiect greu” (Felia 1): calculat la randare din titlu, nestocat, deterministic.
+    env.filters["subiect_greu"] = lambda a: ton.subiect_greu(
+        a.get("display_title") or a.get("title") or "", a.get("category") or "")
     # Codul de judet din date e „CONSTANTA”, „TIMIS”; banda de context din articol are nevoie
     # de forma cu diacritice („Constanța”), din aceeasi sursa ca etichetele de pe coperti.
     env.filters["judet_label"] = geo.eticheta_judet

@@ -24,7 +24,7 @@
   {%- if pr.credit %}{{ credit_foto(pr) }}{% endif %}
   {%- endif %}
   {%- endif %}
-  <p class="card-kicker"><span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}</span>{% if a.anunt_fara_corp %} <span class="badge-extra">Anunț oficial</span>{% endif %}</p>
+  <p class="card-kicker"><span class="badge{% if a.model == 'C' %} c{% endif %}">{{ a.category | cat_label }}</span>{% if a.anunt_fara_corp %} <span class="badge-extra">Anunț oficial</span>{% endif %}{% if a | subiect_greu %} <span class="badge-extra subiect-greu">Subiect greu</span>{% endif %}</p>
   {% if a.moderation_note %}<p class="moderation-note">{{ a.moderation_note }}</p>{% endif %}
   {#- h3, nu h2: pe prima pagină titlul de știre stă sub un <h2> de secțiune, iar șaptezeci
       de h2-uri egale nu spuneau lui Google nimic ierarhic (raportul de SEO de pe 7 nov 2026,
