@@ -53,6 +53,9 @@
   {# `data-pagefind-body` marcheaza CE se indexeaza: titlul si rezumatul, nimic altceva. Greutatea
      mai mare pe titlu face ca o potrivire in titlu sa iasa deasupra uneia din corp. -#}
   <h1 data-pagefind-body data-pagefind-weight="3">{{ a.display_title or a.title }}</h1>
+  {% if a | subiect_greu %}
+  <p class="subiect-greu-nota" role="note"><strong>Subiect greu.</strong> Acest text vorbește despre moarte sau violență, rezumat automat de un program care nu simte. <a href="{{ base }}/{{ a.category }}/">Treci la alte știri din {{ a.category | cat_label }}</a></p>
+  {% endif %}
   {% if a.moderation_note %}
   <aside class="notice moderation-notice" aria-label="Moderare manuală">
     <p><strong>{{ a.moderation_note }}</strong></p>
