@@ -19,6 +19,7 @@ MODELS = ("gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite", "gemi
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models"
 PROBE_PATTERN = os.getenv("GEMINI_PROBE_PATTERN") or r"gemini-4|hydrogen"
 PROBE_MAX = 3
+HYDROGEN = "gemini-4-hydrogen"  # modelul de sinteza dorit primul; se probeaza pe FIECARE cheie
 NEW_MAX = 30
 
 
@@ -140,5 +141,25 @@ def report_new(key, catalog, opener=urllib.request.urlopen):
         print(f"::{level} title=Proba {model}::{fields}")
 
 
+def probe_hydrogen_all_keys(opener=urllib.request.urlopen):
+    """Un apel minimal pe Hydrogen cu fiecare cheie; numele modelului sta in mesaj, nu in titlu
+    (GitHub ascunde `title=` din log). Intoarce lista de coduri, fara chei si fara text."""
+    codes = []
+    for number in range(1, 5):
+        name = "GEMINI_API_KEY" if number == 1 else f"GEMINI_API_KEY_{number}"
+        tokens = [part for part in re.split(r"[,\s]+", os.getenv(name, "").strip()) if part]
+        if not tokens:
+            print(f"::notice title=Hydrogen::cheia {number}: lipseste")
+            codes.append("missing")
+            continue
+        result = probe(tokens[0], HYDROGEN, opener)
+        fields = "; ".join(f"{k}={v}" for k, v in result.items())
+        level = "notice" if result.get("http") == 200 else "warning"
+        print(f"::{level} title=Hydrogen::cheia {number}: model={HYDROGEN}; {fields}")
+        codes.append(result.get("http"))
+    return codes
+
+
 if __name__ == "__main__":
     main()
+    probe_hydrogen_all_keys()

@@ -99,3 +99,20 @@ def test_probe_ignores_thought_parts():
             {"text": "ma gandesc", "thought": True}, {"text": '{"ok": true}'}]}}]})
 
     assert check.probe("k", "gemini-4-x", opener)["json_ok"] is True
+
+
+def test_hydrogen_probed_on_every_key_with_model_in_message(monkeypatch, capsys):
+    for name, value in (("GEMINI_API_KEY", "k1"), ("GEMINI_API_KEY_2", "k2"), ("GEMINI_API_KEY_3", ""), ("GEMINI_API_KEY_4", "k4")):
+        monkeypatch.setenv(name, value)
+    seen = []
+
+    def fake_probe(key, model, opener=None):
+        seen.append((key, model))
+        return {"http": 429} if key == "k2" else {"http": 200, "ms": 5}
+
+    monkeypatch.setattr(check, "probe", fake_probe)
+    codes = check.probe_hydrogen_all_keys()
+    out = capsys.readouterr().out
+    assert codes == [200, 429, "missing", 200]
+    assert seen == [("k1", "gemini-4-hydrogen"), ("k2", "gemini-4-hydrogen"), ("k4", "gemini-4-hydrogen")]
+    assert "model=gemini-4-hydrogen" in out and "k1" not in out and "k2" not in out
