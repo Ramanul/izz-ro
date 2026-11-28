@@ -62,7 +62,7 @@ def test_default_models_match_local_and_github_configuration(monkeypatch):
     monkeypatch.delenv("GEMINI_MODEL", raising=False)
 
     assert gemini._models() == [
-        "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite",
+        "gemini-4-hydrogen", "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite",
     ]
 
 

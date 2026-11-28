@@ -16,6 +16,7 @@ from .base import Provider
 # Modelele sunt încercate serial, în ordinea configurată. GEMINI_MODEL rămâne
 # compatibil pentru configurațiile vechi cu un singur model.
 DEFAULT_MODELS = (
+    "gemini-4-hydrogen",
     "gemini-3.8-flash",
     "gemini-3.6-flash",
     "gemini-3.5-flash-lite",
@@ -51,7 +52,7 @@ BASE_URL = (os.getenv("GEMINI_BASE_URL") or "https://generativelanguage.googleap
 ENDPOINT = BASE_URL + "/v1beta/models/{model}:generateContent"
 THROTTLE = float(os.getenv("GEMINI_THROTTLE", "4.0"))   # pauza intre apeluri: ~15 req/min, sub plafonul RPM free-tier (2s tripa 429 la mijloc de rulare)
 RETRIES_PER_KEY = 2
-REQUEST_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT") or "30")
+REQUEST_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT") or "90")
 # Circuit-breaker pe rulare: fara el, fiecare apel reporneste de la primul model din
 # GEMINI_MODELS, deci un model fara cota (429 pe toate cheile) sau inexistent (404)
 # costa pana la chei x RETRIES_PER_KEY cereri + backoff la FIECARE lot, nu o data.
